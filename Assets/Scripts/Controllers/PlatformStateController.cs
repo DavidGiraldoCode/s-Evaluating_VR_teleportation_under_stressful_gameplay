@@ -11,8 +11,10 @@ public class PlatformStateController : MonoBehaviour
     {
         if (!m_platformState)
             throw new System.ArgumentNullException("No PlatformState has been assigned");
-
-        m_platformMeshR.material.color = m_platformState.GetColor;
+    }
+    private void Start()
+    {
+         m_platformMeshR.material.color = m_platformState.DisplayColor;
     }
 
     private void OnTriggerEnter(Collider other)

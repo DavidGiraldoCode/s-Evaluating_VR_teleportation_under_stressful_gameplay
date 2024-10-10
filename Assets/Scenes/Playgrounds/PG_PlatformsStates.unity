@@ -607,6 +607,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 031b1adae1dda4a02b9ecfd6c8f2a33c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_gameState: {fileID: 11400000, guid: d5f996f94f4d44bcfa93d8fea25ed7b6, type: 2}
 --- !u!43 &475484228
 Mesh:
   m_ObjectHideFlags: 0

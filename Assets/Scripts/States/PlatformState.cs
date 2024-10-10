@@ -13,19 +13,23 @@ public class PlatformState : ScriptableObject
     };
     public enum color
     {
+        NONE,
         RED,
         GREEN,
         BLUE
     }
 
-    [SerializeField] private state m_currentState;
-    [SerializeField] private color m_currentColor;
-    [SerializeField] private Color m_color;
-    public Color GetColor { get => m_color; set => m_color = value; }
-    public color CurrentColor { get => m_currentColor;}
+    [SerializeField] private state m_currentState = state.IDLE;
+    [SerializeField] private color m_currentColor = color.NONE;
+    [SerializeField] private Color m_displayColor;
+    public Color DisplayColor { get => m_displayColor; set => m_displayColor = value; }
+    public color CurrentColor { get => m_currentColor; }
 
     // Methods
-
+    public void InitializePlatform(Color displayColor)
+    {
+        m_displayColor = displayColor;
+    }
     // Events
 
     public delegate void StateChanger(state state, color color);
@@ -39,7 +43,6 @@ public class PlatformState : ScriptableObject
     }
 
     // User feedback, but determines if the precission task can be performed or not.
-
     // Triggers
     public void WrongColor()
     {

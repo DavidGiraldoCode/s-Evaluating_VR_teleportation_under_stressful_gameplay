@@ -29,6 +29,7 @@ public class GameInstanceManager : MonoBehaviour
 
     private void OnEnable()
     {
+        m_gameState.OnSequenceCompleted += OnSequenceCompleted;
         m_PlatformStates = FindObjectsOfType<PlatformStateController>();
         for (int i = 0; i < m_PlatformStates.Length; i++)
         {
@@ -38,6 +39,7 @@ public class GameInstanceManager : MonoBehaviour
 
     private void OnDisable()
     {
+        m_gameState.OnSequenceCompleted -= OnSequenceCompleted;
         for (int i = 0; i < m_PlatformStates.Length; i++)
         {
             m_PlatformStates[i].State.OnStateChange -= OnPlaformStateChange;
@@ -46,18 +48,32 @@ public class GameInstanceManager : MonoBehaviour
     // Custom
     private void OnPlaformStateChange(PlatformState.state state, PlatformState.color color)
     {
-        Debug.Log("The " + color.ToString() + " platform has changed to: " + state.ToString());
-        m_gameState.CurrentColor = (GameState.color) color;
+        //Debug.Log("The " + color.ToString() + " platform has changed to: " + state.ToString());
+        m_gameState.CurrentColor = (GameState.color)color;
 
-        if(state == PlatformState.state.FOCUSSED)
+        if (state == PlatformState.state.FOCUSSED)
         {
-            m_gameState.ProgressInSequence((GameState.color) color);
+            m_gameState.ProgressInSequence((GameState.color)color);
         }
+    }
+
+
+    private void OnPlatfromActivated(PlatformState.color color) // Calls ProgressInSequence()
+    {
+        
+    }
+
+    private void OnSequenceCompleted()
+    {
+        // Calls 
+        Debug.Log("Creating NEW sequence");
+        m_gameState.CreateNewSequence();
+        // TODO ResetStartingPosition();
     }
 
     private void InitializedPlatforms()
     {
-        if(m_PlatformStates == null) return;
+        if (m_PlatformStates == null) return;
 
         Debug.Log("Plaforms found: " + m_PlatformStates.Length);
 
@@ -67,7 +83,7 @@ public class GameInstanceManager : MonoBehaviour
 
         for (int i = 0; i < m_PlatformStates.Length; i++)
         {
-            m_PlatformStates[i].State.InitializePlatform( (Color)colorsTable[m_PlatformStates[i].State.CurrentColor]);
+            m_PlatformStates[i].State.InitializePlatform((Color)colorsTable[m_PlatformStates[i].State.CurrentColor]);
         }
     }
 }

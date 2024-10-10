@@ -22,7 +22,9 @@ public class GameInstanceManager : MonoBehaviour
         if (!m_gameState)
             throw new System.NullReferenceException("The GameInstance is missing the GameState");
 
+        m_gameState.Init();
         InitializedPlatforms();
+
     }
 
     private void OnEnable()
@@ -46,6 +48,11 @@ public class GameInstanceManager : MonoBehaviour
     {
         Debug.Log("The " + color.ToString() + " platform has changed to: " + state.ToString());
         m_gameState.CurrentColor = (GameState.color) color;
+
+        if(state == PlatformState.state.FOCUSSED)
+        {
+            m_gameState.ProgressInSequence((GameState.color) color);
+        }
     }
 
     private void InitializedPlatforms()

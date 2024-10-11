@@ -14520,6 +14520,8 @@ GameObject:
   - component: {fileID: 362519866436504397}
   - component: {fileID: 5626685200922362315}
   - component: {fileID: 5602040428951562959}
+  - component: {fileID: 7839101610813357090}
+  - component: {fileID: 7082799742869104323}
   m_Layer: 0
   m_Name: RIng
   m_TagString: Untagged
@@ -26203,3 +26205,37 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &7839101610813357090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7180094933777760137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af5129f7f96c1436db18de6b7c1373d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_platformState: {fileID: 0}
+--- !u!65 &7082799742869104323
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7180094933777760137}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 1
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 54
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.40000004, y: 0.1, z: 0.39999998}
+  m_Center: {x: 0, y: 0, z: -0.000000007450581}

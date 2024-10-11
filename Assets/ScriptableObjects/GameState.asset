@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37f3e59219a574bb08f339611f05ba09, type: 3}
   m_Name: GameState
   m_EditorClassIdentifier: 
-  currentColor: 0
-  hardCodedSequence: 02000000010000000300000001000000
+  m_currentColor: 0
+  HardCodedSequence: 01000000000000000200000003000000
+  remainingSequences: 3

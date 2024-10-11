@@ -22,6 +22,7 @@ public class GameInstanceManager : MonoBehaviour
         if (!m_gameState)
             throw new System.NullReferenceException("The GameInstance is missing the GameState");
 
+        Debug.Log("Awake GameInstanceManager");
         m_gameState.Init();
         InitializedPlatforms();
 

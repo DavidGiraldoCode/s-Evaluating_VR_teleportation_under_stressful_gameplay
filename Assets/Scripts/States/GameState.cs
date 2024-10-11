@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,31 +18,40 @@ public class GameState : ScriptableObject
         BLUE
     }
     [SerializeField] private color m_currentColor = color.NONE;
-    [SerializeField] private color[] hardCodedSequence;
+    [SerializeField] public color[] HardCodedSequence; // For testing
     private Stack<color> m_currentSequence = new Stack<color>();
+    private static Hashtable m_colorsTable = new Hashtable()
+    {
+        { color.NONE, Color.black},
+        { color.RED, Color.red},
+        { color.GREEN, Color.green},
+        { color.BLUE, Color.blue},
+    };
+    public Stack<color> CurrentSequence { get => m_currentSequence; }
+    public static Hashtable ColorTable { get => m_colorsTable; }
     [SerializeField] private uint remainingSequences = 3;
     public color CurrentColor { get => m_currentColor; set => m_currentColor = value; }
 
     public delegate void CompleteSequence();
     public event CompleteSequence OnSequenceCompleted;
-
+    public delegate void NewSequence(Stack<color> sequence);
+    public event NewSequence OnNewSequence;
     // Methods
     public void Init()
     {
-        for (int i = hardCodedSequence.Length - 1; i >= 0; i--)
-        {
-            Debug.Log("pushing: " + hardCodedSequence[i]);
-            m_currentSequence.Push(hardCodedSequence[i]);
-        }
+        CreateNewSequence();
     }
 
     public void CreateNewSequence()
     {
-        for (int i = hardCodedSequence.Length - 1; i >= 0; i--)
+        for (int i = HardCodedSequence.Length - 1; i >= 0; i--)
         {
-            Debug.Log("pushing: " + hardCodedSequence[i]);
-            m_currentSequence.Push(hardCodedSequence[i]);
+            Debug.Log("pushing: " + HardCodedSequence[i]);
+            m_currentSequence.Push(HardCodedSequence[i]);
         }
+
+        if(OnNewSequence != null)
+            OnNewSequence?.Invoke(m_currentSequence);
     }
     public void ProgressInSequence(color platformColor)
     {
@@ -62,10 +72,10 @@ public class GameState : ScriptableObject
             Debug.Log("Sequence completed");
             remainingSequences--;
 
-            if(remainingSequences == 0)
+            if (remainingSequences == 0)
                 Debug.Log("Condition completed");
 
-            if(OnSequenceCompleted != null)
+            if (OnSequenceCompleted != null)
                 OnSequenceCompleted?.Invoke();
         }
     }

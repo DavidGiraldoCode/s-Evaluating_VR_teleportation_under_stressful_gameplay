@@ -19,7 +19,8 @@ public class PlatformStateController : MonoBehaviour
     private void Start()
     {
         //Debug.Log(" PlatformStateController Start()");
-        m_platformMeshR.material.color = (Color)GameState.ReadableColorToRGB[(GameState.color)m_platformState.DesignatedColor];
+        m_platformMeshR.material.color = m_platformState.DisplayColor;
+        //(Color)GameState.ReadableColorToRGB[(GameState.color)m_platformState.DesignatedColor];
     }
 
     private void OnTriggerEnter(Collider other)

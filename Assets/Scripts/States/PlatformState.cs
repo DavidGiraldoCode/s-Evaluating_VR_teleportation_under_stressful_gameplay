@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "PlatformState", menuName = "States/PlatformState")]
@@ -20,26 +19,30 @@ public class PlatformState : ScriptableObject
     }
 
     [SerializeField] private state m_currentState = state.IDLE;
-    [SerializeField] private color m_currentColor = color.NONE;
+    [SerializeField] private color m_designatedColor; // designate in the Editor
     [SerializeField] private Color m_displayColor;
+    [SerializeField] private bool m_activationAllowed = false;
     public Color DisplayColor { get => m_displayColor; set => m_displayColor = value; }
-    public color CurrentColor { get => m_currentColor; }
-
+    public color DesignatedColor { get => m_designatedColor; }
+    public state CurrentState { get => m_currentState; }
+    public bool AvitationAllowed { get => m_activationAllowed; set => m_activationAllowed = value; }
     // Methods
     public void InitializePlatform(Color displayColor)
     {
+        m_activationAllowed = false;
+        m_currentState = state.IDLE;
         m_displayColor = displayColor;
     }
     // Events
 
-    public delegate void StateChanger(state state, color color);
+    public delegate void StateChanger(PlatformState thisPlatform, state state, color color);
     public event StateChanger OnStateChange;
 
     public void ChangeState(state state)
     {
         if (OnStateChange == null) return;
         m_currentState = state;
-        OnStateChange?.Invoke(m_currentState, m_currentColor);
+        OnStateChange?.Invoke(this, m_currentState, m_designatedColor);
     }
 
     // User feedback, but determines if the precission task can be performed or not.

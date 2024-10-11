@@ -6,7 +6,7 @@ public class GameInstanceManager : MonoBehaviour
     public static GameInstanceManager Instance { get; private set; }
     [SerializeField] private GameState m_gameState;
     private PlatformStateController[] m_PlatformStates;
-    private Hashtable colorsTable = new Hashtable();
+    //private Hashtable colorsTable = new Hashtable();
     // Unity 
     private void Awake()
     {
@@ -32,6 +32,7 @@ public class GameInstanceManager : MonoBehaviour
     {
         m_gameState.OnSequenceCompleted += OnSequenceCompleted;
         m_PlatformStates = FindObjectsOfType<PlatformStateController>();
+
         for (int i = 0; i < m_PlatformStates.Length; i++)
         {
             m_PlatformStates[i].State.OnStateChange += OnPlaformStateChange;
@@ -41,34 +42,51 @@ public class GameInstanceManager : MonoBehaviour
     private void OnDisable()
     {
         m_gameState.OnSequenceCompleted -= OnSequenceCompleted;
+
         for (int i = 0; i < m_PlatformStates.Length; i++)
         {
             m_PlatformStates[i].State.OnStateChange -= OnPlaformStateChange;
         }
     }
     // Custom
-    private void OnPlaformStateChange(PlatformState.state state, PlatformState.color color)
+    private void OnPlaformStateChange(PlatformState thisPlatform, PlatformState.state state, PlatformState.color platformColor)
     {
         //Debug.Log("The " + color.ToString() + " platform has changed to: " + state.ToString());
-        m_gameState.CurrentColor = (GameState.color)color;
+        m_gameState.CurrentColor = (GameState.color)platformColor;
 
-        if (state == PlatformState.state.FOCUSSED)
+        switch (state)
         {
-            m_gameState.ProgressInSequence((GameState.color)color);
+            case PlatformState.state.FOCUSSED:
+                //m_gameState.ProgressInSequence((GameState.color)color);
+                if (m_gameState.CurrentColor == m_gameState.CurrentSequence.Peek())
+                {
+                    Debug.Log("On the right platform, you can activate the platform now");
+                    thisPlatform.AvitationAllowed = true;
+                }
+                else
+                {
+                    Debug.Log("Wrong color, move to the right platform");
+                    thisPlatform.AvitationAllowed = false;
+                }
+                break;
+            case PlatformState.state.ACTIVATED:
+                m_gameState.ProgressInSequence((GameState.color)platformColor);
+                break;
         }
     }
 
 
     private void OnPlatfromActivated(PlatformState.color color) // Calls ProgressInSequence()
     {
-        
+        //m_gameState.ProgressInSequence((GameState.color)color);
     }
 
     private void OnSequenceCompleted()
     {
         // Calls 
-        Debug.Log("Creating NEW sequence");
-        m_gameState.CreateNewSequence();
+        //Debug.Log("Creating NEW sequence");
+        Debug.Log("Task completed, condition completed!");
+        // m_gameState.CreateNewSequence();
         // TODO ResetStartingPosition();
     }
 
@@ -78,13 +96,13 @@ public class GameInstanceManager : MonoBehaviour
 
         Debug.Log("Plaforms found: " + m_PlatformStates.Length);
 
-        colorsTable[PlatformState.color.RED] = Color.red;
-        colorsTable[PlatformState.color.BLUE] = Color.blue;
-        colorsTable[PlatformState.color.GREEN] = Color.green;
+        // colorsTable[PlatformState.color.RED] = Color.red;
+        // colorsTable[PlatformState.color.BLUE] = Color.blue;
+        // colorsTable[PlatformState.color.GREEN] = Color.green;
 
         for (int i = 0; i < m_PlatformStates.Length; i++)
         {
-            m_PlatformStates[i].State.InitializePlatform((Color)colorsTable[m_PlatformStates[i].State.CurrentColor]);
+            m_PlatformStates[i].State.InitializePlatform((Color)GameState.ReadableColorToRGB[m_PlatformStates[i].State.DesignatedColor]);
         }
     }
 }

@@ -41,7 +41,7 @@ public class ColorSequenceHUD : MonoBehaviour
         while (IColor.MoveNext() != false)
         {
             GameState.color color = IColor.Current;
-            m_colorSwatchController[index].ColorSwatch = (Color)GameState.ColorTable[color];
+            m_colorSwatchController[index].ColorSwatch = (Color)GameState.ReadableColorToRGB[color];
             index++;
         }
     }

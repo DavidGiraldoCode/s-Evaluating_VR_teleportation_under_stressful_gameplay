@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: GameState
   m_EditorClassIdentifier: 
   m_currentColor: 0
-  HardCodedSequence: 01000000000000000200000003000000
+  m_currentStimulus: 1
+  HardCodedSequence: 01000000030000000200000003000000
   remainingSequences: 3

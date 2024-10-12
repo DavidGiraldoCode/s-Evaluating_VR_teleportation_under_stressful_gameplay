@@ -4,10 +4,12 @@ using UnityEngine.UI;
 public class ConditionGUISetter : MonoBehaviour
 {
     [SerializeField] private Condition m_condition;
+    [SerializeField] private Button m_button;
 
     private void Awake()
     {
         Debug.Log(m_condition);
+        m_button = GetComponent<Button>();
     }
 
     private void OnEnable()
@@ -31,12 +33,10 @@ public class ConditionGUISetter : MonoBehaviour
             GameInstanceManager.Instance.OnConditionChanged -= OnConditionChanged;
     }
 
-
     private void OnConditionChanged(Condition newCondition)
     {
-        Debug.Log("OnConditionChanged");
-        GetComponent<Button>().interactable = !(m_condition == newCondition);
-        GetComponent<Button>().enabled = !(m_condition == newCondition);
+        // If the current condition is the same as this button's condition, disable its interaction
+        m_button.interactable = (m_condition != newCondition);
     }
     public void SetCondition()
     {

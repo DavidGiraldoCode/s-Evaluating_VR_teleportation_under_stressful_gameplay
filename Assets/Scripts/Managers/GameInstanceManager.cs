@@ -17,6 +17,7 @@ public class GameInstanceManager : MonoBehaviour
 
     public delegate void ConditionHasChanged(Condition newCondition);
     public event ConditionHasChanged OnConditionChanged;
+    public event ConditionHasChanged OnConditionTerminated;
 
     #region MonoBehaviour
     private void Awake()
@@ -69,18 +70,26 @@ public class GameInstanceManager : MonoBehaviour
         if (m_CurrentCondition == null || m_CurrentCondition != newCondition)
             m_CurrentCondition = newCondition;
 
-        if(OnConditionChanged == null) return; // No method has instantiate this event
+        if (OnConditionChanged == null) return; // No method has instantiate this event
         if (OnConditionChanged.GetInvocationList().Length > 0)
-        {
             OnConditionChanged?.Invoke(m_CurrentCondition);
-        }
         else
-        {
             Debug.Log("No one is listening to this event");
-        }
 
         //Triggers the necesarry events for the classes that need this update
     }
+    public void TerminateCondition()
+    {
+        if (OnConditionTerminated != null)
+        {
+            if (OnConditionTerminated.GetInvocationList().Length > 0)
+                OnConditionTerminated?.Invoke(m_CurrentCondition); // Send what condition was terminated
+        }
+        
+        m_CurrentCondition = null;
+    }
+    //OnConditionTerminated
+    //TODO Trigger an even for when the condition is completed and or terminated
     //
     private void OnPlaformStateChange(PlatformState thisPlatform, PlatformState.state state, PlatformState.color platformColor)
     {

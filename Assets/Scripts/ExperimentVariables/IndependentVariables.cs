@@ -1,5 +1,6 @@
 /// <summary>
 /// Hold all the Independent Variables of the experiment.
+/// Teleportation Method, Cognitive Interference, and Time And Environmental Stressor.
 /// </summary>
 
 /*

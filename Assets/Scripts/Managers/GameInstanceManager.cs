@@ -1,13 +1,24 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameInstanceManager : MonoBehaviour
 {
     public static GameInstanceManager Instance { get; private set; }
+    [SerializeField] private List<Condition> m_conditions = new List<Condition>();
+    [Tooltip("Preview only")]
+    [SerializeField] public Condition m_CurrentCondition = null;
     [SerializeField] private GameState m_gameState;
     private PlatformStateController[] m_PlatformStates;
     //private Hashtable colorsTable = new Hashtable();
-    // Unity 
+
+    // Public
+    public Condition CurrentCondition { get => m_CurrentCondition; }
+
+    public delegate void ConditionHasChanged(Condition newCondition);
+    public event ConditionHasChanged OnConditionChanged;
+
+    #region MonoBehaviour
     private void Awake()
     {
         if (!Instance || Instance != this)
@@ -23,6 +34,7 @@ public class GameInstanceManager : MonoBehaviour
             throw new System.NullReferenceException("The GameInstance is missing the GameState");
 
         Debug.Log("Awake GameInstanceManager");
+        m_CurrentCondition = null;
         m_gameState.Init();
         InitializedPlatforms();
 
@@ -48,7 +60,28 @@ public class GameInstanceManager : MonoBehaviour
             m_PlatformStates[i].State.OnStateChange -= OnPlaformStateChange;
         }
     }
-    // Custom
+    #endregion MonoBehaviour
+
+    #region Custom Methods
+    // Experiment
+    public void SetCondition(Condition newCondition)
+    {
+        if (m_CurrentCondition == null || m_CurrentCondition != newCondition)
+            m_CurrentCondition = newCondition;
+
+        if(OnConditionChanged == null) return; // No method has instantiate this event
+        if (OnConditionChanged.GetInvocationList().Length > 0)
+        {
+            OnConditionChanged?.Invoke(m_CurrentCondition);
+        }
+        else
+        {
+            Debug.Log("No one is listening to this event");
+        }
+
+        //Triggers the necesarry events for the classes that need this update
+    }
+    //
     private void OnPlaformStateChange(PlatformState thisPlatform, PlatformState.state state, PlatformState.color platformColor)
     {
         //Debug.Log("The " + color.ToString() + " platform has changed to: " + state.ToString());
@@ -105,4 +138,5 @@ public class GameInstanceManager : MonoBehaviour
             m_PlatformStates[i].State.InitializePlatform((Color)GameState.ReadableColorToRGB[m_PlatformStates[i].State.DesignatedColor]);
         }
     }
+    #endregion Custom Methods
 }

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Holds the data of a condition.
-/// And the state to complete the game loop
+/// Holds the state of the game loop that is being performed by the player. 
+/// Is the task itself within the conditions. Depending on the current condition the characterisitc of the game change.
 /// </summary>
+
+
 //the colors that were considered for the original Stroop Test: red, green, blue, purple, yellow, and brown [Stroop 1935].
 //NT was set to 120
 [CreateAssetMenu(fileName = "GameState", menuName = "States/GameState", order = 0)]

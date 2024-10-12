@@ -7,12 +7,19 @@ using UnityEngine;
 /// Is the task itself within the conditions. Depending on the current condition the characterisitc of the game change.
 /// </summary>
 
-
 //the colors that were considered for the original Stroop Test: red, green, blue, purple, yellow, and brown [Stroop 1935].
 //NT was set to 120
 [CreateAssetMenu(fileName = "GameState", menuName = "States/GameState", order = 0)]
 public class GameState : ScriptableObject
 {
+    public enum state
+    {
+        STANDBY,
+        PRACTICE,
+        TRIAL,
+        LOSE,
+        WIN,
+    }
     public enum color
     {
         NONE,
@@ -28,12 +35,13 @@ public class GameState : ScriptableObject
         WORD,
         COLOR
     }
+    [SerializeField] private state m_currentState = state.STANDBY;
     [SerializeField] private color m_currentColor = color.NONE;
     [SerializeField] private stimulus m_currentStimulus = stimulus.COLOR;
     [SerializeField] public color[] HardCodedSequence; // For testing
     private Stack<color> m_currentSequence = new Stack<color>();
-    static Color o = new Color(255.0f,127.0f,80.0f);
-    static Color p = new Color(153.0f,50.0f,204.0f);
+    static Color o = new Color(255.0f, 127.0f, 80.0f);
+    static Color p = new Color(153.0f, 50.0f, 204.0f);
     private static Hashtable m_colorsTable = new Hashtable()
     {
         { color.NONE, Color.black},

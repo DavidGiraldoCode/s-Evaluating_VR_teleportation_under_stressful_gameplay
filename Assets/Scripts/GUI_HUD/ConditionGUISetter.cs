@@ -17,6 +17,7 @@ public class ConditionGUISetter : MonoBehaviour
         {
             GameInstanceManager.Instance.OnConditionChanged += OnConditionChanged;
             GameInstanceManager.Instance.OnConditionTerminated += OnConditionTerminated;
+            GameInstanceManager.Instance.OnConditionFulfilled += OnConditionFulfilled;
         }
         else
         {
@@ -26,26 +27,44 @@ public class ConditionGUISetter : MonoBehaviour
 
     private void OnDisable()
     {
-        if (GameInstanceManager.Instance)
-        {
-            GameInstanceManager.Instance.OnConditionChanged -= OnConditionChanged;
-            GameInstanceManager.Instance.OnConditionTerminated -= OnConditionTerminated;
-        }
+        UnsubribeFromConditionEvents();
     }
 
     private void OnConditionChanged(Condition newCondition)
     {
-        // If the current condition is the same as this button's condition, disable its interaction
+        // If this button's condition is alredy fulfilled, stop.
+        if (m_condition.IsFulfilled) return;
+
+        // If the new condition is the same as this button's condition, disable its interaction
         m_button.interactable = (m_condition != newCondition);
     }
     private void OnConditionTerminated(Condition newCondition)
     {
-        // If the contidion is completed, the button does not need to be interactive
-        m_button.interactable = !m_condition.IsCompleted;
+        // If the condition is completed, the button does not need to be interactive
+        m_button.interactable = !m_condition.IsFulfilled;
+    }
+    private void OnConditionFulfilled(Condition theFulfilledCondition)
+    {
+        // If the fulfilled condition is the same as this button's condition, do:
+        // 1. disable the button
+        m_button.interactable = !(m_condition == theFulfilledCondition);
+        // 2. Unsubribed from the events.
+        if (m_condition == theFulfilledCondition)
+            UnsubribeFromConditionEvents();
     }
     public void SetCondition()
     {
         if (!GameInstanceManager.Instance) return;
         GameInstanceManager.Instance.SetCondition(m_condition);
+    }
+
+    private void UnsubribeFromConditionEvents()
+    {
+        if (GameInstanceManager.Instance)
+        {
+            GameInstanceManager.Instance.OnConditionChanged -= OnConditionChanged;
+            GameInstanceManager.Instance.OnConditionTerminated -= OnConditionTerminated;
+            GameInstanceManager.Instance.OnConditionFulfilled -= OnConditionFulfilled;
+        }
     }
 }

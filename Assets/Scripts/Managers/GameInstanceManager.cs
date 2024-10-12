@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,19 +6,20 @@ using UnityEngine;
 public class GameInstanceManager : MonoBehaviour
 {
     public static GameInstanceManager Instance { get; private set; }
+    [SerializeField] private GameState m_gameState;
+    // Public
     [SerializeField] private List<Condition> m_conditions = new List<Condition>();
     [Tooltip("Preview only")]
-    [SerializeField] public Condition m_CurrentCondition = null;
-    [SerializeField] private GameState m_gameState;
-    private PlatformStateController[] m_PlatformStates;
-    //private Hashtable colorsTable = new Hashtable();
-
-    // Public
-    public Condition CurrentCondition { get => m_CurrentCondition; }
-
+    [SerializeField] public Condition m_currentCondition = null;
+    private Stack<Condition> m_fulfilledConditions = new Stack<Condition>(); // Keeps track of the progress in the experiment
+    private uint m_totalConditions;
+    public Condition CurrentCondition { get => m_currentCondition; }
     public delegate void ConditionHasChanged(Condition newCondition);
     public event ConditionHasChanged OnConditionChanged;
     public event ConditionHasChanged OnConditionTerminated;
+    public event ConditionHasChanged OnConditionFulfilled;
+    //
+    private PlatformStateController[] m_PlatformStates;
 
     #region MonoBehaviour
     private void Awake()
@@ -33,9 +35,8 @@ public class GameInstanceManager : MonoBehaviour
 
         if (!m_gameState)
             throw new System.NullReferenceException("The GameInstance is missing the GameState");
-
-        Debug.Log("Awake GameInstanceManager");
-        m_CurrentCondition = null;
+        
+        SetupConditions();
         m_gameState.Init();
         InitializedPlatforms();
 
@@ -63,34 +64,78 @@ public class GameInstanceManager : MonoBehaviour
     }
     #endregion MonoBehaviour
 
-    #region Custom Methods
-    // Experiment
+    #region Experiment Conditions
+    /// <summary>
+    /// Traverse the list of all conditions and set them to fulfilled = false;
+    /// </summary>
+    private void SetupConditions()
+    {
+        m_currentCondition = null;
+        m_totalConditions = (uint)m_conditions.Count;
+
+        for (int i = 0; i < m_conditions.Count; i++)
+        {
+            m_conditions[i].IsFulfilled = false;
+        }
+    }
+    /// <summary>
+    /// Call this function when to set the current condition
+    /// </summary>
     public void SetCondition(Condition newCondition)
     {
-        if (m_CurrentCondition == null || m_CurrentCondition != newCondition)
-            m_CurrentCondition = newCondition;
+        if (m_currentCondition == null || m_currentCondition != newCondition)
+            m_currentCondition = newCondition;
 
         if (OnConditionChanged == null) return; // No method has instantiate this event
         if (OnConditionChanged.GetInvocationList().Length > 0)
-            OnConditionChanged?.Invoke(m_CurrentCondition);
+            OnConditionChanged?.Invoke(m_currentCondition);
         else
             Debug.Log("No one is listening to this event");
 
         //Triggers the necesarry events for the classes that need this update
     }
+    /// <summary>
+    /// Call this function when the condition has been forcely terminated.
+    /// </summary>
     public void TerminateCondition()
     {
+        if (m_currentCondition == null) return;
         if (OnConditionTerminated != null)
         {
             if (OnConditionTerminated.GetInvocationList().Length > 0)
-                OnConditionTerminated?.Invoke(m_CurrentCondition); // Send what condition was terminated
+                OnConditionTerminated?.Invoke(m_currentCondition); // Send what condition was terminated
         }
-        
-        m_CurrentCondition = null;
+
+        m_currentCondition = null;
     }
-    //OnConditionTerminated
-    //TODO Trigger an even for when the condition is completed and or terminated
-    //
+    /// <summary>
+    /// Call this function when the task during the current condition has been fulfilled.
+    /// </summary>
+    public void FulfillCondition()
+    {
+        if (m_currentCondition == null) return;
+
+        m_currentCondition.IsFulfilled = true;
+        if (OnConditionFulfilled != null)
+        {
+            if (OnConditionFulfilled.GetInvocationList().Length > 0)
+            {
+                OnConditionFulfilled?.Invoke(m_currentCondition);
+                m_fulfilledConditions.Push(m_currentCondition);
+                // Notify everyone that this condition has been fulfilled
+            }
+        }
+        m_currentCondition = null;
+        if(m_fulfilledConditions.Count == m_totalConditions)
+        {
+            Debug.Log("Experiment completed!");
+            //Trigger event
+        }
+    }
+
+    #endregion Experiment Conditions
+
+    #region Custom Methods
     private void OnPlaformStateChange(PlatformState thisPlatform, PlatformState.state state, PlatformState.color platformColor)
     {
         //Debug.Log("The " + color.ToString() + " platform has changed to: " + state.ToString());

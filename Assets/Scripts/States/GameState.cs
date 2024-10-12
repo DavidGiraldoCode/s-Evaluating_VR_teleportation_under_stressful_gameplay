@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Holds the data of a condition.
-/// And the state to complete the game loop
+/// Holds the state of the game loop that is being performed by the player. 
+/// Is the task itself within the conditions. Depending on the current condition the characterisitc of the game change.
 /// </summary>
+
+
 //the colors that were considered for the original Stroop Test: red, green, blue, purple, yellow, and brown [Stroop 1935].
 //NT was set to 120
 [CreateAssetMenu(fileName = "GameState", menuName = "States/GameState", order = 0)]
@@ -16,7 +18,10 @@ public class GameState : ScriptableObject
         NONE,
         RED,
         GREEN,
-        BLUE
+        BLUE,
+        YELLOW,
+        ORANGE,
+        PURPLE
     }
     public enum stimulus
     {
@@ -27,13 +32,17 @@ public class GameState : ScriptableObject
     [SerializeField] private stimulus m_currentStimulus = stimulus.COLOR;
     [SerializeField] public color[] HardCodedSequence; // For testing
     private Stack<color> m_currentSequence = new Stack<color>();
-
+    static Color o = new Color(255.0f,127.0f,80.0f);
+    static Color p = new Color(153.0f,50.0f,204.0f);
     private static Hashtable m_colorsTable = new Hashtable()
     {
         { color.NONE, Color.black},
         { color.RED, Color.red},
         { color.GREEN, Color.green},
         { color.BLUE, Color.blue},
+        { color.YELLOW, Color.yellow},
+        { color.ORANGE, o},
+        { color.PURPLE, p},
     };
     public Stack<color> CurrentSequence { get => m_currentSequence; }
     /// <summary>

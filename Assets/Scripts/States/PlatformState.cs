@@ -15,7 +15,10 @@ public class PlatformState : ScriptableObject
         NONE,
         RED,
         GREEN,
-        BLUE
+        BLUE,
+        YELLOW,
+        ORANGE,
+        PURPLE
     }
 
     [SerializeField] private state m_currentState = state.IDLE;
@@ -31,7 +34,7 @@ public class PlatformState : ScriptableObject
     {
         m_activationAllowed = false;
         m_currentState = state.IDLE;
-        m_displayColor = displayColor;
+        //m_displayColor = displayColor;
     }
     // Events
 

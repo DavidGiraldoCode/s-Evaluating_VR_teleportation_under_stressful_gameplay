@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f483aa687da04e4e9900699c92688f0, type: 3}
-  m_Name: RedPlatform
+  m_Script: {fileID: 11500000, guid: edb3ba26060d44c5894bcf817dcfd2f0, type: 3}
+  m_Name: ConditionA_PT_Orientation
   m_EditorClassIdentifier: 
-  m_currentState: 0
-  m_designatedColor: 1
-  m_displayColor: {r: 1, g: 0, b: 0, a: 0}
-  m_activationAllowed: 0
+  m_isFulfilled: 1
+  m_teleportationMethod: 1
+  m_cognitiveInterference: 1
+  m_TimeAndEnvironmentalStressor: 0

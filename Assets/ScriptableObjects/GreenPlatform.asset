@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_currentState: 0
   m_designatedColor: 2
-  m_displayColor: {r: 0, g: 0, b: 0, a: 0}
+  m_displayColor: {r: 0.123716116, g: 1, b: 0, a: 0}
   m_activationAllowed: 0

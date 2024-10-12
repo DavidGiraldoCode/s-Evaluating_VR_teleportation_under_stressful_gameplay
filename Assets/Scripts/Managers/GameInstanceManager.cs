@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameInstanceManager : MonoBehaviour
@@ -20,6 +21,7 @@ public class GameInstanceManager : MonoBehaviour
     public event ConditionHasChanged OnConditionTerminated;
     public event ConditionHasChanged OnConditionFulfilled;
     public event ExperimentSate OnExperimentCompleted;
+    public event ExperimentSate OnExperimentReset;
     //
     private PlatformStateController[] m_PlatformStates;
 
@@ -74,6 +76,7 @@ public class GameInstanceManager : MonoBehaviour
     {
         m_currentCondition = null;
         m_totalConditions = (uint)m_conditions.Count;
+        m_fulfilledConditions.Clear();
 
         for (int i = 0; i < m_conditions.Count; i++)
         {
@@ -140,10 +143,25 @@ public class GameInstanceManager : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// Resets the experiment with the coonditions
+    /// </summary>
+    public void ResetExperiment()
+    {
+        SetupConditions();
+        // Reset the gamestate somehow
+        if(OnExperimentReset != null)
+        {
+            if(OnExperimentReset.GetInvocationList().Length > 0)
+            {
+                OnExperimentReset?.Invoke();
+            }
+        }
+    }
 
     #endregion Experiment Conditions
 
-    #region Custom Methods
+    #region Gameloop logic
     private void OnPlaformStateChange(PlatformState thisPlatform, PlatformState.state state, PlatformState.color platformColor)
     {
         //Debug.Log("The " + color.ToString() + " platform has changed to: " + state.ToString());
@@ -200,5 +218,5 @@ public class GameInstanceManager : MonoBehaviour
             m_PlatformStates[i].State.InitializePlatform((Color)GameState.ReadableColorToRGB[m_PlatformStates[i].State.DesignatedColor]);
         }
     }
-    #endregion Custom Methods
+    #endregion Gameloop logic
 }

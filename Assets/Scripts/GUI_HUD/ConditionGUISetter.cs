@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,7 +9,7 @@ public class ConditionGUISetter : MonoBehaviour
 
     private void Awake()
     {
-        if(!GameInstanceManager.Instance)
+        if (!GameInstanceManager.Instance)
             throw new System.NullReferenceException("The GameInstanceManager is missing in the scene");
 
         m_button = GetComponent<Button>();
@@ -17,11 +18,15 @@ public class ConditionGUISetter : MonoBehaviour
     private void OnEnable()
     {
         SubribeFromConditionEvents();
+        if (GameInstanceManager.Instance)
+            GameInstanceManager.Instance.OnExperimentReset += OnExperimentReset;
     }
 
     private void OnDisable()
     {
         UnsubribeFromConditionEvents();
+        if (GameInstanceManager.Instance)
+            GameInstanceManager.Instance.OnExperimentReset -= OnExperimentReset;
     }
 
     private void OnConditionChanged(Condition newCondition)
@@ -46,6 +51,13 @@ public class ConditionGUISetter : MonoBehaviour
         if (m_condition == theFulfilledCondition)
             UnsubribeFromConditionEvents();
     }
+
+    private void OnExperimentReset()
+    {
+        SubribeFromConditionEvents();
+        m_button.interactable = !m_condition.IsFulfilled;
+    }
+
     public void SetCondition()
     {
         if (!GameInstanceManager.Instance) return;

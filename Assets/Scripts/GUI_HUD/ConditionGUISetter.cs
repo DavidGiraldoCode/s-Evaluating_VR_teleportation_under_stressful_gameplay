@@ -8,21 +8,15 @@ public class ConditionGUISetter : MonoBehaviour
 
     private void Awake()
     {
+        if(!GameInstanceManager.Instance)
+            throw new System.NullReferenceException("The GameInstanceManager is missing in the scene");
+
         m_button = GetComponent<Button>();
     }
 
     private void OnEnable()
     {
-        if (GameInstanceManager.Instance)
-        {
-            GameInstanceManager.Instance.OnConditionChanged += OnConditionChanged;
-            GameInstanceManager.Instance.OnConditionTerminated += OnConditionTerminated;
-            GameInstanceManager.Instance.OnConditionFulfilled += OnConditionFulfilled;
-        }
-        else
-        {
-            Debug.Log("Nothing to Subscribe to");
-        }
+        SubribeFromConditionEvents();
     }
 
     private void OnDisable()
@@ -58,6 +52,15 @@ public class ConditionGUISetter : MonoBehaviour
         GameInstanceManager.Instance.SetCondition(m_condition);
     }
 
+    private void SubribeFromConditionEvents()
+    {
+        if (GameInstanceManager.Instance)
+        {
+            GameInstanceManager.Instance.OnConditionChanged += OnConditionChanged;
+            GameInstanceManager.Instance.OnConditionTerminated += OnConditionTerminated;
+            GameInstanceManager.Instance.OnConditionFulfilled += OnConditionFulfilled;
+        }
+    }
     private void UnsubribeFromConditionEvents()
     {
         if (GameInstanceManager.Instance)

@@ -15,9 +15,11 @@ public class GameInstanceManager : MonoBehaviour
     private uint m_totalConditions;
     public Condition CurrentCondition { get => m_currentCondition; }
     public delegate void ConditionHasChanged(Condition newCondition);
+     public delegate void ExperimentSate();
     public event ConditionHasChanged OnConditionChanged;
     public event ConditionHasChanged OnConditionTerminated;
     public event ConditionHasChanged OnConditionFulfilled;
+    public event ExperimentSate OnExperimentCompleted;
     //
     private PlatformStateController[] m_PlatformStates;
 
@@ -129,7 +131,13 @@ public class GameInstanceManager : MonoBehaviour
         if(m_fulfilledConditions.Count == m_totalConditions)
         {
             Debug.Log("Experiment completed!");
-            //Trigger event
+            if(OnExperimentCompleted != null)
+            {
+                if(OnExperimentCompleted.GetInvocationList().Length > 0)
+                {
+                    OnExperimentCompleted?.Invoke();
+                }
+            }
         }
     }
 

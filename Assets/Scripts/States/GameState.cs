@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,11 +15,21 @@ public class GameState : ScriptableObject
 {
     public enum state
     {
-        STANDBY,
-        PRACTICE,
-        TRIAL,
-        LOSE,
-        WIN,
+        PRACTICE_STANDBY,
+        DOING_PRACTICE,
+        PRACTICE_DONE_TRIAL_STANDBY,
+        DOING_TRIAL,
+        TRIAL_DONE,
+    }
+    public enum taskColors
+    {
+        NONE,
+        RED,
+        GREEN,
+        BLUE,
+        YELLOW,
+        ORANGE,
+        PURPLE
     }
     public enum color
     {
@@ -35,10 +46,11 @@ public class GameState : ScriptableObject
         WORD,
         COLOR
     }
-    [SerializeField] private state m_currentState = state.STANDBY;
+    [SerializeField] private state m_currentState = state.PRACTICE_STANDBY;
     [SerializeField] private color m_currentColor = color.NONE;
     [SerializeField] private stimulus m_currentStimulus = stimulus.COLOR;
-    [SerializeField] public color[] HardCodedSequence; // For testing
+    [SerializeField] public color[] HardCodedSequence; //TODO For testing
+    [SerializeField] public color[] HardCodedTrialSequence; //TODO For testing
     private Stack<color> m_currentSequence = new Stack<color>();
     static Color o = new Color(255.0f, 127.0f, 80.0f);
     static Color p = new Color(153.0f, 50.0f, 204.0f);
@@ -66,6 +78,100 @@ public class GameState : ScriptableObject
     public delegate void NextColor(stimulus newStimulus, color nextColor);
     public event NewSequence OnNewSequence;
     public event NextColor OnNewNextColor;
+
+
+    #region Gameloop methods
+
+    public void Setup()
+    {
+        GenerateRandomTasks();
+        m_currentState = state.PRACTICE_STANDBY;
+    }
+
+    private Stack<taskColors> m_practiceTasks = new Stack<taskColors>();
+    private Stack<taskColors> m_trialTasks = new Stack<taskColors>();
+
+    /// <summary>
+    /// Returns the top of the stack of task colors depending whether is the practice of the trial
+    /// </summary>
+    /// <returns>taskColors value</returns>
+    public taskColors CurrentTaskColor()
+    {
+        switch (m_currentState)
+        {
+            case state.DOING_PRACTICE:
+                return m_practiceTasks.Count > 0 ? m_practiceTasks.Peek() : taskColors.NONE;
+            case state.DOING_TRIAL:
+                return m_trialTasks.Count > 0 ? m_trialTasks.Peek() : taskColors.NONE;
+        }
+        return taskColors.NONE;
+    }
+
+    /// <summary>
+    /// Compares if the top of the stack, meaning the current task color is the same
+    /// as the given taskColor argument. If so, pops the task and triggers a possitive event. 
+    /// If not, trigger a wrong color event.
+    /// </summary>
+    /// <param name="taskColor"></param>
+    public void CompleteTask(taskColors platformColor)
+    {
+        if (platformColor == CurrentTaskColor())
+        {
+            RemoveTaskFromStack();
+        }
+        else
+        {
+            //Wrong platform
+        }
+
+        CheckForTaskComplition();
+    }
+    /// <summary>
+    /// Depending on the state of the gameloop, it check wether the stack of task is empty, 
+    /// and trigger the correspoing event
+    /// </summary>
+    private void CheckForTaskComplition()
+    {
+        switch (m_currentState)
+        {
+            case state.DOING_PRACTICE:
+                // OnPracticeTaskCompleted()
+                break;
+            case state.DOING_TRIAL:
+                // OnTrialTaskCompleted()
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Removes the task at the top of the stack of task in the current state, practice or trial
+    /// </summary>
+    private void RemoveTaskFromStack()
+    {
+        if (m_currentState == state.DOING_PRACTICE && m_practiceTasks.Count > 0)
+            m_practiceTasks.Pop();
+        if (m_currentState == state.DOING_TRIAL && m_trialTasks.Count > 0)
+            m_trialTasks.Pop();
+    }
+
+    private void GenerateRandomTasks()
+    {
+        for (int i = HardCodedTrialSequence.Length - 1; i >= 0; i--)
+        {
+            m_trialTasks.Push((taskColors)HardCodedTrialSequence[i]);
+        }
+        for (int i = HardCodedSequence.Length - 1; i >= 0; i--)
+        {
+            m_trialTasks.Push((taskColors)HardCodedSequence[i]);
+        }
+        Debug.Log("All task stacks are ready");
+    }
+
+    #endregion Gameloop methods
+    #region Gameloop events
+    #endregion Gameloop events
+
+    #region Legacy
     // Methods
     public void Init()
     {
@@ -118,12 +224,13 @@ public class GameState : ScriptableObject
         }
     }
     /*
-    OnWrongColor()
-    OnRightColor()
-    OnSequenceCompleted()
-    {
-        remainingSequences--;
-    }
-    OnRoundsWithinConditionCompleted()
-    */
+OnWrongColor()
+OnRightColor()
+OnSequenceCompleted()
+{
+   remainingSequences--;
+}
+OnRoundsWithinConditionCompleted()
+*/
+    #endregion Legacy
 }

@@ -52,7 +52,7 @@ public class StateChangingCounterGUI : MonoBehaviour
     /// <returns></returns>
     IEnumerator CountDownToStartingPosition()
     {
-        for (int i = m_waintingTime; i >= 0; i--)
+        for (int i = m_waintingTime; i > -1; i--)
         {
             m_timer = i;
             m_counterText.text = m_timer.ToString();
@@ -60,7 +60,7 @@ public class StateChangingCounterGUI : MonoBehaviour
 
             if (m_timer == 0)
             {
-                m_gameState.GoToStandby();
+                m_gameState.GoToStandbyOrGameOver();
                 m_timer = m_waintingTime;
                 StopAllCoroutines();
             }

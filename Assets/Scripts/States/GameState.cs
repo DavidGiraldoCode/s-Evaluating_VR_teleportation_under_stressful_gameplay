@@ -31,6 +31,7 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
         TRIAL_STANDBY,
         TRIAL_ONGOING,
         TRIAL_ENDED,
+        GAMEOVER,
     }
     public enum taskColors
     {
@@ -89,6 +90,9 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
     public delegate void NextColor(stimulus newStimulus, color nextColor);
     public event NewSequence OnNewSequence;
     public event NextColor OnNewNextColor;
+
+    //========================================================================================================================
+
     #region Observer
     private List<IObserver<GameStateData>> m_observers; // List of class intrested in listening to this game state
     private class Unsubscriber : IDisposable // An interface that allows subcribers to remove themselves from the list of observers
@@ -121,9 +125,20 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
             observer.OnNext(new GameStateData(m_currentState));
         }
     }
+    /// <summary>
+    /// Send the last notification to all observers,traversing backwards to avoid problems when removing observers
+    /// </summary>
+    private void NotifyObserversForTheLastTime()
+    {
+        for (int i = m_observers.Count - 1; i >= 0; i--)
+        {
+            m_observers[i].OnCompleted();
+        }
+    }
 
     #endregion Observer
 
+    //========================================================================================================================
 
     #region Gameloop methods
 
@@ -183,30 +198,33 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
         {
             case state.PRACTICE_ONGOING:
                 m_currentState = state.PRACTICE_ENDED;
+                NotifyObservers();
                 break;
             case state.TRIAL_ONGOING:
                 m_currentState = state.TRIAL_ENDED;
+                NotifyObservers();
                 break;
         }
-        NotifyObservers();
     }
 
     /// <summary>
     /// Once a task has ended, set the current state to the corresponding standby state and notifiy observers
+    /// If the previous state was practice, goes to trial. If it was trial, goes to gameover.
     /// </summary>
-    public void GoToStandby()
+    public void GoToStandbyOrGameOver()
     {
         switch (m_currentState)
         {
             case state.PRACTICE_ENDED:
                 m_currentState = state.TRIAL_STANDBY;
+                NotifyObservers();
                 break;
             case state.TRIAL_ENDED:
-                m_currentState = state.PRACTICE_STANDBY;
+                m_currentState = state.GAMEOVER;
+                NotifyObserversForTheLastTime();
                 break;
         }
 
-        NotifyObservers();
     }
 
     /// <summary>

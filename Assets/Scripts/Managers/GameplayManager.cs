@@ -7,8 +7,10 @@ using UnityEngine;
 public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
 {
     public static GameplayManager Instance { get; private set; }
+    
     [SerializeField] private GameState m_gameState;
     public delegate void GameplayStateChanges();
+    
     // Gameloop Events
     public static event GameplayStateChanges OnPracticeStandby;     // The player is waiting to manually start the practice
     public static event GameplayStateChanges OnPracticeBegin;       // The player performs the practice tasks
@@ -16,6 +18,10 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     public static event GameplayStateChanges OnPracticeEndAndTrialStandby; // The player completes all the practice task and can manually start the trial
     public static event GameplayStateChanges OnTrialBegin;          // The player performs the trial tasks 
     public static event GameplayStateChanges OnTrialEnd;            // The player completes all the trial task
+    
+    // Observer
+    private IDisposable unsubscriber;
+    
     #region MonoMonoBehaviour
     private void Awake()
     {
@@ -46,6 +52,7 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
         EnterGameplay(null); //TODO for testing     
     }
     #endregion MonoMonoBehaviour
+    
     #region Gameplay
     /// <summary>
     /// Starts the "game" accordingly with the condition
@@ -54,7 +61,7 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     public void EnterGameplay(Condition experimentCondition)
     {
         m_gameState.Setup();
-        m_gameState.Subscribe(this);
+        unsubscriber = m_gameState.Subscribe(this);
         // Setup teleporation
         // Setup HUD prompts system with congnitive interference
         // Setup time and environmental stressors
@@ -74,6 +81,8 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     public void ExitGameplay()
     {
         // Save the necesarry information to the server or file
+        unsubscriber.Dispose(); // Unsubscribe from observing the GameState
+        Debug.Log("Exiting Game, returning to conditions");
     }
     #endregion Gameplay
     #region Event Trigger
@@ -86,10 +95,11 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
         OnTrialBegin?.Invoke();
     }
     #endregion Event Trigger
+    
     #region Observer pattern
     public void OnCompleted()
     {
-        throw new System.NotImplementedException();
+        ExitGameplay();
     }
 
     public void OnError(System.Exception error)
@@ -102,10 +112,16 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
         Debug.Log(value.NewState);
         Debug.Log("State changed: ");
 
-        if (value.NewState == GameState.state.PRACTICE_ENDED)
-            OnPracticeEnd?.Invoke();
-        else if (value.NewState == GameState.state.TRIAL_ENDED)
-            OnTrialEnd?.Invoke();
+        switch (value.NewState)
+        {
+            case GameState.state.PRACTICE_ENDED:
+                OnPracticeEnd?.Invoke();
+                break;
+            case GameState.state.TRIAL_ENDED:
+                OnTrialEnd?.Invoke();
+                break;
+        }
+
     }
 
     #endregion Observer pattern

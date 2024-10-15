@@ -17,8 +17,8 @@ These results could guide future research directions and the design of VR testin
 - [ ] Finish gameloop
     - [ ] Connect the condition with the game state
     - [ ] Update the game loop to have a practice and trial color sequence
-    - [ ] GUI for <Start Practice>, then for "Practice complete now" <Start Trial>.
-    - [ ] GUI once the Trial is completed (Condition fulfilled), <Back to conditions>
+    - [ ] GUI for *Start Practice*, then for "Practice complete now" *Start Trial*.
+    - [ ] GUI once the Trial is completed (Condition fulfilled), *Back to conditions*
     - [ ] The color prompt shows "COLOR" or "WORD" depending on the presence of the congnitive interference
 - [ ] Menu to hide the conditions
 - [ ] Confirmation feature to manually reset, terminate and fulfill each condition and the experiment

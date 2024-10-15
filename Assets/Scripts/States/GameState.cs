@@ -3,6 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct GameStateData
+{
+    public GameStateData(GameState.state newState)
+    {
+        _newState = newState;
+    }
+    private GameState.state _newState;
+    public GameState.state NewState { get => _newState; }
+}
+
 /// <summary>
 /// Holds the state of the game loop that is being performed by the player. 
 /// Is the task itself within the conditions. Depending on the current condition the characterisitc of the game change.
@@ -11,15 +21,17 @@ using UnityEngine;
 //the colors that were considered for the original Stroop Test: red, green, blue, purple, yellow, and brown [Stroop 1935].
 //NT was set to 120
 [CreateAssetMenu(fileName = "GameState", menuName = "States/GameState", order = 0)]
-public class GameState : ScriptableObject
+public class GameState : ScriptableObject, IObservable<GameStateData>
 {
     public enum state
     {
         PRACTICE_STANDBY,
-        DOING_PRACTICE,
-        PRACTICE_DONE_TRIAL_STANDBY,
-        DOING_TRIAL,
-        TRIAL_DONE,
+        PRACTICE_ONGOING,
+        PRACTICE_ENDED,
+        TRIAL_STANDBY,
+        TRIAL_ONGOING,
+        TRIAL_ENDED,
+        GAMEOVER,
     }
     public enum taskColors
     {
@@ -79,11 +91,60 @@ public class GameState : ScriptableObject
     public event NewSequence OnNewSequence;
     public event NextColor OnNewNextColor;
 
+    //========================================================================================================================
+
+    #region Observer
+    private List<IObserver<GameStateData>> m_observers; // List of class intrested in listening to this game state
+    private class Unsubscriber : IDisposable // An interface that allows subcribers to remove themselves from the list of observers
+    {
+        private List<IObserver<GameStateData>> _observers;
+        private IObserver<GameStateData> _observer;
+
+        public Unsubscriber(List<IObserver<GameStateData>> observers, IObserver<GameStateData> observer)
+        {
+            this._observers = observers;
+            this._observer = observer;
+        }
+
+        public void Dispose()
+        {
+            if (_observer != null && _observers.Contains(_observer))
+                _observers.Remove(_observer);
+        }
+    }
+    public IDisposable Subscribe(IObserver<GameStateData> observer)
+    {
+        m_observers.Add(observer);
+        return new Unsubscriber(m_observers, observer);
+    }
+
+    private void NotifyObservers()
+    {
+        foreach (var observer in m_observers)
+        {
+            observer.OnNext(new GameStateData(m_currentState));
+        }
+    }
+    /// <summary>
+    /// Send the last notification to all observers,traversing backwards to avoid problems when removing observers
+    /// </summary>
+    private void NotifyObserversForTheLastTime()
+    {
+        for (int i = m_observers.Count - 1; i >= 0; i--)
+        {
+            m_observers[i].OnCompleted();
+        }
+    }
+
+    #endregion Observer
+
+    //========================================================================================================================
 
     #region Gameloop methods
 
     public void Setup()
     {
+        m_observers = new List<IObserver<GameStateData>>();
         GenerateRandomTasks();
         m_currentState = state.PRACTICE_STANDBY;
     }
@@ -99,9 +160,9 @@ public class GameState : ScriptableObject
     {
         switch (m_currentState)
         {
-            case state.DOING_PRACTICE:
+            case state.PRACTICE_ONGOING:
                 return m_practiceTasks.Count > 0 ? m_practiceTasks.Peek() : taskColors.NONE;
-            case state.DOING_TRIAL:
+            case state.TRIAL_ONGOING:
                 return m_trialTasks.Count > 0 ? m_trialTasks.Peek() : taskColors.NONE;
         }
         return taskColors.NONE;
@@ -126,6 +187,46 @@ public class GameState : ScriptableObject
 
         CheckForTaskComplition();
     }
+
+    /// <summary>
+    /// Terminates the current task Practice or Trials and nitifies the observers
+    /// </summary>
+    public void CompleteTask()
+    {
+
+        switch (m_currentState)
+        {
+            case state.PRACTICE_ONGOING:
+                m_currentState = state.PRACTICE_ENDED;
+                NotifyObservers();
+                break;
+            case state.TRIAL_ONGOING:
+                m_currentState = state.TRIAL_ENDED;
+                NotifyObservers();
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Once a task has ended, set the current state to the corresponding standby state and notifiy observers
+    /// If the previous state was practice, goes to trial. If it was trial, goes to gameover.
+    /// </summary>
+    public void GoToStandbyOrGameOver()
+    {
+        switch (m_currentState)
+        {
+            case state.PRACTICE_ENDED:
+                m_currentState = state.TRIAL_STANDBY;
+                NotifyObservers();
+                break;
+            case state.TRIAL_ENDED:
+                m_currentState = state.GAMEOVER;
+                NotifyObserversForTheLastTime();
+                break;
+        }
+
+    }
+
     /// <summary>
     /// Depending on the state of the gameloop, it check wether the stack of task is empty, 
     /// and trigger the correspoing event
@@ -134,10 +235,10 @@ public class GameState : ScriptableObject
     {
         switch (m_currentState)
         {
-            case state.DOING_PRACTICE:
+            case state.PRACTICE_ONGOING:
                 // OnPracticeTaskCompleted()
                 break;
-            case state.DOING_TRIAL:
+            case state.TRIAL_ONGOING:
                 // OnTrialTaskCompleted()
                 break;
         }
@@ -148,9 +249,9 @@ public class GameState : ScriptableObject
     /// </summary>
     private void RemoveTaskFromStack()
     {
-        if (m_currentState == state.DOING_PRACTICE && m_practiceTasks.Count > 0)
+        if (m_currentState == state.PRACTICE_ONGOING && m_practiceTasks.Count > 0)
             m_practiceTasks.Pop();
-        if (m_currentState == state.DOING_TRIAL && m_trialTasks.Count > 0)
+        if (m_currentState == state.TRIAL_ONGOING && m_trialTasks.Count > 0)
             m_trialTasks.Pop();
     }
 
@@ -168,8 +269,16 @@ public class GameState : ScriptableObject
     }
 
     #endregion Gameloop methods
-    #region Gameloop events
-    #endregion Gameloop events
+    #region Event Listeners
+    public void OnPracticeBegin()
+    {
+        m_currentState = state.PRACTICE_ONGOING;
+    }
+    public void OnTrialBegin()
+    {
+        m_currentState = state.TRIAL_ONGOING;
+    }
+    #endregion Event Listeners
 
     #region Legacy
     // Methods
@@ -223,12 +332,13 @@ public class GameState : ScriptableObject
                 OnNewNextColor?.Invoke(m_currentStimulus, m_currentSequence.Peek());
         }
     }
+
     /*
 OnWrongColor()
 OnRightColor()
 OnSequenceCompleted()
 {
-   remainingSequences--;
+remainingSequences--;
 }
 OnRoundsWithinConditionCompleted()
 */

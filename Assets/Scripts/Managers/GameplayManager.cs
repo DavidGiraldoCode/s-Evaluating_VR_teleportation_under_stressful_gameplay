@@ -1,15 +1,18 @@
+using System;
 using UnityEngine;
 /// <summary>
-/// Manager the actual execution of the gameloop that represent the sequence of task the player will performed.
-/// It only consernce with the condition at hand. Triggers the events related to the practice and trial tasks.
+/// Manages the actual execution of the gameloop that represent the sequence of task the player will performed.
+/// It only concerns with the condition at hand. Triggers the events related to the practice and trial tasks.
 /// </summary>
-public class GameplayManager : MonoBehaviour
+public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
 {
     public static GameplayManager Instance { get; private set; }
     [SerializeField] private GameState m_gameState;
     public delegate void GameplayStateChanges();
+    // Gameloop Events
     public static event GameplayStateChanges OnPracticeStandby;     // The player is waiting to manually start the practice
-    public static event GameplayStateChanges OnPracticeBegin;       // The player performs the practice tasks 
+    public static event GameplayStateChanges OnPracticeBegin;       // The player performs the practice tasks
+    public static event GameplayStateChanges OnPracticeEnd;       // The player performs the practice tasks
     public static event GameplayStateChanges OnPracticeEndAndTrialStandby; // The player completes all the practice task and can manually start the trial
     public static event GameplayStateChanges OnTrialBegin;          // The player performs the trial tasks 
     public static event GameplayStateChanges OnTrialEnd;            // The player completes all the trial task
@@ -28,10 +31,19 @@ public class GameplayManager : MonoBehaviour
         if (m_gameState == null)
             throw new System.NullReferenceException("GameState missing");
     }
-    //TODO for testing
-    private void Start() 
+    private void OnEnable()
     {
-        EnterGameplay(null);    
+        OnPracticeBegin += m_gameState.OnPracticeBegin;
+        OnTrialBegin += m_gameState.OnTrialBegin;
+    }
+    private void OnDisable()
+    {
+        OnPracticeBegin -= m_gameState.OnPracticeBegin;
+        OnTrialBegin -= m_gameState.OnTrialBegin;
+    }
+    private void Start()
+    {
+        EnterGameplay(null); //TODO for testing     
     }
     #endregion MonoMonoBehaviour
     #region Gameplay
@@ -42,6 +54,7 @@ public class GameplayManager : MonoBehaviour
     public void EnterGameplay(Condition experimentCondition)
     {
         m_gameState.Setup();
+        m_gameState.Subscribe(this);
         // Setup teleporation
         // Setup HUD prompts system with congnitive interference
         // Setup time and environmental stressors
@@ -63,4 +76,37 @@ public class GameplayManager : MonoBehaviour
         // Save the necesarry information to the server or file
     }
     #endregion Gameplay
+    #region Event Trigger
+    public void BeginPractice()
+    {
+        OnPracticeBegin?.Invoke();
+    }
+    public void BeginTrial()
+    {
+        OnTrialBegin?.Invoke();
+    }
+    #endregion Event Trigger
+    #region Observer pattern
+    public void OnCompleted()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnError(System.Exception error)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnNext(GameStateData value)
+    {
+        Debug.Log(value.NewState);
+        Debug.Log("State changed: ");
+
+        if (value.NewState == GameState.state.PRACTICE_ENDED)
+            OnPracticeEnd?.Invoke();
+        else if (value.NewState == GameState.state.TRIAL_ENDED)
+            OnTrialEnd?.Invoke();
+    }
+
+    #endregion Observer pattern
 }

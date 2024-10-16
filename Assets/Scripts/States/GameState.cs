@@ -210,6 +210,7 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
     }
 
     /// <summary>
+    /// This is call by the counter, 
     /// Once a task has ended, set the current state to the corresponding standby state and notifiy observers
     /// If the previous state was practice, goes to trial. If it was trial, goes to gameover.
     /// </summary>

@@ -50,7 +50,7 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     }
     private void Start()
     {
-        EnterGameplay(null); //TODO for testing     
+        //EnterGameplay(null); //TODO for testing     
     }
     #endregion MonoMonoBehaviour
 
@@ -66,14 +66,7 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
         // Setup teleporation
         // Setup HUD prompts system with congnitive interference
         // Setup time and environmental stressors
-
-        if (OnPracticeStandby != null)
-        {
-            if (OnPracticeStandby.GetInvocationList().Length > 0)
-            {
-                OnPracticeStandby?.Invoke();
-            }
-        }
+        ReturnToStandby();
     }
 
     /// <summary>
@@ -82,11 +75,25 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     public void ExitGameplay()
     {
         // Save the necesarry information to the server or file
-        unsubscriber.Dispose(); // Unsubscribe from observing the GameState
         Debug.Log("Exiting Game, returning to conditions");
+
+        if (unsubscriber != null)
+            unsubscriber.Dispose(); // Unsubscribe from observing the GameState
+
+        //ReturnToStandby();
     }
     #endregion Gameplay
     #region Event Trigger
+    private void ReturnToStandby()
+    {
+        if (OnPracticeStandby != null)
+        {
+            if (OnPracticeStandby.GetInvocationList().Length > 0)
+            {
+                OnPracticeStandby?.Invoke();
+            }
+        }
+    }
     /// <summary>
     /// Starts the tasks depending on the previos standby state
     /// </summary>
@@ -115,6 +122,9 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     #region Observer pattern
     public void OnCompleted()
     {
+        if (ExperimentManager.Instance)
+            ExperimentManager.Instance.FulfillCondition();
+
         ExitGameplay();
     }
 

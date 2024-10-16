@@ -38,7 +38,7 @@ public class ExperimentManager : MonoBehaviour
         }
 
         if (!m_gameState)
-            throw new System.NullReferenceException("The GameInstance is missing the GameState");
+            throw new System.NullReferenceException("The ExperimentManager is missing the GameState");
         
         SetupConditions();
         m_gameState.Init();

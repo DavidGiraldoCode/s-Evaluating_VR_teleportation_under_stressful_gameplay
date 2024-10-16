@@ -1,6 +1,7 @@
+using System;
 using UnityEngine;
 /// <summary>
-/// Listens to the condictions and relocates the player in the middle of the environment
+/// Listens to the gameplay states and relocates the player in the middle of the environment
 /// </summary>
 public class PlayerRelocator : MonoBehaviour
 {
@@ -8,18 +9,42 @@ public class PlayerRelocator : MonoBehaviour
 
     private void Awake()
     {
-        if (!ExperimentManager.Instance)
-            throw new System.NullReferenceException("The ExperimentManager is missing in the scene");
+        if (!GameplayManager.Instance)
+            throw new System.NullReferenceException("The GameplayManager is missing in the scene");
         if (!m_player)
             throw new System.NullReferenceException("No Player has been asgined to be realocated");
     }
     private void OnEnable()
     {
-        SubribeFromConditionEvents();
+        //SubribeFromConditionEvents();
+        SubribeToGameplayEvents();
     }
     private void OnDisable()
     {
-        UnsubribeFromConditionEvents();
+        //UnsubribeFromConditionEvents();
+        SubribeToGameplayEvents();
+    }
+
+    private void OnTasksReset()
+    {
+        m_player.position = transform.position;
+    }
+    private void SubribeToGameplayEvents()
+    {
+        if (GameplayManager.Instance)
+        {
+            GameplayManager.OnPracticeStandby += OnTasksReset;
+            GameplayManager.OnTrialStandby += OnTasksReset;
+        }
+    }
+
+    private void UnsubribeToGameplayEvents()
+    {
+        if (GameplayManager.Instance)
+        {
+            GameplayManager.OnPracticeStandby -= OnTasksReset;
+            GameplayManager.OnTrialStandby -= OnTasksReset;
+        }
     }
 
     private void PlayerRelocationOnConditionChange(Condition newCondition)

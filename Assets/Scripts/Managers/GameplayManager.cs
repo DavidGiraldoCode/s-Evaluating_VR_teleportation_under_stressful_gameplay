@@ -50,7 +50,7 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     }
     private void Start()
     {
-        EnterGameplay(null); //TODO for testing     
+        //EnterGameplay(null); //TODO for testing     
     }
     #endregion MonoMonoBehaviour
 

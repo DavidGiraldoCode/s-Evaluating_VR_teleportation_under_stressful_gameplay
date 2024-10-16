@@ -16,7 +16,7 @@ public class ExperimentManager : MonoBehaviour
     private uint m_totalConditions;
     public Condition CurrentCondition { get => m_currentCondition; }
     public delegate void ConditionHasChanged(Condition newCondition);
-     public delegate void ExperimentSate();
+    public delegate void ExperimentSate();
     public event ConditionHasChanged OnConditionChanged;
     public event ConditionHasChanged OnConditionTerminated;
     public event ConditionHasChanged OnConditionFulfilled;
@@ -39,7 +39,7 @@ public class ExperimentManager : MonoBehaviour
 
         if (!m_gameState)
             throw new System.NullReferenceException("The ExperimentManager is missing the GameState");
-        
+
         SetupConditions();
         m_gameState.Init();
         InitializedPlatforms();
@@ -99,12 +99,23 @@ public class ExperimentManager : MonoBehaviour
 
         //Triggers the necesarry events for the classes that need this update
     }
+
+    public void EnterGameplay()
+    {
+        if (!GameplayManager.Instance) return;
+        GameplayManager.Instance.EnterGameplay(m_currentCondition);
+    }
     /// <summary>
     /// Call this function when the condition has been forcely terminated.
+    /// It exits the gamaplay
     /// </summary>
     public void TerminateCondition()
     {
         if (m_currentCondition == null) return;
+
+        if (GameplayManager.Instance)
+            GameplayManager.Instance.ExitGameplay();
+
         if (OnConditionTerminated != null)
         {
             if (OnConditionTerminated.GetInvocationList().Length > 0)
@@ -115,10 +126,14 @@ public class ExperimentManager : MonoBehaviour
     }
     /// <summary>
     /// Call this function when the task during the current condition has been fulfilled.
+    /// It exits the gamaplay
     /// </summary>
     public void FulfillCondition()
     {
         if (m_currentCondition == null) return;
+
+        if (GameplayManager.Instance)
+            GameplayManager.Instance.ExitGameplay();
 
         m_currentCondition.IsFulfilled = true;
         if (OnConditionFulfilled != null)
@@ -131,12 +146,12 @@ public class ExperimentManager : MonoBehaviour
             }
         }
         m_currentCondition = null;
-        if(m_fulfilledConditions.Count == m_totalConditions)
+        if (m_fulfilledConditions.Count == m_totalConditions)
         {
             Debug.Log("Experiment completed!");
-            if(OnExperimentCompleted != null)
+            if (OnExperimentCompleted != null)
             {
-                if(OnExperimentCompleted.GetInvocationList().Length > 0)
+                if (OnExperimentCompleted.GetInvocationList().Length > 0)
                 {
                     OnExperimentCompleted?.Invoke();
                 }
@@ -150,9 +165,9 @@ public class ExperimentManager : MonoBehaviour
     {
         SetupConditions();
         // Reset the gamestate somehow
-        if(OnExperimentReset != null)
+        if (OnExperimentReset != null)
         {
-            if(OnExperimentReset.GetInvocationList().Length > 0)
+            if (OnExperimentReset.GetInvocationList().Length > 0)
             {
                 OnExperimentReset?.Invoke();
             }

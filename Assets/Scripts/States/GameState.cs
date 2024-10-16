@@ -243,11 +243,15 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
         switch (m_currentState)
         {
             case state.PRACTICE_ONGOING:
-                if (m_practiceTasks.Count == 0)
-                    Debug.Log("OnPracticeTaskCompleted");
+                if (m_practiceTasks.Count > 0) break;
+                m_currentState = state.PRACTICE_ENDED;
+                NotifyObservers();
                 //OnPracticeTaskCompleted
                 break;
             case state.TRIAL_ONGOING:
+                if (m_trialTasks.Count > 0) break;
+                m_currentState = state.TRIAL_ENDED;
+                NotifyObservers();
                 // OnTrialTaskCompleted()
                 break;
         }

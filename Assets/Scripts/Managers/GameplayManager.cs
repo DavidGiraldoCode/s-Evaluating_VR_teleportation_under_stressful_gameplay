@@ -68,7 +68,7 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     private void Start()
     {
         EnterGameplay(null); //TODO for testing, REMOVE
-        BeginGame();
+        //BeginGame();
     }
     #endregion MonoMonoBehaviour
 

@@ -22,7 +22,7 @@ public class PlayerRelocator : MonoBehaviour
     private void OnDisable()
     {
         //UnsubribeFromConditionEvents();
-        SubribeToGameplayEvents();
+        UnsubribeToGameplayEvents();
     }
 
     private void OnTasksReset()

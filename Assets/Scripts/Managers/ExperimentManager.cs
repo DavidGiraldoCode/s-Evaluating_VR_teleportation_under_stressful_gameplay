@@ -123,6 +123,7 @@ public class ExperimentManager : MonoBehaviour
         }
 
         m_currentCondition = null;
+        if (OnConditionChanged != null) OnConditionChanged?.Invoke(m_currentCondition);
     }
     /// <summary>
     /// Call this function when the task during the current condition has been fulfilled.
@@ -146,6 +147,8 @@ public class ExperimentManager : MonoBehaviour
             }
         }
         m_currentCondition = null;
+        if (OnConditionChanged != null) OnConditionChanged?.Invoke(m_currentCondition);
+
         if (m_fulfilledConditions.Count == m_totalConditions)
         {
             Debug.Log("Experiment completed!");

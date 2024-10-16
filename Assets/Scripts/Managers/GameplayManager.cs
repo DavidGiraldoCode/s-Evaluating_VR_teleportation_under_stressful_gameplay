@@ -21,6 +21,7 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     public static event GameplayStateChanges OnTrialStandby;     // The player is waiting to manually start the practice
     public static event GameplayStateChanges OnTrialBegin;          // The player performs the trial tasks 
     public static event GameplayStateChanges OnTrialEnd;            // The player completes all the trial task
+    public static event GameplayStateChanges OnGameOver;
 
     // Variables
     private PlatformStateController[] m_PlatformStates; // Holds all the platforms in the scene to then subscribe to their events
@@ -99,6 +100,7 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
             unsubscriber.Dispose(); // Unsubscribe from observing the GameState
 
         //ReturnToStandby();
+        OnGameOver?.Invoke();
     }
     #endregion Enter & Exit Gameplay
 

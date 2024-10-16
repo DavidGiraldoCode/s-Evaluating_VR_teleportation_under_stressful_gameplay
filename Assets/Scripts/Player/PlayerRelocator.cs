@@ -35,6 +35,7 @@ public class PlayerRelocator : MonoBehaviour
         {
             GameplayManager.OnPracticeStandby += OnTasksReset;
             GameplayManager.OnTrialStandby += OnTasksReset;
+            GameplayManager.OnGameOver += OnTasksReset;
         }
     }
 
@@ -44,6 +45,7 @@ public class PlayerRelocator : MonoBehaviour
         {
             GameplayManager.OnPracticeStandby -= OnTasksReset;
             GameplayManager.OnTrialStandby -= OnTasksReset;
+            GameplayManager.OnGameOver -= OnTasksReset;
         }
     }
 

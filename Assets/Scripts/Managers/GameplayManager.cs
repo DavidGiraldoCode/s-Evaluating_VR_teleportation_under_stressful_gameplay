@@ -87,6 +87,21 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     }
     #endregion Gameplay
     #region Event Trigger
+    /// <summary>
+    /// Starts the tasks depending on the previos standby state
+    /// </summary>
+    public void BeginGame()
+    {
+        switch (m_gameState.CurrentState)
+        {
+            case GameState.state.PRACTICE_STANDBY:
+                OnPracticeBegin?.Invoke();
+                break;
+            case GameState.state.TRIAL_STANDBY:
+                OnTrialBegin?.Invoke();
+                break;
+        }
+    }
     public void BeginPractice()
     {
         OnPracticeBegin?.Invoke();

@@ -8,7 +8,7 @@ public class GameplayGUIManager : MonoBehaviour
     [SerializeField] private GameObject m_startGameGUI;
     [SerializeField] private GameObject m_counterGUI;
     private ColorPromptController m_colorPromptController;
-    #region Monobehavior
+    #region Monobehavior Methods
     private void Awake()
     {
         if (!Instance || Instance != this)
@@ -22,6 +22,8 @@ public class GameplayGUIManager : MonoBehaviour
 
         m_colorPromptController = FindFirstObjectByType<ColorPromptController>();
         m_colorPromptController?.gameObject.SetActive(false);
+        m_startGameGUI.SetActive(false);
+        m_counterGUI.SetActive(false);
     }
     private void Start()
     {
@@ -31,6 +33,18 @@ public class GameplayGUIManager : MonoBehaviour
     }
 
     private void OnEnable()
+    {
+        SubscribeToEvents();
+    }
+
+    private void OnDisable()
+    {
+        UnsuscribeToEvents();
+    }
+
+    #endregion Monobehavior
+    #region Events handlers
+    private void SubscribeToEvents()
     {
         if (!GameplayManager.Instance) return;
         GameplayManager.OnPracticeBegin += OnPracticeBegin;
@@ -47,8 +61,7 @@ public class GameplayGUIManager : MonoBehaviour
         GameplayManager.OnPracticeEnd += OnTaskEnd;
         GameplayManager.OnTrialEnd += OnTaskEnd;
     }
-
-    private void OnDisable()
+    private void UnsuscribeToEvents()
     {
         if (!GameplayManager.Instance) return;
         GameplayManager.OnPracticeBegin -= OnPracticeBegin;
@@ -64,9 +77,6 @@ public class GameplayGUIManager : MonoBehaviour
         GameplayManager.OnPracticeEnd += OnTaskEnd;
         GameplayManager.OnTrialEnd += OnTaskEnd;
     }
-
-    #endregion Monobehavior
-    #region Events handlers
     private void OnTaskBegin()
     {
         m_startGameGUI.SetActive(false);

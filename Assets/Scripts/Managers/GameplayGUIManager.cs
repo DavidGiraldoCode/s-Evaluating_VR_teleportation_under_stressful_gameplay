@@ -5,8 +5,10 @@ using UnityEngine;
 public class GameplayGUIManager : MonoBehaviour
 {
     public static GameplayGUIManager Instance { get; private set; }
+    [SerializeField] private GameState m_gameState;
     [SerializeField] private GameObject m_startGameGUI;
     [SerializeField] private GameObject m_counterGUI;
+
     private ColorPromptController m_colorPromptController;
     #region Monobehavior Methods
     private void Awake()
@@ -81,10 +83,13 @@ public class GameplayGUIManager : MonoBehaviour
     {
         m_startGameGUI.SetActive(false);
         m_colorPromptController?.gameObject.SetActive(true);
+        m_gameState.OnNewNextColor += m_colorPromptController.OnNewNextColor;
     }
     private void OnTaskEnd()
     {
         m_colorPromptController?.gameObject.SetActive(false);
+        m_gameState.OnNewNextColor -= m_colorPromptController.OnNewNextColor;
+
         m_counterGUI.SetActive(true);
     }
 

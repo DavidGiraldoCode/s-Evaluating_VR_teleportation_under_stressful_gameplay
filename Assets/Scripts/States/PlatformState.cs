@@ -39,6 +39,9 @@ public class PlatformState : ScriptableObject
     // Events
 
     public delegate void StateChanger(PlatformState thisPlatform, state state, color color);
+    /// <summary>
+    /// Signals everytime the platform changes state IDLE, FOCUSSED, ACTIVATED
+    /// </summary>
     public event StateChanger OnStateChange;
 
     public void ChangeState(state state)

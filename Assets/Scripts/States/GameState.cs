@@ -68,13 +68,13 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
     static Color p = new Color(153.0f, 50.0f, 204.0f);
     private static Hashtable m_colorsTable = new Hashtable()
     {
-        { color.NONE, Color.black},
-        { color.RED, Color.red},
-        { color.GREEN, Color.green},
-        { color.BLUE, Color.blue},
-        { color.YELLOW, Color.yellow},
-        { color.ORANGE, o},
-        { color.PURPLE, p},
+        { taskColors.NONE, Color.black},
+        { taskColors.RED, Color.red},
+        { taskColors.GREEN, Color.green},
+        { taskColors.BLUE, Color.blue},
+        { taskColors.YELLOW, Color.yellow},
+        { taskColors.ORANGE, o},
+        { taskColors.PURPLE, p},
     };
 
     [SerializeField] private uint remainingSequences = 3;
@@ -89,7 +89,7 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
     public delegate void CompleteSequence();
     public event CompleteSequence OnSequenceCompleted;
     public delegate void NewSequence(Stack<color> sequence);
-    public delegate void NextColor(stimulus newStimulus, color nextColor);
+    public delegate void NextColor(stimulus newStimulus, taskColors nextColor);
     public event NewSequence OnNewSequence;
     public event NextColor OnNewNextColor;
 
@@ -156,6 +156,7 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
 
     /// <summary>
     /// Returns the top of the stack of task colors depending whether is the practice of the trial
+    /// Use it to compare with the platform color
     /// </summary>
     /// <returns>taskColors value</returns>
     public taskColors CurrentTaskColor()
@@ -181,10 +182,13 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
         if (platformColor == CurrentTaskColor())
         {
             RemoveTaskFromStack();
+            //Right platform
+            Debug.Log("Right platform, removing " + platformColor.ToString());
         }
         else
         {
             //Wrong platform
+            Debug.Log("Wrong platform " + platformColor.ToString());
         }
 
         CheckForTaskComplition();
@@ -239,9 +243,15 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
         switch (m_currentState)
         {
             case state.PRACTICE_ONGOING:
-                // OnPracticeTaskCompleted()
+                if (m_practiceTasks.Count > 0) break;
+                m_currentState = state.PRACTICE_ENDED;
+                NotifyObservers();
+                //OnPracticeTaskCompleted
                 break;
             case state.TRIAL_ONGOING:
+                if (m_trialTasks.Count > 0) break;
+                m_currentState = state.TRIAL_ENDED;
+                NotifyObservers();
                 // OnTrialTaskCompleted()
                 break;
         }
@@ -253,20 +263,30 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
     private void RemoveTaskFromStack()
     {
         if (m_currentState == state.PRACTICE_ONGOING && m_practiceTasks.Count > 0)
+        {
             m_practiceTasks.Pop();
-        if (m_currentState == state.TRIAL_ONGOING && m_trialTasks.Count > 0)
+
+            if (OnNewNextColor != null)
+                OnNewNextColor?.Invoke(m_currentStimulus, CurrentTaskColor());
+        }
+        else if (m_currentState == state.TRIAL_ONGOING && m_trialTasks.Count > 0)
+        {
             m_trialTasks.Pop();
+            if (OnNewNextColor != null)
+                OnNewNextColor?.Invoke(m_currentStimulus, CurrentTaskColor());
+        }
+
     }
 
     private void GenerateRandomTasks()
     {
+        for (int i = HardCodedSequence.Length - 1; i >= 0; i--)
+        {
+            m_practiceTasks.Push((taskColors)HardCodedSequence[i]);
+        }
         for (int i = HardCodedTrialSequence.Length - 1; i >= 0; i--)
         {
             m_trialTasks.Push((taskColors)HardCodedTrialSequence[i]);
-        }
-        for (int i = HardCodedSequence.Length - 1; i >= 0; i--)
-        {
-            m_trialTasks.Push((taskColors)HardCodedSequence[i]);
         }
         Debug.Log("All task stacks are ready");
     }
@@ -276,14 +296,19 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
     public void OnPracticeBegin()
     {
         m_currentState = state.PRACTICE_ONGOING;
+        if (OnNewNextColor != null)
+            OnNewNextColor?.Invoke(m_currentStimulus, CurrentTaskColor());
     }
     public void OnTrialBegin()
     {
         m_currentState = state.TRIAL_ONGOING;
+        if (OnNewNextColor != null)
+            OnNewNextColor?.Invoke(m_currentStimulus, CurrentTaskColor());
     }
     #endregion Event Listeners
 
-    #region Legacy
+
+    #region Legacy ............................
     // Methods
     public void Init()
     {
@@ -301,8 +326,8 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
         if (OnNewSequence != null)
             OnNewSequence?.Invoke(m_currentSequence);
 
-        if (OnNewNextColor != null)
-            OnNewNextColor?.Invoke(m_currentStimulus, m_currentSequence.Peek());
+        if (OnNewNextColor != null) ;
+        //OnNewNextColor?.Invoke(m_currentStimulus, m_currentSequence.Peek());
     }
     public void ProgressInSequence(color platformColor)
     {
@@ -331,11 +356,12 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
         }
         else
         {
-            if (OnNewNextColor != null)
-                OnNewNextColor?.Invoke(m_currentStimulus, m_currentSequence.Peek());
+            if (OnNewNextColor != null) ;
+            //OnNewNextColor?.Invoke(m_currentStimulus, m_currentSequence.Peek());
         }
     }
 
+    #endregion Legacy
     /*
 OnWrongColor()
 OnRightColor()
@@ -345,5 +371,4 @@ remainingSequences--;
 }
 OnRoundsWithinConditionCompleted()
 */
-    #endregion Legacy
 }

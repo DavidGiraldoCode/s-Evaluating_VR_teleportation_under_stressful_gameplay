@@ -52,6 +52,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_platformState: {fileID: 11400000, guid: 35be233ac0a934f7f85eadcd88102f61, type: 2}
   m_platformMeshR: {fileID: 6149935361033576885}
+  m_gameState: {fileID: 11400000, guid: d5f996f94f4d44bcfa93d8fea25ed7b6, type: 2}
 --- !u!136 &8650670796306260742
 CapsuleCollider:
   m_ObjectHideFlags: 0

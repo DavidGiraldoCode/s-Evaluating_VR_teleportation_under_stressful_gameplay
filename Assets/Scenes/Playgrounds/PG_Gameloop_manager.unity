@@ -901,7 +901,7 @@ GameObject:
   - component: {fileID: 519745942}
   - component: {fileID: 519745941}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Message
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -946,7 +946,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Task completed, getting back to starting position in
+  m_text: 'Task completed, getting back to '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2289,7 +2289,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1497384278}
-  - component: {fileID: 1497384279}
   m_Layer: 5
   m_Name: TasksCompletedCounter
   m_TagString: Untagged
@@ -2319,21 +2318,6 @@ RectTransform:
   m_AnchoredPosition: {x: -352, y: 47}
   m_SizeDelta: {x: 300, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1497384279
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1497384277}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3115c591db9ad41f99d09b5734f2e4fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_gameState: {fileID: 11400000, guid: d5f996f94f4d44bcfa93d8fea25ed7b6, type: 2}
-  m_waintingTime: 5
-  m_counterText: {fileID: 1611890190}
 --- !u!1 &1611890188
 GameObject:
   m_ObjectHideFlags: 0
@@ -2346,7 +2330,7 @@ GameObject:
   - component: {fileID: 1611890191}
   - component: {fileID: 1611890190}
   m_Layer: 5
-  m_Name: GameLoopStateCounter
+  m_Name: Counter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3113,6 +3097,7 @@ GameObject:
   - component: {fileID: 2131758294}
   - component: {fileID: 2131758293}
   - component: {fileID: 2131758297}
+  - component: {fileID: 2131758298}
   m_Layer: 5
   m_Name: GameLoop_GUI
   m_TagString: Untagged
@@ -3221,6 +3206,22 @@ MonoBehaviour:
   m_startPracticeGUI: {fileID: 1842141023}
   m_startTrialGUI: {fileID: 1127340942}
   m_counterGUI: {fileID: 1497384277}
+--- !u!114 &2131758298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2131758292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3115c591db9ad41f99d09b5734f2e4fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_gameState: {fileID: 11400000, guid: d5f996f94f4d44bcfa93d8fea25ed7b6, type: 2}
+  m_waintingTime: 5
+  m_message: {fileID: 519745941}
+  m_counterText: {fileID: 1611890190}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

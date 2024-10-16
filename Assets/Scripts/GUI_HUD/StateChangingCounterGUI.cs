@@ -6,6 +6,8 @@ public class StateChangingCounterGUI : MonoBehaviour
 {
     [SerializeField] private GameState m_gameState;
     [SerializeField] private int m_waintingTime = 5;
+    [SerializeField] private TMP_Text m_message;
+    private string m_baseMessage;
     [SerializeField] private TMP_Text m_counterText;
     private float m_timer;
     private void Awake()
@@ -14,6 +16,7 @@ public class StateChangingCounterGUI : MonoBehaviour
             throw new System.NullReferenceException("The GameState is missing");
 
         m_timer = m_waintingTime;
+        m_baseMessage = m_message.text;
     }
     private void OnEnable()
     {
@@ -32,16 +35,17 @@ public class StateChangingCounterGUI : MonoBehaviour
             GameplayManager.OnTrialEnd -= OnTrialEnd;
         }
     }
-
     private void OnPracticeEnd()
     {
-        Debug.Log("Starting counter to pass to Trial Standby...");
+        //Debug.Log("Starting counter to pass to Trial Standby...");
+        m_message.text = m_baseMessage + "starting position in";
         StartCoroutine(CountDownToStartingPosition());
     }
 
     private void OnTrialEnd()
     {
-        Debug.Log("Starting counter to pass to Conditions...");
+        //Debug.Log("Starting counter to pass to Conditions...");
+        m_message.text = m_baseMessage + "conditions menu in";
         StartCoroutine(CountDownToStartingPosition());
     }
     // Recall that coroutines are methods that can wait for a certain amount of time before excecuting actions on a next frame

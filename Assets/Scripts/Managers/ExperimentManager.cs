@@ -107,7 +107,7 @@ public class ExperimentManager : MonoBehaviour
     }
     /// <summary>
     /// Call this function when the condition has been forcely terminated.
-    /// It exits the gamaplay
+    /// It exits the gamaplay by force
     /// </summary>
     public void TerminateCondition()
     {
@@ -132,9 +132,6 @@ public class ExperimentManager : MonoBehaviour
     public void FulfillCondition()
     {
         if (m_currentCondition == null) return;
-
-        if (GameplayManager.Instance)
-            GameplayManager.Instance.ExitGameplay();
 
         m_currentCondition.IsFulfilled = true;
         if (OnConditionFulfilled != null)

@@ -82,8 +82,10 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     public void ExitGameplay()
     {
         // Save the necesarry information to the server or file
-        unsubscriber.Dispose(); // Unsubscribe from observing the GameState
         Debug.Log("Exiting Game, returning to conditions");
+
+        if (unsubscriber != null)
+            unsubscriber.Dispose(); // Unsubscribe from observing the GameState
     }
     #endregion Gameplay
     #region Event Trigger
@@ -115,6 +117,9 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     #region Observer pattern
     public void OnCompleted()
     {
+        if (ExperimentManager.Instance)
+            ExperimentManager.Instance.FulfillCondition();
+
         ExitGameplay();
     }
 

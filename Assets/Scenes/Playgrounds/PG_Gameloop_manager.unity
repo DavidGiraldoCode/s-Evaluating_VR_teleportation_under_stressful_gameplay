@@ -3219,6 +3219,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_gameState: {fileID: 11400000, guid: d5f996f94f4d44bcfa93d8fea25ed7b6, type: 2}
+  m_counterGUI: {fileID: 1497384277}
   m_waintingTime: 5
   m_message: {fileID: 519745941}
   m_counterText: {fileID: 1611890190}

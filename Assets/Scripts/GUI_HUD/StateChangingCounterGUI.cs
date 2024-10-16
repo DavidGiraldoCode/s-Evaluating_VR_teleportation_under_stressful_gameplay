@@ -5,6 +5,7 @@ using TMPro;
 public class StateChangingCounterGUI : MonoBehaviour
 {
     [SerializeField] private GameState m_gameState;
+    [SerializeField] private GameObject m_counterGUI;
     [SerializeField] private int m_waintingTime = 5;
     [SerializeField] private TMP_Text m_message;
     private string m_baseMessage;
@@ -14,6 +15,8 @@ public class StateChangingCounterGUI : MonoBehaviour
     {
         if (!m_gameState)
             throw new System.NullReferenceException("The GameState is missing");
+        if (!m_counterGUI)
+            throw new System.NullReferenceException("The CounterGUI is missing");
 
         m_timer = m_waintingTime;
         m_baseMessage = m_message.text;
@@ -66,6 +69,7 @@ public class StateChangingCounterGUI : MonoBehaviour
             {
                 m_gameState.GoToStandbyOrGameOver();
                 m_timer = m_waintingTime;
+                m_counterGUI.SetActive(false);
                 StopAllCoroutines();
             }
             // The yield lien is where the excecution pauses resume in the next frame

@@ -156,6 +156,7 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
 
     /// <summary>
     /// Returns the top of the stack of task colors depending whether is the practice of the trial
+    /// Use it to compare with the platform color
     /// </summary>
     /// <returns>taskColors value</returns>
     public taskColors CurrentTaskColor()
@@ -181,10 +182,13 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
         if (platformColor == CurrentTaskColor())
         {
             RemoveTaskFromStack();
+            //Right platform
+            Debug.Log("Right platform, removing " + platformColor.ToString());
         }
         else
         {
             //Wrong platform
+            Debug.Log("Wrong platform " + platformColor.ToString());
         }
 
         CheckForTaskComplition();
@@ -239,7 +243,9 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
         switch (m_currentState)
         {
             case state.PRACTICE_ONGOING:
-                // OnPracticeTaskCompleted()
+                if (m_practiceTasks.Count == 0)
+                    Debug.Log("OnPracticeTaskCompleted");
+                //OnPracticeTaskCompleted
                 break;
             case state.TRIAL_ONGOING:
                 // OnTrialTaskCompleted()
@@ -260,13 +266,13 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
 
     private void GenerateRandomTasks()
     {
+        for (int i = HardCodedSequence.Length - 1; i >= 0; i--)
+        {
+            m_practiceTasks.Push((taskColors)HardCodedSequence[i]);
+        }
         for (int i = HardCodedTrialSequence.Length - 1; i >= 0; i--)
         {
             m_trialTasks.Push((taskColors)HardCodedTrialSequence[i]);
-        }
-        for (int i = HardCodedSequence.Length - 1; i >= 0; i--)
-        {
-            m_trialTasks.Push((taskColors)HardCodedSequence[i]);
         }
         Debug.Log("All task stacks are ready");
     }
@@ -283,7 +289,8 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
     }
     #endregion Event Listeners
 
-    #region Legacy
+
+    #region Legacy ............................
     // Methods
     public void Init()
     {
@@ -336,6 +343,7 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
         }
     }
 
+    #endregion Legacy
     /*
 OnWrongColor()
 OnRightColor()
@@ -345,5 +353,4 @@ remainingSequences--;
 }
 OnRoundsWithinConditionCompleted()
 */
-    #endregion Legacy
 }

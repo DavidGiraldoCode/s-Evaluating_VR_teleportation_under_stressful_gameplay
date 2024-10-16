@@ -13,7 +13,7 @@ public class ActivationPlatformButton : MonoBehaviour
         if (m_platformState.CurrentState == PlatformState.state.FOCUSSED && m_platformState.AvitationAllowed)
         {
             m_platformState.ChangeState(PlatformState.state.ACTIVATED);
-            Debug.Log("Platfrom Activated!!!");
+            //Debug.Log("Platfrom Activated!!!");
         }
     }
 }

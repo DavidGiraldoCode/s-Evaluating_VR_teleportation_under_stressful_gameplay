@@ -22,6 +22,8 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     public static event GameplayStateChanges OnTrialBegin;          // The player performs the trial tasks 
     public static event GameplayStateChanges OnTrialEnd;            // The player completes all the trial task
 
+    // Variables
+    private PlatformStateController[] m_PlatformStates; // Holds all the platforms in the scene to then subscribe to their events
 
     #region MonoMonoBehaviour
     private void Awake()
@@ -37,24 +39,40 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
         }
         if (m_gameState == null)
             throw new System.NullReferenceException("GameState missing");
+
+        m_PlatformStates = FindObjectsOfType<PlatformStateController>();
+
     }
     private void OnEnable()
     {
         OnPracticeBegin += m_gameState.OnPracticeBegin;
         OnTrialBegin += m_gameState.OnTrialBegin;
+
+        if (m_PlatformStates != null)
+            for (int i = 0; i < m_PlatformStates.Length; i++)
+            {
+                m_PlatformStates[i].State.OnStateChange += OnPlaformStateChange;
+            }
     }
     private void OnDisable()
     {
         OnPracticeBegin -= m_gameState.OnPracticeBegin;
         OnTrialBegin -= m_gameState.OnTrialBegin;
+
+        if (m_PlatformStates != null)
+            for (int i = 0; i < m_PlatformStates.Length; i++)
+            {
+                m_PlatformStates[i].State.OnStateChange -= OnPlaformStateChange;
+            }
     }
     private void Start()
     {
-        //EnterGameplay(null); //TODO for testing     
+        EnterGameplay(null); //TODO for testing, REMOVE
+        BeginGame();
     }
     #endregion MonoMonoBehaviour
 
-    #region Gameplay
+    #region Enter & Exit Gameplay
     /// <summary>
     /// Starts the "game" accordingly with the condition
     /// </summary>
@@ -82,8 +100,18 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
 
         //ReturnToStandby();
     }
-    #endregion Gameplay
-    #region Event Trigger
+    #endregion Enter & Exit Gameplay
+
+    #region Gameloop methods ........
+    private void OnPlaformStateChange(PlatformState thisPlatform, PlatformState.state state, PlatformState.color color)
+    {
+        if (state == PlatformState.state.ACTIVATED)
+            m_gameState.CompleteTask((GameState.taskColors)color);
+    }
+
+    #endregion Gameloop methods
+
+    #region Task Event Trigger ........
     private void ReturnToStandby()
     {
         if (OnPracticeStandby != null)
@@ -117,7 +145,7 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     {
         OnTrialBegin?.Invoke();
     }
-    #endregion Event Trigger
+    #endregion Task Event Trigger
 
     #region Observer pattern
     public void OnCompleted()

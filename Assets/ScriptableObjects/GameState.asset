@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37f3e59219a574bb08f339611f05ba09, type: 3}
   m_Name: GameState
   m_EditorClassIdentifier: 
-  m_currentState: 1
+  m_currentState: 4
   m_currentColor: 3
   m_currentStimulus: 1
   HardCodedSequence: 0100000003000000
-  HardCodedTrialSequence: 060000000500000005000000
+  HardCodedTrialSequence: 060000000400000005000000
   remainingSequences: 3

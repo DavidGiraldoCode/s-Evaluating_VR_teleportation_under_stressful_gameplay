@@ -5517,6 +5517,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 644862802052091182, guid: 5ec8f4ccb21d94a2e8af4c4cd8a37a1d, type: 3}
+      propertyPath: m_gameState
+      value: 
+      objectReference: {fileID: 11400000, guid: d5f996f94f4d44bcfa93d8fea25ed7b6, type: 2}
     - target: {fileID: 1722698756643600211, guid: 5ec8f4ccb21d94a2e8af4c4cd8a37a1d, type: 3}
       propertyPath: m_Name
       value: GameLoop_GUI

@@ -68,13 +68,13 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
     static Color p = new Color(153.0f, 50.0f, 204.0f);
     private static Hashtable m_colorsTable = new Hashtable()
     {
-        { color.NONE, Color.black},
-        { color.RED, Color.red},
-        { color.GREEN, Color.green},
-        { color.BLUE, Color.blue},
-        { color.YELLOW, Color.yellow},
-        { color.ORANGE, o},
-        { color.PURPLE, p},
+        { taskColors.NONE, Color.black},
+        { taskColors.RED, Color.red},
+        { taskColors.GREEN, Color.green},
+        { taskColors.BLUE, Color.blue},
+        { taskColors.YELLOW, Color.yellow},
+        { taskColors.ORANGE, o},
+        { taskColors.PURPLE, p},
     };
 
     [SerializeField] private uint remainingSequences = 3;
@@ -89,7 +89,7 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
     public delegate void CompleteSequence();
     public event CompleteSequence OnSequenceCompleted;
     public delegate void NewSequence(Stack<color> sequence);
-    public delegate void NextColor(stimulus newStimulus, color nextColor);
+    public delegate void NextColor(stimulus newStimulus, taskColors nextColor);
     public event NewSequence OnNewSequence;
     public event NextColor OnNewNextColor;
 
@@ -263,9 +263,19 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
     private void RemoveTaskFromStack()
     {
         if (m_currentState == state.PRACTICE_ONGOING && m_practiceTasks.Count > 0)
+        {
             m_practiceTasks.Pop();
-        if (m_currentState == state.TRIAL_ONGOING && m_trialTasks.Count > 0)
+
+            if (OnNewNextColor != null)
+                OnNewNextColor?.Invoke(m_currentStimulus, CurrentTaskColor());
+        }
+        else if (m_currentState == state.TRIAL_ONGOING && m_trialTasks.Count > 0)
+        {
             m_trialTasks.Pop();
+            if (OnNewNextColor != null)
+                OnNewNextColor?.Invoke(m_currentStimulus, CurrentTaskColor());
+        }
+
     }
 
     private void GenerateRandomTasks()
@@ -286,10 +296,14 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
     public void OnPracticeBegin()
     {
         m_currentState = state.PRACTICE_ONGOING;
+        if (OnNewNextColor != null)
+            OnNewNextColor?.Invoke(m_currentStimulus, CurrentTaskColor());
     }
     public void OnTrialBegin()
     {
         m_currentState = state.TRIAL_ONGOING;
+        if (OnNewNextColor != null)
+            OnNewNextColor?.Invoke(m_currentStimulus, CurrentTaskColor());
     }
     #endregion Event Listeners
 
@@ -312,8 +326,8 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
         if (OnNewSequence != null)
             OnNewSequence?.Invoke(m_currentSequence);
 
-        if (OnNewNextColor != null)
-            OnNewNextColor?.Invoke(m_currentStimulus, m_currentSequence.Peek());
+        if (OnNewNextColor != null) ;
+        //OnNewNextColor?.Invoke(m_currentStimulus, m_currentSequence.Peek());
     }
     public void ProgressInSequence(color platformColor)
     {
@@ -342,8 +356,8 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
         }
         else
         {
-            if (OnNewNextColor != null)
-                OnNewNextColor?.Invoke(m_currentStimulus, m_currentSequence.Peek());
+            if (OnNewNextColor != null) ;
+            //OnNewNextColor?.Invoke(m_currentStimulus, m_currentSequence.Peek());
         }
     }
 

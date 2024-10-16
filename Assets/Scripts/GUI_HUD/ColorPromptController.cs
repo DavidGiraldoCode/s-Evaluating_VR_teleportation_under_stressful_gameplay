@@ -19,6 +19,7 @@ public class ColorPromptController : MonoBehaviour
     private void OnEnable()
     {
         m_gamesState.OnNewNextColor += OnNewNextColor;
+
     }
     private void OnDisable()
     {
@@ -27,7 +28,7 @@ public class ColorPromptController : MonoBehaviour
 
     #endregion MonoBehaviour Methods
     //
-    private void OnNewNextColor(GameState.stimulus newStimulus, GameState.color newColor)
+    public void OnNewNextColor(GameState.stimulus newStimulus, GameState.taskColors newColor)
     {
         //Debug.Log("newColor: " + newColor);
         UpdateColorPromptDisplay( newStimulus.ToString(), newColor.ToString(), (Color)GameState.ReadableColorToRGB[newColor]);

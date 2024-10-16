@@ -9,24 +9,24 @@ public class ConditionGUISetter : MonoBehaviour
 
     private void Awake()
     {
-        if (!GameInstanceManager.Instance)
-            throw new System.NullReferenceException("The GameInstanceManager is missing in the scene");
+        if (!ExperimentManager.Instance)
+            throw new NullReferenceException("The ExperimentManager is missing in the scene");
 
         m_button = GetComponent<Button>();
     }
 
     private void OnEnable()
     {
-        SubribeFromConditionEvents();
-        if (GameInstanceManager.Instance)
-            GameInstanceManager.Instance.OnExperimentReset += OnExperimentReset;
+        SubribeToConditionEvents();
+        if (ExperimentManager.Instance)
+            ExperimentManager.Instance.OnExperimentReset += OnExperimentReset;
     }
 
     private void OnDisable()
     {
         UnsubribeFromConditionEvents();
-        if (GameInstanceManager.Instance)
-            GameInstanceManager.Instance.OnExperimentReset -= OnExperimentReset;
+        if (ExperimentManager.Instance)
+            ExperimentManager.Instance.OnExperimentReset -= OnExperimentReset;
     }
 
     private void OnConditionChanged(Condition newCondition)
@@ -44,42 +44,49 @@ public class ConditionGUISetter : MonoBehaviour
     }
     private void OnConditionFulfilled(Condition theFulfilledCondition)
     {
+        
         // If the fulfilled condition is the same as this button's condition, do:
         // 1. disable the button
         m_button.interactable = !(m_condition == theFulfilledCondition);
         // 2. Unsubribed from the events.
         if (m_condition == theFulfilledCondition)
+        {
             UnsubribeFromConditionEvents();
+            Debug.Log("OnConditionFulfilled");
+            Debug.Log("UnsubribeFromConditionEvents");
+        }
+
     }
 
     private void OnExperimentReset()
     {
-        SubribeFromConditionEvents();
+        SubribeToConditionEvents();
         m_button.interactable = !m_condition.IsFulfilled;
     }
 
     public void SetCondition()
     {
-        if (!GameInstanceManager.Instance) return;
-        GameInstanceManager.Instance.SetCondition(m_condition);
+        if (!ExperimentManager.Instance) return;
+        ExperimentManager.Instance.SetCondition(m_condition);
     }
 
-    private void SubribeFromConditionEvents()
+    private void SubribeToConditionEvents()
     {
-        if (GameInstanceManager.Instance)
+        if (ExperimentManager.Instance)
         {
-            GameInstanceManager.Instance.OnConditionChanged += OnConditionChanged;
-            GameInstanceManager.Instance.OnConditionTerminated += OnConditionTerminated;
-            GameInstanceManager.Instance.OnConditionFulfilled += OnConditionFulfilled;
+            ExperimentManager.Instance.OnConditionChanged += OnConditionChanged;
+            ExperimentManager.Instance.OnConditionTerminated += OnConditionTerminated;
+            ExperimentManager.Instance.OnConditionFulfilled += OnConditionFulfilled;
+            Debug.Log("SubribeToConditionEvents");
         }
     }
     private void UnsubribeFromConditionEvents()
     {
-        if (GameInstanceManager.Instance)
+        if (ExperimentManager.Instance)
         {
-            GameInstanceManager.Instance.OnConditionChanged -= OnConditionChanged;
-            GameInstanceManager.Instance.OnConditionTerminated -= OnConditionTerminated;
-            GameInstanceManager.Instance.OnConditionFulfilled -= OnConditionFulfilled;
+            ExperimentManager.Instance.OnConditionChanged -= OnConditionChanged;
+            ExperimentManager.Instance.OnConditionTerminated -= OnConditionTerminated;
+            ExperimentManager.Instance.OnConditionFulfilled -= OnConditionFulfilled;
         }
     }
 }

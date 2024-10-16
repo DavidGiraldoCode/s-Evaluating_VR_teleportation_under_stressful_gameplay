@@ -7,21 +7,25 @@ using UnityEngine;
 public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
 {
     public static GameplayManager Instance { get; private set; }
-    
+
     [SerializeField] private GameState m_gameState;
-    public delegate void GameplayStateChanges();
-    
+    // Observer
+    private IDisposable unsubscriber;
+
     // Gameloop Events
+    public delegate void GameplayStateChanges();
     public static event GameplayStateChanges OnPracticeStandby;     // The player is waiting to manually start the practice
     public static event GameplayStateChanges OnPracticeBegin;       // The player performs the practice tasks
     public static event GameplayStateChanges OnPracticeEnd;       // The player performs the practice tasks
     public static event GameplayStateChanges OnPracticeEndAndTrialStandby; // The player completes all the practice task and can manually start the trial
+    public static event GameplayStateChanges OnTrialStandby;     // The player is waiting to manually start the practice
     public static event GameplayStateChanges OnTrialBegin;          // The player performs the trial tasks 
     public static event GameplayStateChanges OnTrialEnd;            // The player completes all the trial task
-    
-    // Observer
-    private IDisposable unsubscriber;
-    
+    public static event GameplayStateChanges OnGameOver;
+
+    // Variables
+    private PlatformStateController[] m_PlatformStates; // Holds all the platforms in the scene to then subscribe to their events
+
     #region MonoMonoBehaviour
     private void Awake()
     {
@@ -36,24 +40,40 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
         }
         if (m_gameState == null)
             throw new System.NullReferenceException("GameState missing");
+
+        m_PlatformStates = FindObjectsOfType<PlatformStateController>();
+
     }
     private void OnEnable()
     {
         OnPracticeBegin += m_gameState.OnPracticeBegin;
         OnTrialBegin += m_gameState.OnTrialBegin;
+
+        if (m_PlatformStates != null)
+            for (int i = 0; i < m_PlatformStates.Length; i++)
+            {
+                m_PlatformStates[i].State.OnStateChange += OnPlaformStateChange;
+            }
     }
     private void OnDisable()
     {
         OnPracticeBegin -= m_gameState.OnPracticeBegin;
         OnTrialBegin -= m_gameState.OnTrialBegin;
+
+        if (m_PlatformStates != null)
+            for (int i = 0; i < m_PlatformStates.Length; i++)
+            {
+                m_PlatformStates[i].State.OnStateChange -= OnPlaformStateChange;
+            }
     }
     private void Start()
     {
-        EnterGameplay(null); //TODO for testing     
+        EnterGameplay(null); //TODO for testing, REMOVE
+        //BeginGame();
     }
     #endregion MonoMonoBehaviour
-    
-    #region Gameplay
+
+    #region Enter & Exit Gameplay
     /// <summary>
     /// Starts the "game" accordingly with the condition
     /// </summary>
@@ -65,14 +85,7 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
         // Setup teleporation
         // Setup HUD prompts system with congnitive interference
         // Setup time and environmental stressors
-
-        if (OnPracticeStandby != null)
-        {
-            if (OnPracticeStandby.GetInvocationList().Length > 0)
-            {
-                OnPracticeStandby?.Invoke();
-            }
-        }
+        ReturnToStandby();
     }
 
     /// <summary>
@@ -81,11 +94,51 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     public void ExitGameplay()
     {
         // Save the necesarry information to the server or file
-        unsubscriber.Dispose(); // Unsubscribe from observing the GameState
         Debug.Log("Exiting Game, returning to conditions");
+
+        if (unsubscriber != null)
+            unsubscriber.Dispose(); // Unsubscribe from observing the GameState
+
+        //ReturnToStandby();
+        OnGameOver?.Invoke();
     }
-    #endregion Gameplay
-    #region Event Trigger
+    #endregion Enter & Exit Gameplay
+
+    #region Gameloop methods ........
+    private void OnPlaformStateChange(PlatformState thisPlatform, PlatformState.state state, PlatformState.color color)
+    {
+        if (state == PlatformState.state.ACTIVATED)
+            m_gameState.CompleteTask((GameState.taskColors)color);
+    }
+
+    #endregion Gameloop methods
+
+    #region Task Event Trigger ........
+    private void ReturnToStandby()
+    {
+        if (OnPracticeStandby != null)
+        {
+            if (OnPracticeStandby.GetInvocationList().Length > 0)
+            {
+                OnPracticeStandby?.Invoke();
+            }
+        }
+    }
+    /// <summary>
+    /// Starts the tasks depending on the previos standby state
+    /// </summary>
+    public void BeginGame()
+    {
+        switch (m_gameState.CurrentState)
+        {
+            case GameState.state.PRACTICE_STANDBY:
+                OnPracticeBegin?.Invoke();
+                break;
+            case GameState.state.TRIAL_STANDBY:
+                OnTrialBegin?.Invoke();
+                break;
+        }
+    }
     public void BeginPractice()
     {
         OnPracticeBegin?.Invoke();
@@ -94,11 +147,14 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     {
         OnTrialBegin?.Invoke();
     }
-    #endregion Event Trigger
-    
+    #endregion Task Event Trigger
+
     #region Observer pattern
     public void OnCompleted()
     {
+        if (ExperimentManager.Instance)
+            ExperimentManager.Instance.FulfillCondition();
+
         ExitGameplay();
     }
 
@@ -116,6 +172,9 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
         {
             case GameState.state.PRACTICE_ENDED:
                 OnPracticeEnd?.Invoke();
+                break;
+            case GameState.state.TRIAL_STANDBY:
+                OnTrialStandby?.Invoke();
                 break;
             case GameState.state.TRIAL_ENDED:
                 OnTrialEnd?.Invoke();

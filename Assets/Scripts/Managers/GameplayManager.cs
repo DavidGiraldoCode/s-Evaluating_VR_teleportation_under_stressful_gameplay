@@ -66,14 +66,7 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
         // Setup teleporation
         // Setup HUD prompts system with congnitive interference
         // Setup time and environmental stressors
-
-        if (OnPracticeStandby != null)
-        {
-            if (OnPracticeStandby.GetInvocationList().Length > 0)
-            {
-                OnPracticeStandby?.Invoke();
-            }
-        }
+        ReturnToStandby();
     }
 
     /// <summary>
@@ -86,9 +79,21 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
 
         if (unsubscriber != null)
             unsubscriber.Dispose(); // Unsubscribe from observing the GameState
+
+        ReturnToStandby();
     }
     #endregion Gameplay
     #region Event Trigger
+    private void ReturnToStandby()
+    {
+        if (OnPracticeStandby != null)
+        {
+            if (OnPracticeStandby.GetInvocationList().Length > 0)
+            {
+                OnPracticeStandby?.Invoke();
+            }
+        }
+    }
     /// <summary>
     /// Starts the tasks depending on the previos standby state
     /// </summary>

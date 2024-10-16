@@ -2808,6 +2808,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_enterGameplayButton: {fileID: 1881812408}
+  m_conditionGUIMenu: {fileID: 1274796390}
 --- !u!1 &1420711868
 GameObject:
   m_ObjectHideFlags: 0

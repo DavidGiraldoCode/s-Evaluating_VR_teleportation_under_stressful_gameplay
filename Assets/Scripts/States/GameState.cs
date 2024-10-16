@@ -76,14 +76,16 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
         { color.ORANGE, o},
         { color.PURPLE, p},
     };
+
+    [SerializeField] private uint remainingSequences = 3;
     public Stack<color> CurrentSequence { get => m_currentSequence; }
     /// <summary>
     /// Table to translate the redable color into RGB
     /// </summary>
     public static Hashtable ReadableColorToRGB { get => m_colorsTable; }
-    [SerializeField] private uint remainingSequences = 3;
     public color CurrentColor { get => m_currentColor; set => m_currentColor = value; }
     public stimulus CurrentStimulus { get => m_currentStimulus; set => m_currentStimulus = value; }
+    public state CurrentState { get => m_currentState; private set => m_currentState = value; }
     public delegate void CompleteSequence();
     public event CompleteSequence OnSequenceCompleted;
     public delegate void NewSequence(Stack<color> sequence);

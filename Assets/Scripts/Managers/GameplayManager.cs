@@ -80,7 +80,7 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
         if (unsubscriber != null)
             unsubscriber.Dispose(); // Unsubscribe from observing the GameState
 
-        ReturnToStandby();
+        //ReturnToStandby();
     }
     #endregion Gameplay
     #region Event Trigger

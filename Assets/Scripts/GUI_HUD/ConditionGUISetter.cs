@@ -10,14 +10,14 @@ public class ConditionGUISetter : MonoBehaviour
     private void Awake()
     {
         if (!ExperimentManager.Instance)
-            throw new System.NullReferenceException("The ExperimentManager is missing in the scene");
+            throw new NullReferenceException("The ExperimentManager is missing in the scene");
 
         m_button = GetComponent<Button>();
     }
 
     private void OnEnable()
     {
-        SubribeFromConditionEvents();
+        SubribeToConditionEvents();
         if (ExperimentManager.Instance)
             ExperimentManager.Instance.OnExperimentReset += OnExperimentReset;
     }
@@ -44,17 +44,23 @@ public class ConditionGUISetter : MonoBehaviour
     }
     private void OnConditionFulfilled(Condition theFulfilledCondition)
     {
+        
         // If the fulfilled condition is the same as this button's condition, do:
         // 1. disable the button
         m_button.interactable = !(m_condition == theFulfilledCondition);
         // 2. Unsubribed from the events.
         if (m_condition == theFulfilledCondition)
+        {
             UnsubribeFromConditionEvents();
+            Debug.Log("OnConditionFulfilled");
+            Debug.Log("UnsubribeFromConditionEvents");
+        }
+
     }
 
     private void OnExperimentReset()
     {
-        SubribeFromConditionEvents();
+        SubribeToConditionEvents();
         m_button.interactable = !m_condition.IsFulfilled;
     }
 
@@ -64,13 +70,14 @@ public class ConditionGUISetter : MonoBehaviour
         ExperimentManager.Instance.SetCondition(m_condition);
     }
 
-    private void SubribeFromConditionEvents()
+    private void SubribeToConditionEvents()
     {
         if (ExperimentManager.Instance)
         {
             ExperimentManager.Instance.OnConditionChanged += OnConditionChanged;
             ExperimentManager.Instance.OnConditionTerminated += OnConditionTerminated;
             ExperimentManager.Instance.OnConditionFulfilled += OnConditionFulfilled;
+            Debug.Log("SubribeToConditionEvents");
         }
     }
     private void UnsubribeFromConditionEvents()

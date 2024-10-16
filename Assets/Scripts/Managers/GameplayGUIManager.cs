@@ -21,7 +21,7 @@ public class GameplayGUIManager : MonoBehaviour
         }
 
         m_colorPromptController = FindFirstObjectByType<ColorPromptController>();
-        m_colorPromptController.gameObject.SetActive(false);
+        m_colorPromptController?.gameObject.SetActive(false);
     }
     private void Start()
     {
@@ -70,11 +70,11 @@ public class GameplayGUIManager : MonoBehaviour
     private void OnTaskBegin()
     {
         m_startGameGUI.SetActive(false);
-        m_colorPromptController.gameObject.SetActive(true);
+        m_colorPromptController?.gameObject.SetActive(true);
     }
     private void OnTaskEnd()
     {
-        m_colorPromptController.gameObject.SetActive(false);
+        m_colorPromptController?.gameObject.SetActive(false);
         m_counterGUI.SetActive(true);
     }
 

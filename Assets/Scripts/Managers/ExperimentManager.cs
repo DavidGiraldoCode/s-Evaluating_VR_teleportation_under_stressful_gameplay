@@ -1,29 +1,27 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ExperimentManager : MonoBehaviour
 {
     public static ExperimentManager Instance { get; private set; }
-    [SerializeField] private GameState m_gameState;
-    // Public
-    [SerializeField] private List<Condition> m_conditions = new List<Condition>();
+    public Condition CurrentCondition { get => m_currentCondition; }
+
     [Tooltip("Preview only")]
-    [SerializeField] public Condition m_currentCondition = null;
+    [SerializeField] private Condition m_currentCondition = null;
+    // Delegates
+    public delegate void ConditionChangedEventHandler(Condition newCondition);
+    public delegate void ExperimentStateEventHandler();
+
+    //Events
+    public event ConditionChangedEventHandler OnConditionChanged;
+    public event ConditionChangedEventHandler OnConditionTerminated;
+    public event ConditionChangedEventHandler OnConditionFulfilled;
+    public event ExperimentStateEventHandler OnExperimentCompleted;
+    public event ExperimentStateEventHandler OnExperimentReset;
+    [SerializeField] private GameState m_gameState;
+    [SerializeField] private List<Condition> m_conditions = new List<Condition>();
     private Stack<Condition> m_fulfilledConditions = new Stack<Condition>(); // Keeps track of the progress in the experiment
     private uint m_totalConditions;
-    public Condition CurrentCondition { get => m_currentCondition; }
-    public delegate void ConditionHasChanged(Condition newCondition);
-    public delegate void ExperimentSate();
-    public event ConditionHasChanged OnConditionChanged;
-    public event ConditionHasChanged OnConditionTerminated;
-    public event ConditionHasChanged OnConditionFulfilled;
-    public event ExperimentSate OnExperimentCompleted;
-    public event ExperimentSate OnExperimentReset;
-    //
-    private PlatformStateController[] m_PlatformStates;
 
     #region MonoBehaviour
     private void Awake()
@@ -41,8 +39,8 @@ public class ExperimentManager : MonoBehaviour
             throw new System.NullReferenceException("The ExperimentManager is missing the GameState");
 
         SetupConditions();
-        m_gameState.Init();
-        InitializedPlatforms();
+        //m_gameState.Init();
+        //InitializedPlatforms();
 
     }
 
@@ -70,7 +68,7 @@ public class ExperimentManager : MonoBehaviour
 
     #region Experiment Conditions
     /// <summary>
-    /// Traverse the list of all conditions and set them to fulfilled = false;
+    /// Restart all the conditions, setting them to fulfilled = false, to start a new experiment
     /// </summary>
     private void SetupConditions()
     {
@@ -126,8 +124,8 @@ public class ExperimentManager : MonoBehaviour
         if (OnConditionChanged != null) OnConditionChanged?.Invoke(m_currentCondition);
     }
     /// <summary>
-    /// Call this function when the task during the current condition has been fulfilled.
-    /// It exits the gamaplay
+    /// Call this function when the tasks during the current condition has been fulfilled.
+    /// The GameplayManager handles this as it nows the state of the game, and exits the gamaplay
     /// </summary>
     public void FulfillCondition()
     {
@@ -140,6 +138,7 @@ public class ExperimentManager : MonoBehaviour
             {
                 OnConditionFulfilled?.Invoke(m_currentCondition);
                 m_fulfilledConditions.Push(m_currentCondition);
+                Debug.Log("m_fulfilledConditions.Count " + m_fulfilledConditions.Count);
                 // Notify everyone that this condition has been fulfilled
             }
         }
@@ -177,6 +176,7 @@ public class ExperimentManager : MonoBehaviour
     #endregion Experiment Conditions
 
     #region Gameloop logic
+    private PlatformStateController[] m_PlatformStates;
     private void OnPlaformStateChange(PlatformState thisPlatform, PlatformState.state state, PlatformState.color platformColor)
     {
         //Debug.Log("The " + color.ToString() + " platform has changed to: " + state.ToString());

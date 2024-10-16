@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class GameInstanceManager : MonoBehaviour
+public class ExperimentManager : MonoBehaviour
 {
-    public static GameInstanceManager Instance { get; private set; }
+    public static ExperimentManager Instance { get; private set; }
     [SerializeField] private GameState m_gameState;
     // Public
     [SerializeField] private List<Condition> m_conditions = new List<Condition>();

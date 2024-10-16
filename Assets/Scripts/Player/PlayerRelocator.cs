@@ -8,8 +8,8 @@ public class PlayerRelocator : MonoBehaviour
 
     private void Awake()
     {
-        if (!GameInstanceManager.Instance)
-            throw new System.NullReferenceException("The GameInstanceManager is missing in the scene");
+        if (!ExperimentManager.Instance)
+            throw new System.NullReferenceException("The ExperimentManager is missing in the scene");
         if (!m_player)
             throw new System.NullReferenceException("No Player has been asgined to be realocated");
     }
@@ -28,21 +28,21 @@ public class PlayerRelocator : MonoBehaviour
     }
     private void SubribeFromConditionEvents()
     {
-        if (GameInstanceManager.Instance)
+        if (ExperimentManager.Instance)
         {
-            GameInstanceManager.Instance.OnConditionChanged += PlayerRelocationOnConditionChange;
-            GameInstanceManager.Instance.OnConditionTerminated += PlayerRelocationOnConditionChange;
-            GameInstanceManager.Instance.OnConditionFulfilled += PlayerRelocationOnConditionChange;
+            ExperimentManager.Instance.OnConditionChanged += PlayerRelocationOnConditionChange;
+            ExperimentManager.Instance.OnConditionTerminated += PlayerRelocationOnConditionChange;
+            ExperimentManager.Instance.OnConditionFulfilled += PlayerRelocationOnConditionChange;
         }
     }
 
     private void UnsubribeFromConditionEvents()
     {
-        if (GameInstanceManager.Instance)
+        if (ExperimentManager.Instance)
         {
-            GameInstanceManager.Instance.OnConditionChanged -= PlayerRelocationOnConditionChange;
-            GameInstanceManager.Instance.OnConditionTerminated -= PlayerRelocationOnConditionChange;
-            GameInstanceManager.Instance.OnConditionFulfilled -= PlayerRelocationOnConditionChange;
+            ExperimentManager.Instance.OnConditionChanged -= PlayerRelocationOnConditionChange;
+            ExperimentManager.Instance.OnConditionTerminated -= PlayerRelocationOnConditionChange;
+            ExperimentManager.Instance.OnConditionFulfilled -= PlayerRelocationOnConditionChange;
         }
     }
 }

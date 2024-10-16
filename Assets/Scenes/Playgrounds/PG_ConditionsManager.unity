@@ -1524,7 +1524,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7796085835470955810, guid: 24085d39ba6a241a0a8b8bbd148627f4, type: 3}
       propertyPath: m_Name
-      value: GameInstanceManager
+      value: ExperimentManager
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

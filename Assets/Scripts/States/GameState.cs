@@ -63,7 +63,7 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
     [SerializeField] private stimulus m_currentStimulus = stimulus.COLOR;
     [SerializeField] public color[] HardCodedSequence; //TODO For testing
     [SerializeField] public color[] HardCodedTrialSequence; //TODO For testing
-    private Stack<color> m_currentSequence = new Stack<color>();
+    //private Stack<taskColors> m_currentSequence = new Stack<taskColors>();
     static Color o = new Color(255.0f, 127.0f, 80.0f);
     static Color p = new Color(153.0f, 50.0f, 204.0f);
     private static Hashtable m_colorsTable = new Hashtable()
@@ -77,18 +77,18 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
         { taskColors.PURPLE, p},
     };
 
-    [SerializeField] private uint remainingSequences = 3;
-    public Stack<color> CurrentSequence { get => m_currentSequence; }
+    //[SerializeField] private uint remainingSequences = 3;
+    //public Stack<taskColors> CurrentSequence { get => m_currentSequence; }
     /// <summary>
     /// Table to translate the redable color into RGB
     /// </summary>
     public static Hashtable ReadableColorToRGB { get => m_colorsTable; }
-    public color CurrentColor { get => m_currentColor; set => m_currentColor = value; }
+    //public color CurrentColor { get => m_currentColor; set => m_currentColor = value; }
     public stimulus CurrentStimulus { get => m_currentStimulus; set => m_currentStimulus = value; }
     public state CurrentState { get => m_currentState; private set => m_currentState = value; }
     public delegate void CompleteSequence();
-    public event CompleteSequence OnSequenceCompleted;
-    public delegate void NewSequence(Stack<color> sequence);
+    //public event CompleteSequence OnSequenceCompleted;
+    public delegate void NewSequence(Stack<taskColors> sequence);
     public delegate void NextColor(stimulus newStimulus, taskColors nextColor);
     public event NewSequence OnNewSequence;
     public event NextColor OnNewNextColor;
@@ -310,7 +310,7 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
 
     #region Legacy ............................
     // Methods
-    public void Init()
+    /*public void Init()
     {
         CreateNewSequence();
     }
@@ -359,7 +359,7 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
             if (OnNewNextColor != null) ;
             //OnNewNextColor?.Invoke(m_currentStimulus, m_currentSequence.Peek());
         }
-    }
+    }*/
 
     #endregion Legacy
     /*

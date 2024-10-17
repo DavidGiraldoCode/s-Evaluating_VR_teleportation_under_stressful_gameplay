@@ -25,22 +25,22 @@ public class ColorSequenceHUD : MonoBehaviour
     }
 
     // Custom
-    private void OnNewSequence(Stack<GameState.color> sequence)
+    private void OnNewSequence(Stack<GameState.taskColors> sequence)
     {
 
         Debug.Log("OnNewSequence ColorSequenceHUD");
         SetColorHUD(sequence);
     }
-    private void SetColorHUD(Stack<GameState.color> sequence)
+    private void SetColorHUD(Stack<GameState.taskColors> sequence)
     {
         m_colorSwatchController = FindObjectsOfType<ColorSwatchController>();
 
-        IEnumerator<GameState.color> IColor = sequence.GetEnumerator();
+        IEnumerator<GameState.taskColors> IColor = sequence.GetEnumerator();
         uint index = 0;
 
         while (IColor.MoveNext() != false)
         {
-            GameState.color color = IColor.Current;
+            GameState.taskColors color = IColor.Current;
             m_colorSwatchController[index].ColorSwatch = (Color)GameState.ReadableColorToRGB[color];
             index++;
         }

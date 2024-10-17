@@ -49,6 +49,7 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
         OnPracticeBegin += m_gameState.OnPracticeBegin;
         OnTrialBegin += m_gameState.OnTrialBegin;
 
+        //Subscribe to platform events
         if (m_PlatformStates != null)
             for (int i = 0; i < m_PlatformStates.Length; i++)
             {
@@ -60,6 +61,7 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
         OnPracticeBegin -= m_gameState.OnPracticeBegin;
         OnTrialBegin -= m_gameState.OnTrialBegin;
 
+         //Unsubscribe to platform events
         if (m_PlatformStates != null)
             for (int i = 0; i < m_PlatformStates.Length; i++)
             {
@@ -81,6 +83,7 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     public void EnterGameplay(Condition experimentCondition)
     {
         m_gameState.Setup();
+        ResetPlatform();
         unsubscriber = m_gameState.Subscribe(this);
         // Setup teleporation
         // Setup HUD prompts system with congnitive interference
@@ -122,6 +125,16 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
             {
                 OnPracticeStandby?.Invoke();
             }
+        }
+    }
+    /// <summary>
+    /// Resets the plaforms states to Idle and the AvitationAllowed to false
+    /// </summary>
+    private void ResetPlatform()
+    {
+        for(int i = 0; i < m_PlatformStates.Length; i++)
+        {
+            m_PlatformStates[i].State.InitializePlatform();
         }
     }
     /// <summary>

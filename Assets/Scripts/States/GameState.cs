@@ -179,19 +179,24 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
     /// <param name="taskColor"></param>
     public void CompleteTask(taskColors platformColor)
     {
-        if (platformColor == CurrentTaskColor())
+        //Invariance; it wont let any color be removed if the task state is not ongoing
+        if (CurrentState == state.PRACTICE_ONGOING || CurrentState == state.TRIAL_ONGOING)
         {
-            RemoveTaskFromStack();
-            //Right platform
-            Debug.Log("Right platform, removing " + platformColor.ToString());
-        }
-        else
-        {
-            //Wrong platform
-            Debug.Log("Wrong platform " + platformColor.ToString());
+            if (platformColor == CurrentTaskColor())
+            {
+                RemoveTaskFromStack();
+                //Right platform
+                Debug.Log("Right platform, removing " + platformColor.ToString());
+            }
+            else
+            {
+                //Wrong platform
+                Debug.Log("Wrong platform " + platformColor.ToString());
+            }
+
+            CheckForTaskComplition();
         }
 
-        CheckForTaskComplition();
     }
 
     /// <summary>

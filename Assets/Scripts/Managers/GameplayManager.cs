@@ -25,7 +25,8 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
 
     // Variables
     private PlatformStateController[] m_PlatformStates; // Holds all the platforms in the scene to then subscribe to their events
-
+    [SerializeField] private PlayerController m_playerController; // The ref to the player to enable teleportation
+    
     #region MonoMonoBehaviour
     private void Awake()
     {
@@ -42,6 +43,12 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
             throw new System.NullReferenceException("GameState missing");
 
         m_PlatformStates = FindObjectsOfType<PlatformStateController>();
+
+        m_playerController = FindObjectOfType<PlayerController>();
+        if (m_playerController == null)
+            Debug.LogError("There is no PlayerController in the scene");
+
+        m_playerController.CanTeleport = false;
 
     }
     private void OnEnable()
@@ -61,7 +68,7 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
         OnPracticeBegin -= m_gameState.OnPracticeBegin;
         OnTrialBegin -= m_gameState.OnTrialBegin;
 
-         //Unsubscribe to platform events
+        //Unsubscribe to platform events
         if (m_PlatformStates != null)
             for (int i = 0; i < m_PlatformStates.Length; i++)
             {
@@ -132,7 +139,7 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     /// </summary>
     private void ResetPlatform()
     {
-        for(int i = 0; i < m_PlatformStates.Length; i++)
+        for (int i = 0; i < m_PlatformStates.Length; i++)
         {
             m_PlatformStates[i].State.InitializePlatform();
         }
@@ -151,15 +158,23 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
                 OnTrialBegin?.Invoke();
                 break;
         }
+        m_playerController.CanTeleport = true;
     }
-    public void BeginPractice()
-    {
-        OnPracticeBegin?.Invoke();
-    }
-    public void BeginTrial()
-    {
-        OnTrialBegin?.Invoke();
-    }
+    // public void BeginPractice()
+    // {
+    //     Debug.Log("XXXXXX BeginPractice XXXXXX");
+    //     OnPracticeBegin?.Invoke();
+    //     Debug.Log(m_playerController.CanTeleport);
+    //     m_playerController.CanTeleport = true;
+    //     Debug.Log(m_playerController.CanTeleport);
+    // }
+    // public void BeginTrial()
+    // {
+    //     OnTrialBegin?.Invoke();
+    //     Debug.Log(m_playerController.CanTeleport);
+    //     m_playerController.CanTeleport = true;
+    //     Debug.Log(m_playerController.CanTeleport);
+    // }
     #endregion Task Event Trigger
 
     #region Observer pattern
@@ -185,11 +200,13 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
         {
             case GameState.state.PRACTICE_ENDED:
                 OnPracticeEnd?.Invoke();
+                m_playerController.CanTeleport = false;
                 break;
             case GameState.state.TRIAL_STANDBY:
                 OnTrialStandby?.Invoke();
                 break;
             case GameState.state.TRIAL_ENDED:
+                m_playerController.CanTeleport = false;
                 OnTrialEnd?.Invoke();
                 break;
         }

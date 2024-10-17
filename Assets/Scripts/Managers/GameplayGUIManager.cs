@@ -90,8 +90,10 @@ public class GameplayGUIManager : MonoBehaviour
         m_startGameGUI.SetActive(false);
         m_colorPromptController.gameObject.SetActive(true);
         m_gameState.OnNewNextColor += m_colorPromptController.OnNewNextColor;
-        m_colorPromptController.SetTaskColorPromptDisplay(m_gameState.CurrentTaskColor());
-        
+        m_colorPromptController.SetTaskColorPromptDisplay(  m_gameState.CurrentStimulus.ToString(), 
+                                                            m_gameState.CurrentTaskColor().ToString(),
+                                                            (Color)GameState.ReadableColorToRGB[m_gameState.CurrentTaskColor()]);
+
     }
     private void OnTaskEnd()
     {

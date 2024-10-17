@@ -30,12 +30,24 @@ public class ColorPromptController : MonoBehaviour
     //
     public void OnNewNextColor(GameState.stimulus newStimulus, GameState.taskColors newColor)
     {
-        //Debug.Log("newColor: " + newColor);
-        UpdateColorPromptDisplay( newStimulus.ToString(), newColor.ToString(), (Color)GameState.ReadableColorToRGB[newColor]);
+        //Debug.Log("OnNewNextColor: " + newColor);
+        UpdateColorPromptDisplay(newStimulus.ToString(), newColor.ToString(), (Color)GameState.ReadableColorToRGB[newColor]);
     }
 
     private void UpdateColorPromptDisplay(string stroopStimuliType, string wordColor, Color newColor)
     {
+        //Debug.Log(newColor);
+        m_indcator.text = stroopStimuliType;
+        m_stroopStimuli.color = newColor;
+        m_stroopStimuli.text = wordColor;
+    }
+
+    public void SetTaskColorPromptDisplay(string stroopStimuliType, string wordColor, Color newColor)
+    {
+  //      Debug.Log("Direct setting of color: " + newColor.ToString());
+//        Debug.Log((Color)GameState.ReadableColorToRGB[newColor]);
+        //m_stroopStimuli.color = (Color)GameState.ReadableColorToRGB[newColor];
+
         m_indcator.text = stroopStimuliType;
         m_stroopStimuli.color = newColor;
         m_stroopStimuli.text = wordColor;

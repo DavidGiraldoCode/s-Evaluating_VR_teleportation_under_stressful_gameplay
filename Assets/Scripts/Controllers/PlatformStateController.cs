@@ -32,18 +32,18 @@ public class PlatformStateController : MonoBehaviour
         if (!other.gameObject.CompareTag("Player")) return;
         m_platformState.ChangeState(PlatformState.state.FOCUSSED);
 
-        Debug.Log(m_platformState.DesignatedColor);
-        Debug.Log(m_gameState.CurrentTaskColor());
+        //Debug.Log(m_platformState.DesignatedColor);
+        //Debug.Log(m_gameState.CurrentTaskColor());
 
 
         if (m_platformState.DesignatedColor == (PlatformState.color)m_gameState.CurrentTaskColor())
         {
             m_platformState.AvitationAllowed = true;
-            Debug.Log("m_platformState.AvitationAllowed: " + m_platformState.AvitationAllowed);
+            //Debug.Log("m_platformState.AvitationAllowed: " + m_platformState.AvitationAllowed);
         }
         else
         {
-            Debug.Log("m_platformState Avitation NOT Allowed: " + m_platformState.AvitationAllowed);
+            //Debug.Log("m_platformState Avitation NOT Allowed: " + m_platformState.AvitationAllowed);
         }
 
 

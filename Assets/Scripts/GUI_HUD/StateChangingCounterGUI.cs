@@ -63,7 +63,7 @@ public class StateChangingCounterGUI : MonoBehaviour
         {
             m_timer = i;
             m_counterText.text = m_timer.ToString();
-            Debug.Log(m_timer);
+            //Debug.Log(m_timer);
 
             if (m_timer == 0)
             {

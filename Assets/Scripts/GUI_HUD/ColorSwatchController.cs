@@ -17,7 +17,7 @@ public class ColorSwatchController : MonoBehaviour
     }
     private void Start()
     {
-        Debug.Log("Start ColorSwatchController");
+        //Debug.Log("Start ColorSwatchController");
         SetColorSwatchDisplay();   
     }
     // Custom

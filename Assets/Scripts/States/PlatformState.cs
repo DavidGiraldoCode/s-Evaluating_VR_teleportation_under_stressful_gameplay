@@ -22,15 +22,15 @@ public class PlatformState : ScriptableObject
     }
 
     [SerializeField] private state m_currentState = state.IDLE;
-    [SerializeField] private color m_designatedColor; // designate in the Editor
-    [SerializeField] private Color m_displayColor;
+    [SerializeField] private color m_designatedColor; // designate the value in the Editor
+    [SerializeField] private Color m_displayColor; // Asign the visual representation of the color in the editor
     [SerializeField] private bool m_activationAllowed = false;
     public Color DisplayColor { get => m_displayColor; set => m_displayColor = value; }
     public color DesignatedColor { get => m_designatedColor; }
     public state CurrentState { get => m_currentState; }
     public bool AvitationAllowed { get => m_activationAllowed; set => m_activationAllowed = value; }
     // Methods
-    public void InitializePlatform(Color displayColor)
+    public void InitializePlatform()
     {
         m_activationAllowed = false;
         m_currentState = state.IDLE;

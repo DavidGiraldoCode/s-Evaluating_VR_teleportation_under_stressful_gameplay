@@ -46,23 +46,23 @@ public class ExperimentManager : MonoBehaviour
 
     private void OnEnable()
     {
-        m_gameState.OnSequenceCompleted += OnSequenceCompleted;
-        m_PlatformStates = FindObjectsOfType<PlatformStateController>();
+        //m_gameState.OnSequenceCompleted += OnSequenceCompleted;
+        // m_PlatformStates = FindObjectsOfType<PlatformStateController>();
 
-        for (int i = 0; i < m_PlatformStates.Length; i++)
-        {
-            m_PlatformStates[i].State.OnStateChange += OnPlaformStateChange;
-        }
+        // for (int i = 0; i < m_PlatformStates.Length; i++)
+        // {
+        //     m_PlatformStates[i].State.OnStateChange += OnPlaformStateChange;
+        // }
     }
 
     private void OnDisable()
     {
-        m_gameState.OnSequenceCompleted -= OnSequenceCompleted;
+        //m_gameState.OnSequenceCompleted -= OnSequenceCompleted;
 
-        for (int i = 0; i < m_PlatformStates.Length; i++)
-        {
-            m_PlatformStates[i].State.OnStateChange -= OnPlaformStateChange;
-        }
+        // for (int i = 0; i < m_PlatformStates.Length; i++)
+        // {
+        //     m_PlatformStates[i].State.OnStateChange -= OnPlaformStateChange;
+        // }
     }
     #endregion MonoBehaviour
 
@@ -176,8 +176,8 @@ public class ExperimentManager : MonoBehaviour
     #endregion Experiment Conditions
 
     #region Gameloop logic
-    private PlatformStateController[] m_PlatformStates;
-    private void OnPlaformStateChange(PlatformState thisPlatform, PlatformState.state state, PlatformState.color platformColor)
+    //private PlatformStateController[] m_PlatformStates;
+    /*private void OnPlaformStateChange(PlatformState thisPlatform, PlatformState.state state, PlatformState.color platformColor)
     {
         //Debug.Log("The " + color.ToString() + " platform has changed to: " + state.ToString());
         m_gameState.CurrentColor = (GameState.color)platformColor;
@@ -201,7 +201,7 @@ public class ExperimentManager : MonoBehaviour
                 m_gameState.ProgressInSequence((GameState.color)platformColor);
                 break;
         }
-    }
+    }*/
 
 
     private void OnPlatfromActivated(PlatformState.color color) // Calls ProgressInSequence()
@@ -213,25 +213,25 @@ public class ExperimentManager : MonoBehaviour
     {
         // Calls 
         //Debug.Log("Creating NEW sequence");
-        Debug.Log("Task completed, condition completed!");
+        //Debug.Log("Task completed, condition completed!");
         // m_gameState.CreateNewSequence();
         // TODO ResetStartingPosition();
     }
 
-    private void InitializedPlatforms()
-    {
-        if (m_PlatformStates == null) return;
+    // private void InitializedPlatforms()
+    // {
+    //     if (m_PlatformStates == null) return;
 
-        Debug.Log("Plaforms found: " + m_PlatformStates.Length);
+    //     Debug.Log("Plaforms found: " + m_PlatformStates.Length);
 
-        // colorsTable[PlatformState.color.RED] = Color.red;
-        // colorsTable[PlatformState.color.BLUE] = Color.blue;
-        // colorsTable[PlatformState.color.GREEN] = Color.green;
+    //     // colorsTable[PlatformState.color.RED] = Color.red;
+    //     // colorsTable[PlatformState.color.BLUE] = Color.blue;
+    //     // colorsTable[PlatformState.color.GREEN] = Color.green;
 
-        for (int i = 0; i < m_PlatformStates.Length; i++)
-        {
-            m_PlatformStates[i].State.InitializePlatform((Color)GameState.ReadableColorToRGB[m_PlatformStates[i].State.DesignatedColor]);
-        }
-    }
+    //     for (int i = 0; i < m_PlatformStates.Length; i++)
+    //     {
+    //         m_PlatformStates[i].State.InitializePlatform((Color)GameState.ReadableColorToRGB[m_PlatformStates[i].State.DesignatedColor]);
+    //     }
+    // }
     #endregion Gameloop logic
 }

@@ -52,8 +52,8 @@ public class ConditionGUISetter : MonoBehaviour
         if (m_condition == theFulfilledCondition)
         {
             UnsubribeFromConditionEvents();
-            Debug.Log("OnConditionFulfilled");
-            Debug.Log("UnsubribeFromConditionEvents");
+            //Debug.Log("OnConditionFulfilled");
+            //Debug.Log("UnsubribeFromConditionEvents");
         }
 
     }

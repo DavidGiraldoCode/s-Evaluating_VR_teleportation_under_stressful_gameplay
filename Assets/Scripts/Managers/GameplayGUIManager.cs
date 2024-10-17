@@ -8,7 +8,7 @@ public class GameplayGUIManager : MonoBehaviour
     [SerializeField] private GameState m_gameState;
     [SerializeField] private GameObject m_startGameGUI;
     [SerializeField] private GameObject m_counterGUI;
-    private ColorPromptController m_colorPromptController;
+    [SerializeField] private ColorPromptController m_colorPromptController;
 
     #region Monobehavior Methods
     private void Awake()
@@ -22,8 +22,11 @@ public class GameplayGUIManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        m_colorPromptController = FindFirstObjectByType<ColorPromptController>();
-        m_colorPromptController?.gameObject.SetActive(false);
+        if (m_colorPromptController == null)
+            m_colorPromptController = FindFirstObjectByType<ColorPromptController>();
+
+        m_colorPromptController.gameObject.SetActive(false);
+
         m_startGameGUI.SetActive(false);
         m_counterGUI.SetActive(false);
     }
@@ -85,12 +88,14 @@ public class GameplayGUIManager : MonoBehaviour
     private void OnTaskBegin()
     {
         m_startGameGUI.SetActive(false);
-        m_colorPromptController?.gameObject.SetActive(true);
+        m_colorPromptController.gameObject.SetActive(true);
         m_gameState.OnNewNextColor += m_colorPromptController.OnNewNextColor;
+        m_colorPromptController.SetTaskColorPromptDisplay(m_gameState.CurrentTaskColor());
+        
     }
     private void OnTaskEnd()
     {
-        m_colorPromptController?.gameObject.SetActive(false);
+        m_colorPromptController.gameObject.SetActive(false);
         m_gameState.OnNewNextColor -= m_colorPromptController.OnNewNextColor;
 
         m_counterGUI.SetActive(true);

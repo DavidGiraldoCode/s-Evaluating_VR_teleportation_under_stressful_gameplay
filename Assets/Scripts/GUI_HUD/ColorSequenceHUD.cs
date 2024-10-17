@@ -28,7 +28,7 @@ public class ColorSequenceHUD : MonoBehaviour
     private void OnNewSequence(Stack<GameState.taskColors> sequence)
     {
 
-        Debug.Log("OnNewSequence ColorSequenceHUD");
+        //Debug.Log("OnNewSequence ColorSequenceHUD");
         SetColorHUD(sequence);
     }
     private void SetColorHUD(Stack<GameState.taskColors> sequence)

@@ -43,26 +43,28 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
         ORANGE,
         PURPLE
     }
-    public enum color
-    {
-        NONE,
-        RED,
-        GREEN,
-        BLUE,
-        YELLOW,
-        ORANGE,
-        PURPLE
-    }
+    // public enum color
+    // {
+    //     NONE,
+    //     RED,
+    //     GREEN,
+    //     BLUE,
+    //     YELLOW,
+    //     ORANGE,
+    //     PURPLE
+    // }
     public enum stimulus
     {
         WORD,
         COLOR
     }
+    private Stack<taskColors> m_practiceTasks = new Stack<taskColors>();
+    private Stack<taskColors> m_trialTasks = new Stack<taskColors>();
     [SerializeField] private state m_currentState = state.PRACTICE_STANDBY;
-    [SerializeField] private color m_currentColor = color.NONE;
+    //[SerializeField] private color m_currentColor = color.NONE;
     [SerializeField] private stimulus m_currentStimulus = stimulus.COLOR;
-    [SerializeField] public color[] HardCodedSequence; //TODO For testing
-    [SerializeField] public color[] HardCodedTrialSequence; //TODO For testing
+    [SerializeField] public taskColors[] HardCodedPracticeSequence; //TODO For testing
+    [SerializeField] public taskColors[] HardCodedTrialSequence; //TODO For testing
     //private Stack<taskColors> m_currentSequence = new Stack<taskColors>();
     static Color o = new Color(255.0f, 127.0f, 80.0f);
     static Color p = new Color(153.0f, 50.0f, 204.0f);
@@ -73,8 +75,8 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
         { taskColors.GREEN, Color.green},
         { taskColors.BLUE, Color.blue},
         { taskColors.YELLOW, Color.yellow},
-        { taskColors.ORANGE, o},
-        { taskColors.PURPLE, p},
+        { taskColors.ORANGE, new Color(1.0f,0.498f,0.314f)}, // Domain [0,1]
+        { taskColors.PURPLE, new Color(0.6f,0.196f,0.8f)},
     };
 
     //[SerializeField] private uint remainingSequences = 3;
@@ -151,8 +153,6 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
         m_currentState = state.PRACTICE_STANDBY;
     }
 
-    private Stack<taskColors> m_practiceTasks = new Stack<taskColors>();
-    private Stack<taskColors> m_trialTasks = new Stack<taskColors>();
 
     /// <summary>
     /// Returns the top of the stack of task colors depending whether is the practice of the trial
@@ -280,13 +280,13 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
 
     private void GenerateRandomTasks()
     {
-        for (int i = HardCodedSequence.Length - 1; i >= 0; i--)
+        for (int i = HardCodedPracticeSequence.Length - 1; i >= 0; i--)
         {
-            m_practiceTasks.Push((taskColors)HardCodedSequence[i]);
+            m_practiceTasks.Push(HardCodedPracticeSequence[i]);
         }
         for (int i = HardCodedTrialSequence.Length - 1; i >= 0; i--)
         {
-            m_trialTasks.Push((taskColors)HardCodedTrialSequence[i]);
+            m_trialTasks.Push(HardCodedTrialSequence[i]);
         }
         Debug.Log("All task stacks are ready");
     }
@@ -301,6 +301,7 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
     }
     public void OnTrialBegin()
     {
+        Debug.Log("OnTrialBegin");
         m_currentState = state.TRIAL_ONGOING;
         if (OnNewNextColor != null)
             OnNewNextColor?.Invoke(m_currentStimulus, CurrentTaskColor());

@@ -6469,6 +6469,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5331888415734612437, guid: 9d5379492d0734e479047287064b39d4, type: 3}
+      propertyPath: m_text
+      value: XXX
+      objectReference: {fileID: 0}
+    - target: {fileID: 5331888415734612437, guid: 9d5379492d0734e479047287064b39d4, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0.32800388
+      objectReference: {fileID: 0}
+    - target: {fileID: 5331888415734612437, guid: 9d5379492d0734e479047287064b39d4, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.5660378
+      objectReference: {fileID: 0}
+    - target: {fileID: 5331888415734612437, guid: 9d5379492d0734e479047287064b39d4, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.78039217
+      objectReference: {fileID: 0}
+    - target: {fileID: 5331888415734612437, guid: 9d5379492d0734e479047287064b39d4, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4283732167
+      objectReference: {fileID: 0}
     - target: {fileID: 9051808069818357809, guid: 9d5379492d0734e479047287064b39d4, type: 3}
       propertyPath: m_Name
       value: ColorPromptWidget

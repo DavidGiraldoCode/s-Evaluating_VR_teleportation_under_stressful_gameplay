@@ -36,7 +36,7 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
         else
         {
             Destroy(gameObject);
-            Debug.Log("Duplicated removed");
+            //Debug.Log("Duplicated removed");
         }
         if (m_gameState == null)
             throw new System.NullReferenceException("GameState missing");
@@ -178,8 +178,8 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
 
     public void OnNext(GameStateData value)
     {
-        Debug.Log(value.NewState);
-        Debug.Log("State changed: ");
+        //Debug.Log(value.NewState);
+        //Debug.Log("State changed: ");
 
         switch (value.NewState)
         {

@@ -36,10 +36,10 @@ MonoBehaviour:
   requiresSystemKeyboard: 0
   experimentalFeaturesEnabled: 0
   insightPassthroughEnabled: 0
-  _insightPassthroughSupport: 0
+  _insightPassthroughSupport: 1
   _processorFavor: 0
   systemSplashScreen: {fileID: 0}
   systemSplashScreenType: 0
-  _systemLoadingScreenBackground: 0
+  _systemLoadingScreenBackground: 1
   ovrPluginMd5Win64: c5f5b2e428bb2d35f187951cf142e270e94825b27d43b30a68ec9fa24d446168
   ovrPluginMd5Android: d0f458f93a4bd7b037cebce018e2a32640b95decddaba7399a1e9af0ea4a9758

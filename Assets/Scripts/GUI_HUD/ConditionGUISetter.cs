@@ -1,11 +1,14 @@
 using System;
+using Oculus.Interaction;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ConditionGUISetter : MonoBehaviour
+public class ConditionGUISetter : MonoBehaviour, IPointable
 {
     [SerializeField] private Condition m_condition;
     [SerializeField] private Button m_button;
+
+    public event Action<PointerEvent> WhenPointerEventRaised;
 
     private void Awake()
     {

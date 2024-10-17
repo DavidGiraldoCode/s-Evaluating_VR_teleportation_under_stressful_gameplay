@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8008921667850675514}
-  - component: {fileID: 3717715374798147858}
   m_Layer: 5
   m_Name: StartGameGUI
   m_TagString: Untagged
@@ -39,19 +38,6 @@ RectTransform:
   m_AnchoredPosition: {x: -37, y: 48}
   m_SizeDelta: {x: 300, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &3717715374798147858
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1637192855146840382}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5d3305ddd7804431b57b9401ed4c808, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_gameState: {fileID: 11400000, guid: d5f996f94f4d44bcfa93d8fea25ed7b6, type: 2}
 --- !u!1 &1722698756643600211
 GameObject:
   m_ObjectHideFlags: 0
@@ -169,8 +155,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bca3fd14985641a6a37d962826bd301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_gameState: {fileID: 11400000, guid: d5f996f94f4d44bcfa93d8fea25ed7b6, type: 2}
   m_startGameGUI: {fileID: 1637192855146840382}
   m_counterGUI: {fileID: 4241989946267267257}
+  m_colorPromptController: {fileID: 0}
 --- !u!114 &1542686383070636228
 MonoBehaviour:
   m_ObjectHideFlags: 0

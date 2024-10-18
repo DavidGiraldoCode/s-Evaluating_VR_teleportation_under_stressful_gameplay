@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public class ConditionGUISetter : MonoBehaviour, IPointable
 {
     [SerializeField] private Condition m_condition;
-    [SerializeField] private Button m_button;
+    //[SerializeField] private Button m_button;
+    [SerializeField] private Toggle m_button;
+    
 
     public event Action<PointerEvent> WhenPointerEventRaised;
 
@@ -15,7 +17,8 @@ public class ConditionGUISetter : MonoBehaviour, IPointable
         if (!ExperimentManager.Instance)
             throw new NullReferenceException("The ExperimentManager is missing in the scene");
 
-        m_button = GetComponent<Button>();
+        //m_button = GetComponent<Button>();
+        m_button = GetComponent<Toggle>();
     }
 
     private void OnEnable()

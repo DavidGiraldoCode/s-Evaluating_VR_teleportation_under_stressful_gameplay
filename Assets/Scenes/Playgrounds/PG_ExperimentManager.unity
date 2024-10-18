@@ -817,6 +817,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameLoop_GUI
       objectReference: {fileID: 0}
+    - target: {fileID: 1722698756643600211, guid: 5ec8f4ccb21d94a2e8af4c4cd8a37a1d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2053266665737227143, guid: 5ec8f4ccb21d94a2e8af4c4cd8a37a1d, type: 3}
       propertyPath: m_Pivot.x
       value: 0

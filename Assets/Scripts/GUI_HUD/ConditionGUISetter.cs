@@ -1,18 +1,24 @@
 using System;
+using Oculus.Interaction;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ConditionGUISetter : MonoBehaviour
+public class ConditionGUISetter : MonoBehaviour, IPointable
 {
     [SerializeField] private Condition m_condition;
-    [SerializeField] private Button m_button;
+    //[SerializeField] private Button m_button;
+    [SerializeField] private Toggle m_button;
+    
+
+    public event Action<PointerEvent> WhenPointerEventRaised;
 
     private void Awake()
     {
         if (!ExperimentManager.Instance)
             throw new NullReferenceException("The ExperimentManager is missing in the scene");
 
-        m_button = GetComponent<Button>();
+        //m_button = GetComponent<Button>();
+        m_button = GetComponent<Toggle>();
     }
 
     private void OnEnable()

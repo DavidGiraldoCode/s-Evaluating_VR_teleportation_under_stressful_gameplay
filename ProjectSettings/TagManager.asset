@@ -3,7 +3,28 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Locomotion
+  - PassThrough
+  - PassThroughButton
+  - LocoButton
+  - LocoText
+  - SamplesInfoPanel
+  - QDSUISharedThemeColor
+  - QDSUISection
+  - QDSUIIcon
+  - QDSUISecondaryButton
+  - QDSUIPrimaryButton
+  - QDSUIAccentColor
+  - QDSUITextInputField
+  - QDSUITextSecondaryColor
+  - QDSUIToggleButton
+  - QDSUITooltip
+  - QDSUIToggleSwitch
+  - QDSUIBorderlessButton
+  - QDSUIToggleBorderlessButton
+  - QDSUIToggleCheckboxRadio
+  - QDSUIDestructiveButton
   layers:
   - Default
   - TransparentFX
@@ -11,7 +32,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Platforms
   - 
   - 
   - 

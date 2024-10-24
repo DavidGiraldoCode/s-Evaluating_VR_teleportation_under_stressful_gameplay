@@ -32,19 +32,22 @@ public class ControllerDataReader : MonoBehaviour
 
     private void OnSelected()
     {
-        Debug.Log("XXX Selecto!!!!");
+        //Debug.Log("XXX Selecto!!!!");
         from = _teleportArcGravity.PointAtIndex(0);
         to = _teleportArcGravity.PointAtIndex(_teleportArcGravity.PointsCount - 1);
 
         _teleportInteractable.Surface.ClosestSurfacePoint(to, out SurfaceHit hit);
-        Debug.Log("XXX Hit.Point" + hit.Point);
+        //Debug.Log("XXX Hit.Point" + hit.Point);
 
-        Debug.Log("XXX TeleportInteractor.AcceptDestination: " + _teleportInteractor.AcceptDestination);
-        Debug.Log("XXX TeleportInteractor.ArcOrigin " + _teleportInteractor.ArcOrigin);
-        Debug.Log("XXX TeleportInteractor.ArcEnd " + _teleportInteractor.ArcEnd);
-        Debug.Log("XXX TeleportInteractor.TeleportTarget " + _teleportInteractor.TeleportTarget);
-
-        _teleportInteractable.InjectOptionalTargetPoint(_gameObjTransform);
+        Debug.Log("XXX TeleportInteractor.HasValidDestination(): " + _teleportInteractor.HasValidDestination());
+        //Debug.Log("XXX TeleportInteractor.ArcOrigin " + _teleportInteractor.ArcOrigin);
+        //Debug.Log("XXX TeleportInteractor.ArcEnd " + _teleportInteractor.ArcEnd);
+        //Debug.Log("XXX TeleportInteractor.TeleportTarget " + _teleportInteractor.TeleportTarget);
+        if (_teleportInteractor.HasValidDestination())
+        {
+            _gameObjTransform.position = _teleportInteractor.ArcEnd.Point;
+            _teleportInteractable.InjectOptionalTargetPoint(_gameObjTransform);
+        }
 
         // if (_teleportInteractable.DetectHit(from, to, out TeleportHit hit))
         // {

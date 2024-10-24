@@ -1,6 +1,10 @@
 # DM2905 - Assessing VR Teleportation Mechanics Under High Arousal in Fast-Paced Game-like Scenarios
 <img width="1096" alt="image" src="https://github.com/user-attachments/assets/8075172d-78b9-4fa9-8a89-61d4acb7d757">
 
+## Teleportation test
+<img width="600" alt="image" src="Assets/Art/Images/bunny_rotating_for_gif.gif">
+<span>Here you can see the teleportation with custom orientation at target position</span>
+
 
 ## Objective and Research Question
 Evaluate whether users perform differently using teleportation techniques under high-arousal-inducing situations than in traditional lab environments without game-like stressors, aiming to answer the following:
@@ -15,15 +19,15 @@ These results could guide future research directions and the design of VR testin
 
 ### Backlog
 - [ ] Finish gameloop
-    - [ ] Connect the condition with the game state
-    - [ ] Update the game loop to have a practice and trial color sequence
-    - [ ] GUI for *Start Practice*, then for "Practice complete now" *Start Trial*.
-    - [ ] GUI once the Trial is completed (Condition fulfilled), *Back to conditions*
+    - [x] Connect the condition with the game state
+    - [x] Update the game loop to have a practice and trial color sequence
+    - [x] GUI for *Start Practice*, then for "Practice complete now" *Start Trial*.
+    - [x] GUI once the Trial is completed (Condition fulfilled), *Back to conditions*
     - [ ] The color prompt shows "COLOR" or "WORD" depending on the presence of the congnitive interference
-- [ ] Menu to hide the conditions
-- [ ] Confirmation feature to manually reset, terminate and fulfill each condition and the experiment
-- [ ] Test the conditions manu in VR
-- [ ] Hide and show the conditions menu
+- [x] Menu to hide the conditions
+- [x] Confirmation feature to manually reset, terminate and fulfill each condition and the experiment
+- [x] Test the conditions manu in VR
+- [x] Hide and show the conditions menu
 - [ ] Begin the experiment with a subject ID, set the ID either by keyboard input, or random.
 
 ### Devlogs

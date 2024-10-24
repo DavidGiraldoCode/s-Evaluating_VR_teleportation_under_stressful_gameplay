@@ -5,6 +5,8 @@ using Oculus.Interaction.Locomotion;
 using Oculus.Interaction;
 using System;
 using Oculus.Interaction.Surfaces;
+using Oculus.Interaction.DistanceReticles;
+using UnityEditor.PackageManager;
 
 /// <summary>
 /// This is a debugging class to read data form the controller
@@ -21,6 +23,9 @@ public class ControllerDataReader : MonoBehaviour
     public ActiveStateSelector _activeStateSelector;
     public ActiveStateSelector _openSelector;
 
+    public Transform _arcVisualTarget;
+    private bool _preTeleportBunny = false;
+
     private Vector3 from, to;
 
     private void Awake()
@@ -36,16 +41,21 @@ public class ControllerDataReader : MonoBehaviour
 
     private void OnOpenUnselected()
     {
+        Debug.Log("XXX OnOpenUnselected!");
+        _preTeleportBunny = false;
         //Debug.Log(" OnOpenUnselected!");
     }
 
     private void OnOpenSelected()
     {
         Debug.Log("XXX OnOpenSelected!");
-        Debug.Log("XXX _teleportInteractor.ArcEnd.Point: " + _teleportInteractor.ArcEnd.Point);
-        Debug.Log("XXX _teleportArcGravity.PointAtIndex(n-1) " + _teleportArcGravity.PointAtIndex(_teleportArcGravity.PointsCount - 1));
+        _preTeleportBunny = true;
+        ///Debug.Log("XXX _teleportInteractor.ArcEnd.Point: " + _teleportInteractor.ArcEnd.Point);
+        //Debug.Log("XXX _teleportArcGravity.PointAtIndex(n-1) " + _teleportArcGravity.PointAtIndex(_teleportArcGravity.PointsCount - 1));
         _gameObjTransformPrevious = _gameObjTransform;
-        _gameObjTransform.position = _teleportArcGravity.PointAtIndex(_teleportArcGravity.PointsCount - 1);
+        //_gameObjTransform.position = _teleportArcGravity.PointAtIndex(_teleportArcGravity.PointsCount - 1);
+        //ReticleDataTeleport r = new ReticleDataTeleport();
+        //r.ProcessHitPoint(_teleportInteractor.ArcEnd.Point);
     }
 
     private void OnUnselected()
@@ -107,6 +117,11 @@ public class ControllerDataReader : MonoBehaviour
                 _gameObjTransform.rotation = Quaternion.LookRotation(joyStickRotation, Vector3.up);
             }
 
+        }
+
+        if (_preTeleportBunny)
+        {
+            _gameObjTransform.position = _arcVisualTarget.position;
         }
 
         // Debug.Log("XXX: _teleportArcGravity.PointsCount: " + _teleportArcGravity.PointsCount);

@@ -1363,6 +1363,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 451178008}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &69898444 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5326757260379304910, guid: 4841ffc0c0203424aa20389fa184badd, type: 3}
+  m_PrefabInstance: {fileID: 1947582568178942316}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &109342051
 GameObject:
   m_ObjectHideFlags: 0
@@ -1516,6 +1521,7 @@ MonoBehaviour:
   _teleportArcGravity: {fileID: 1947582568178942329}
   _activeStateSelector: {fileID: 695768485}
   _openSelector: {fileID: 1488224331}
+  _arcVisualTarget: {fileID: 69898444}
 --- !u!1 &183884142
 GameObject:
   m_ObjectHideFlags: 0

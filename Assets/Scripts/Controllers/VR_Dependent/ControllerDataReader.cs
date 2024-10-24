@@ -1,5 +1,10 @@
 using UnityEngine;
 using Oculus.Interaction.Input;
+using Oculus.Interaction.PoseDetection.Debug;
+using Oculus.Interaction.Locomotion;
+using Oculus.Interaction;
+using System;
+using Oculus.Interaction.Surfaces;
 
 /// <summary>
 /// This is a debugging class to read data form the controller
@@ -8,11 +13,48 @@ public class ControllerDataReader : MonoBehaviour
 {
     public ControllerRef _rightControllerRef;
     public ControllerRef _leftControllerRef;
-
+    public TeleportInteractable _teleportInteractable;
+    public TeleportInteractor _teleportInteractor;
     public Transform _gameObjTransform;
+    public TeleportArcGravity _teleportArcGravity;
+    public ActiveStateSelector _activeStateSelector;
+
+    private Vector3 from, to;
 
     private void Awake()
     {
+        _activeStateSelector.WhenSelected += OnSelected;
+    }
+    private void OnDisable()
+    {
+        _activeStateSelector.WhenSelected -= OnSelected;
+    }
+
+    private void OnSelected()
+    {
+        Debug.Log("XXX Selecto!!!!");
+        from = _teleportArcGravity.PointAtIndex(0);
+        to = _teleportArcGravity.PointAtIndex(_teleportArcGravity.PointsCount - 1);
+
+        _teleportInteractable.Surface.ClosestSurfacePoint(to, out SurfaceHit hit);
+        Debug.Log("XXX Hit.Point" + hit.Point);
+
+        Debug.Log("XXX TeleportInteractor.AcceptDestination: " + _teleportInteractor.AcceptDestination);
+        Debug.Log("XXX TeleportInteractor.ArcOrigin " + _teleportInteractor.ArcOrigin);
+        Debug.Log("XXX TeleportInteractor.ArcEnd " + _teleportInteractor.ArcEnd);
+        Debug.Log("XXX TeleportInteractor.TeleportTarget " + _teleportInteractor.TeleportTarget);
+
+        _teleportInteractable.InjectOptionalTargetPoint(_gameObjTransform);
+
+        // if (_teleportInteractable.DetectHit(from, to, out TeleportHit hit))
+        // {
+        //     hit.relativeTo = _gameObjTransform;
+        //     Debug.Log("XXX Hit in _teleportInteractable");
+        // }
+        // else
+        // {
+        //     Debug.Log("XXX No hit");
+        // }
     }
 
     private void Update()
@@ -26,6 +68,11 @@ public class ControllerDataReader : MonoBehaviour
             }
 
         }
+
+        // Debug.Log("XXX: _teleportArcGravity.PointsCount: " + _teleportArcGravity.PointsCount);
+        // Debug.Log("XXX: _teleportArcGravity.PointAtIndex(0): " + _teleportArcGravity.PointAtIndex(0));
+        // Debug.Log("XXX: _teleportArcGravity.PointAtIndex(n-1): " + _teleportArcGravity.PointAtIndex(_teleportArcGravity.PointsCount - 1));
+
     }
 
     private void PrinterOfInput()

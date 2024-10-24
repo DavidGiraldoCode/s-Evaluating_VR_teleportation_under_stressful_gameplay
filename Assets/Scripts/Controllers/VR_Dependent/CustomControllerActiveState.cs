@@ -17,6 +17,7 @@ public class CustomControllerActiveState : MonoBehaviour, IActiveState
     {
         get
         {
+            return _rightControllerRef.ControllerInput.PrimaryButton == false;
             if (!_rightControllerRef.ControllerInput.PrimaryButton && _readyForTeleporting)
             {
                 _active = true;
@@ -31,7 +32,7 @@ public class CustomControllerActiveState : MonoBehaviour, IActiveState
                 Debug.Log("XXX _interactor.Active: " + _interactor.Active);
             }
             //_active = false;
-            return _active;
+            
 
         }
     }//=> _rightControllerRef.ControllerInput.PrimaryButton == false; //Negate the state becase we are intrested when the button get relesed

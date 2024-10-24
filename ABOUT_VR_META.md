@@ -1,7 +1,7 @@
 # VR in Meta
 
 ## Modifying the teleportation.
-Important to notice that the TeleportActiveState is handled via a component called `ActiveStateGate` that is attached to the Prefab with the same name (TeleportActiveState). This gate has an `Open` and `Close` Selector, which are the most important parts since they actually enable the Selector to start selecting (who would it, though). The logic in the `Open` Selector is going to show the `TeleportArc,` and the logic inside the Selector (after being enabled) is what is going to trigger the actual teleportation.
+Important to notice that the TeleportActiveState is handled via a component called `ActiveStateGate` that is attached to the Prefab with the same name (TeleportActiveState). This gate has an `Open` and `Close` Selector, which are the most important parts since they actually enable the Selector to start selecting (who would it thought? 🙃). The logic in the `Open` Selector is going to show the `TeleportArc,` and the logic inside the Selector (after being enabled) is what is going to trigger the actual teleportation.
 
 ## Controlls inputs and how to get data
 <img width="800" alt="image" src="/Assets/Art/Images/controlls_inputs.png"></br>

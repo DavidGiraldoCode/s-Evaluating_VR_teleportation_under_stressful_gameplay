@@ -19,8 +19,12 @@ public class ControllerDataReader : MonoBehaviour
     {
         if (_rightControllerRef.ControllerInput.PrimaryButton)
         {
-            Vector3 joyStickRotation = new Vector3(_leftControllerRef.ControllerInput.Primary2DAxis.x, 0.0f, _leftControllerRef.ControllerInput.Primary2DAxis.y);
-            _gameObjTransform.rotation = Quaternion.LookRotation(joyStickRotation, Vector3.up);
+            if (_leftControllerRef.ControllerInput.Primary2DAxis.magnitude > 0)
+            {
+                Vector3 joyStickRotation = new Vector3(_leftControllerRef.ControllerInput.Primary2DAxis.x, 0.0f, _leftControllerRef.ControllerInput.Primary2DAxis.y);
+                _gameObjTransform.rotation = Quaternion.LookRotation(joyStickRotation, Vector3.up);
+            }
+
         }
     }
 
@@ -41,3 +45,4 @@ public class ControllerDataReader : MonoBehaviour
     }
 
 }
+

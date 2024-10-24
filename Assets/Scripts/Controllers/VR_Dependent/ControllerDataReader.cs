@@ -16,30 +16,67 @@ public class ControllerDataReader : MonoBehaviour
     public TeleportInteractable _teleportInteractable;
     public TeleportInteractor _teleportInteractor;
     public Transform _gameObjTransform;
+    private Transform _gameObjTransformPrevious;
     public TeleportArcGravity _teleportArcGravity;
     public ActiveStateSelector _activeStateSelector;
+    public ActiveStateSelector _openSelector;
 
     private Vector3 from, to;
 
     private void Awake()
     {
         _activeStateSelector.WhenSelected += OnSelected;
+        _activeStateSelector.WhenUnselected += OnUnselected;
+
+        _openSelector.WhenSelected += OnOpenSelected;
+        _openSelector.WhenUnselected += OnOpenUnselected;
+
+        _gameObjTransformPrevious = _gameObjTransform;
     }
+
+    private void OnOpenUnselected()
+    {
+        //Debug.Log(" OnOpenUnselected!");
+    }
+
+    private void OnOpenSelected()
+    {
+        Debug.Log("XXX OnOpenSelected!");
+        Debug.Log("XXX _teleportInteractor.ArcEnd.Point: " + _teleportInteractor.ArcEnd.Point);
+        Debug.Log("XXX _teleportArcGravity.PointAtIndex(n-1) " + _teleportArcGravity.PointAtIndex(_teleportArcGravity.PointsCount - 1));
+        _gameObjTransformPrevious = _gameObjTransform;
+        _gameObjTransform.position = _teleportArcGravity.PointAtIndex(_teleportArcGravity.PointsCount - 1);
+    }
+
+    private void OnUnselected()
+    {
+        if (!_teleportInteractor.HasValidDestination())
+        {
+            _gameObjTransform = _gameObjTransformPrevious;
+        }
+    }
+
     private void OnDisable()
     {
         _activeStateSelector.WhenSelected -= OnSelected;
+        _activeStateSelector.WhenUnselected -= OnUnselected;
+
+        _openSelector.WhenSelected -= OnOpenSelected;
+        _openSelector.WhenUnselected -= OnOpenUnselected;
     }
 
     private void OnSelected()
     {
         //Debug.Log("XXX Selecto!!!!");
-        from = _teleportArcGravity.PointAtIndex(0);
-        to = _teleportArcGravity.PointAtIndex(_teleportArcGravity.PointsCount - 1);
+        //from = _teleportArcGravity.PointAtIndex(0);
+        //to = _teleportArcGravity.PointAtIndex(_teleportArcGravity.PointsCount - 1);
 
-        _teleportInteractable.Surface.ClosestSurfacePoint(to, out SurfaceHit hit);
+
+        //_teleportInteractable.Surface.ClosestSurfacePoint(to, out SurfaceHit hit);
         //Debug.Log("XXX Hit.Point" + hit.Point);
 
-        Debug.Log("XXX TeleportInteractor.HasValidDestination(): " + _teleportInteractor.HasValidDestination());
+
+        //Debug.Log("XXX TeleportInteractor.HasValidDestination(): " + _teleportInteractor.HasValidDestination());
         //Debug.Log("XXX TeleportInteractor.ArcOrigin " + _teleportInteractor.ArcOrigin);
         //Debug.Log("XXX TeleportInteractor.ArcEnd " + _teleportInteractor.ArcEnd);
         //Debug.Log("XXX TeleportInteractor.TeleportTarget " + _teleportInteractor.TeleportTarget);

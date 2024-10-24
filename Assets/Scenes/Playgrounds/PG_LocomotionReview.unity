@@ -1051,6 +1051,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: bunny Active Debug
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7266fa28b18cc414bb4f6dca0c6260f1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1511,6 +1515,7 @@ MonoBehaviour:
   _gameObjTransform: {fileID: 1235828383}
   _teleportArcGravity: {fileID: 1947582568178942329}
   _activeStateSelector: {fileID: 695768485}
+  _openSelector: {fileID: 1488224331}
 --- !u!1 &183884142
 GameObject:
   m_ObjectHideFlags: 0

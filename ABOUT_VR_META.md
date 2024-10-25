@@ -43,3 +43,5 @@ public class YourCustomComponent : MonoBehaviour
 ### Interactable Lifecycle [🔗](https://developers.meta.com/horizon/documentation/unity/unity-isdk-interactor-interactable-lifecycle/)
 
 ### Interactor [🔗](https://developers.meta.com/horizon/documentation/unity/unity-isdk-interactor)
+
+### The [Grabbable components 🔗](https://developers.meta.com/horizon/documentation/unity/unity-isdk-grabbable/) and How to [Create grab interactions 🔗](https://developers.meta.com/horizon/documentation/unity/unity-isdk-create-hand-grab-interactions-legacy/)

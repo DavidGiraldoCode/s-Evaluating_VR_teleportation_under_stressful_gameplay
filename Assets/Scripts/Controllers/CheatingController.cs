@@ -1,12 +1,16 @@
 using System;
 using Oculus.Interaction;
 using UnityEngine;
+using UnityEngine.UIElements;
 /// <summary>
 /// The CheatingController keep track of two colliders, a sphere between the two points of the buzz-wire, and a bouding box
 /// that represents the playable area. If the ring touches the sphere or leaves the bounding box, it will return no the default position.
 /// </summary>
 public class CheatingController : MonoBehaviour
 {
+    [Tooltip("This is the platform the cheating controller is protecting, and is then use to track data. Gets pass down to the BuzzWireTrigger")]
+    [SerializeField] private PlatformState _platformState;
+    public PlatformState CurrentPlatformState { get => _platformState; }
     [Tooltip("References the trigger collider of the ring")]
     [SerializeField] private Collider _ringCollider;
     [Tooltip("References an invisible sphere in the middle of the ring to avoid player to pass the ring directly to the other location")]
@@ -18,11 +22,16 @@ public class CheatingController : MonoBehaviour
     [SerializeField] private GameObject _ISDK_HandGrabInteraction;
     [SerializeField] private ResetBuzzWirePosition _resetBuzzWirePosition;
 
+    private void Awake()
+    {
+        if (!_platformState)
+            throw new System.NullReferenceException("The PlatformState is missing");
+    }
     private void OnEnable()
     {
         _resetBuzzWirePosition.OnPlayerLeftTheGameZone += OnPlayerLeftTheGameZone;
 
-       
+
     }
 
     private void OnDisable()
@@ -47,15 +56,16 @@ public class CheatingController : MonoBehaviour
         */
         if (other == _sphereCollider)
         {
-            Debug.Log("XXX OnTriggerEnter: " + other);
+            Debug.Log("XXX OnTriggerEnter: " + other.gameObject.name);
             ResetBuzzWirePosition();
         }
     }
     private void OnTriggerExit(Collider other)
     {
+        BoxCollider col = gameObject.GetComponent<BoxCollider>();
         if (other == _boxCollider)
         {
-            Debug.Log("XXX OnTriggerExit: " + other);
+            Debug.Log("XXX OnTriggerExit Other is: " + other.gameObject.name + " trigger by " + name);
             ResetBuzzWirePosition();
         }
 

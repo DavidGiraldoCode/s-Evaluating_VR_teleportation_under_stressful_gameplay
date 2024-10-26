@@ -7,6 +7,9 @@ using UnityEngine;
 /// </summary>
 public class CheatingController : MonoBehaviour
 {
+    [Tooltip("This is the platform the cheating controller is protecting, and is then use to track data. Gets pass down to the BuzzWireTrigger")]
+    [SerializeField] private PlatformState _platformState;
+    public PlatformState CurrentPlatformState { get => _platformState; }
     [Tooltip("References the trigger collider of the ring")]
     [SerializeField] private Collider _ringCollider;
     [Tooltip("References an invisible sphere in the middle of the ring to avoid player to pass the ring directly to the other location")]
@@ -18,11 +21,16 @@ public class CheatingController : MonoBehaviour
     [SerializeField] private GameObject _ISDK_HandGrabInteraction;
     [SerializeField] private ResetBuzzWirePosition _resetBuzzWirePosition;
 
+    private void Awake()
+    {
+        if (!_platformState)
+            throw new System.NullReferenceException("The PlatformState is missing");
+    }
     private void OnEnable()
     {
         _resetBuzzWirePosition.OnPlayerLeftTheGameZone += OnPlayerLeftTheGameZone;
 
-       
+
     }
 
     private void OnDisable()

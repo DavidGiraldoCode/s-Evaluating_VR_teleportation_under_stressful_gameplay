@@ -5,6 +5,8 @@
 <img width="600" alt="image" src="Assets/Art/Images/bunny_rotating_for_gif.gif">
 <span>Here you can see the teleportation with custom orientation at target position</span>
 
+<img width="600" alt="image" src="Assets/Art/Images/buzz_wire.png">
+<span>The BuzzWire backend configuration to detect the player moves and control cheating</span>
 
 ## Objective and Research Question
 Evaluate whether users perform differently using teleportation techniques under high-arousal-inducing situations than in traditional lab environments without game-like stressors, aiming to answer the following:

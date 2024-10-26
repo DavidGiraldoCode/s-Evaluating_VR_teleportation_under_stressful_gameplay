@@ -222,6 +222,9 @@ MonoBehaviour:
   _ringCollider: {fileID: 21598816}
   _sphereCollider: {fileID: 893310993}
   _boxCollider: {fileID: 0}
+  _defaultLocation: {fileID: 1535056386}
+  _grabInteractorState: {fileID: 867801321}
+  _ISDK_HandGrabInteraction: {fileID: 1687707213}
 --- !u!1 &72732270
 GameObject:
   m_ObjectHideFlags: 0
@@ -14787,6 +14790,7 @@ GameObject:
   - component: {fileID: 867801319}
   - component: {fileID: 867801318}
   - component: {fileID: 867801320}
+  - component: {fileID: 867801321}
   m_Layer: 0
   m_Name: GrabInteractor
   m_TagString: Untagged
@@ -14863,6 +14867,20 @@ MonoBehaviour:
   _includeChildrenAsDependents: 1
   _gameObjects: []
   _monoBehaviours: []
+--- !u!114 &867801321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 867801316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a56054f6e3838f4e85dce4e71979800, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactor: {fileID: 867801318}
+  _property: 8
 --- !u!1 &883959707
 GameObject:
   m_ObjectHideFlags: 0
@@ -32806,6 +32824,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HandGrabInteractor
       objectReference: {fileID: 0}
+    - target: {fileID: 3282029263655771837, guid: 885ecae56b16f13428a67de5ae482a72, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4958898349752764376, guid: 885ecae56b16f13428a67de5ae482a72, type: 3}
       propertyPath: _handVisual
       value: 
@@ -33161,6 +33183,10 @@ PrefabInstance:
     - target: {fileID: 3282029263655771837, guid: 885ecae56b16f13428a67de5ae482a72, type: 3}
       propertyPath: m_Name
       value: HandGrabInteractor
+      objectReference: {fileID: 0}
+    - target: {fileID: 3282029263655771837, guid: 885ecae56b16f13428a67de5ae482a72, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4958898349752764376, guid: 885ecae56b16f13428a67de5ae482a72, type: 3}
       propertyPath: _handVisual

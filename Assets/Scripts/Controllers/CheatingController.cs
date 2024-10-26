@@ -1,3 +1,4 @@
+using System;
 using Oculus.Interaction;
 using UnityEngine;
 /// <summary>
@@ -15,6 +16,22 @@ public class CheatingController : MonoBehaviour
     [SerializeField] private Transform _defaultLocation;
     [SerializeField] private InteractorActiveState _grabInteractorState;
     [SerializeField] private GameObject _ISDK_HandGrabInteraction;
+    [SerializeField] private ResetBuzzWirePosition _resetBuzzWirePosition;
+
+    private void OnEnable()
+    {
+        _resetBuzzWirePosition.OnPlayerLeftTheGameZone += OnPlayerLeftTheGameZone;
+    }
+
+    private void OnDisable()
+    {
+        _resetBuzzWirePosition.OnPlayerLeftTheGameZone -= OnPlayerLeftTheGameZone;
+    }
+
+    private void OnPlayerLeftTheGameZone()
+    {
+        ResetBuzzWirePosition();
+    }
 
     private void Update()
     {
@@ -29,10 +46,7 @@ public class CheatingController : MonoBehaviour
         if (other == _sphereCollider)
         {
             Debug.Log("XXX OnTriggerEnter: " + other);
-            _ISDK_HandGrabInteraction.SetActive(false); // Disable the grabbing by force
-            gameObject.transform.position = _defaultLocation.position;
-            gameObject.transform.rotation = _defaultLocation.rotation;
-            _ISDK_HandGrabInteraction.SetActive(true);
+            ResetBuzzWirePosition();
         }
     }
     private void OnTriggerExit(Collider other)
@@ -40,11 +54,20 @@ public class CheatingController : MonoBehaviour
         if (other == _boxCollider)
         {
             Debug.Log("XXX OnTriggerExit: " + other);
-            _ISDK_HandGrabInteraction.SetActive(false); // Disable the grabbing by force
-            gameObject.transform.position = _defaultLocation.position;
-            gameObject.transform.rotation = _defaultLocation.rotation;
-            _ISDK_HandGrabInteraction.SetActive(true);
+            ResetBuzzWirePosition();
         }
+    }
+
+    /// <summary>
+    /// Takes the GrabbableRing GameObject and disables the GrabInteractor for a moment to change 
+    /// the position and orientation back to the default state. Then, enables the GrabInteractor again.
+    /// </summary>
+    private void ResetBuzzWirePosition()
+    {
+        _ISDK_HandGrabInteraction.SetActive(false); // Disable the grabbing by force
+        gameObject.transform.position = _defaultLocation.position;
+        gameObject.transform.rotation = _defaultLocation.rotation;
+        _ISDK_HandGrabInteraction.SetActive(true);
     }
 }
 

@@ -1,6 +1,7 @@
 using System;
 using Oculus.Interaction;
 using UnityEngine;
+using UnityEngine.UIElements;
 /// <summary>
 /// The CheatingController keep track of two colliders, a sphere between the two points of the buzz-wire, and a bouding box
 /// that represents the playable area. If the ring touches the sphere or leaves the bounding box, it will return no the default position.
@@ -55,15 +56,16 @@ public class CheatingController : MonoBehaviour
         */
         if (other == _sphereCollider)
         {
-            Debug.Log("XXX OnTriggerEnter: " + other);
+            Debug.Log("XXX OnTriggerEnter: " + other.gameObject.name);
             ResetBuzzWirePosition();
         }
     }
     private void OnTriggerExit(Collider other)
     {
+        BoxCollider col = gameObject.GetComponent<BoxCollider>();
         if (other == _boxCollider)
         {
-            Debug.Log("XXX OnTriggerExit: " + other);
+            Debug.Log("XXX OnTriggerExit Other is: " + other.gameObject.name + " trigger by " + name);
             ResetBuzzWirePosition();
         }
 

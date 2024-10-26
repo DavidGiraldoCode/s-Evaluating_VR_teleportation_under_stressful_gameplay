@@ -11,4 +11,21 @@ public class BuzzWireTrigger : MonoBehaviour
     {
         _platformState = GetComponentInParent<CheatingController>().CurrentPlatformState;
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent<BuzzWireTouches>(out BuzzWireTouches path))
+        {
+            //Debug.Log("XXX: " + path);
+            path.SetColor(Color.red);
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.TryGetComponent<BuzzWireTouches>(out BuzzWireTouches path))
+        {
+            //Debug.Log("XXX: " + path);
+            path.SetColor(Color.white);
+        }
+    }
 }

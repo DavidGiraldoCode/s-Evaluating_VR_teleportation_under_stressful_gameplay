@@ -47,3 +47,5 @@ public class YourCustomComponent : MonoBehaviour
 ### The [Grabbable components 🔗](https://developers.meta.com/horizon/documentation/unity/unity-isdk-grabbable/) and How to [Create grab interactions 🔗](https://developers.meta.com/horizon/documentation/unity/unity-isdk-create-hand-grab-interactions-legacy/)
 
 ### Use [quick actions 🔗](https://developers.meta.com/horizon/documentation/unity/unity-isdk-quick-actions/) to set the default grabbable on any GameObject and the controllers
+
+## How to do [Snapping interactions 🔗](https://developers.meta.com/horizon/documentation/unity/unity-isdk-snap-interaction)

@@ -1,12 +1,7 @@
 using UnityEngine;
 using Oculus.Interaction.Input;
-using Oculus.Interaction.PoseDetection.Debug;
 using Oculus.Interaction.Locomotion;
 using Oculus.Interaction;
-using System;
-using Oculus.Interaction.Surfaces;
-using Oculus.Interaction.DistanceReticles;
-using UnityEditor.PackageManager;
 
 /// <summary>
 /// This is a debugging class to read data form the controller

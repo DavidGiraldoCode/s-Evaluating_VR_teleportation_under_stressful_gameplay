@@ -21,6 +21,8 @@ public class CheatingController : MonoBehaviour
     private void OnEnable()
     {
         _resetBuzzWirePosition.OnPlayerLeftTheGameZone += OnPlayerLeftTheGameZone;
+
+       
     }
 
     private void OnDisable()
@@ -56,6 +58,7 @@ public class CheatingController : MonoBehaviour
             Debug.Log("XXX OnTriggerExit: " + other);
             ResetBuzzWirePosition();
         }
+
     }
 
     /// <summary>

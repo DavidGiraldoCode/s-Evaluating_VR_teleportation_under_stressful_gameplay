@@ -1,7 +1,9 @@
 using Oculus.Interaction;
-using Unity.VisualScripting;
 using UnityEngine;
-
+/// <summary>
+/// The CheatingController keep track of two colliders, a sphere between the two points of the buzz-wire, and a bouding box
+/// that represents the playable area. If the ring touches the sphere or leaves the bounding box, it will return no the default position.
+/// </summary>
 public class CheatingController : MonoBehaviour
 {
     [Tooltip("References the trigger collider of the ring")]
@@ -27,6 +29,17 @@ public class CheatingController : MonoBehaviour
         if (other == _sphereCollider)
         {
             Debug.Log("XXX OnTriggerEnter: " + other);
+            _ISDK_HandGrabInteraction.SetActive(false); // Disable the grabbing by force
+            gameObject.transform.position = _defaultLocation.position;
+            gameObject.transform.rotation = _defaultLocation.rotation;
+            _ISDK_HandGrabInteraction.SetActive(true);
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other == _boxCollider)
+        {
+            Debug.Log("XXX OnTriggerExit: " + other);
             _ISDK_HandGrabInteraction.SetActive(false); // Disable the grabbing by force
             gameObject.transform.position = _defaultLocation.position;
             gameObject.transform.rotation = _defaultLocation.rotation;

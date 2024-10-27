@@ -7,6 +7,7 @@ public class PlatformStateController : MonoBehaviour
     [SerializeField] private GameState m_gameState;
     private ActivationPlatformButton m_activationPlatformButton;
     public PlatformState State { get => m_platformState; }
+    private CheatingController m_cheatingController;
 
     //Unity
     private void Awake()
@@ -20,6 +21,9 @@ public class PlatformStateController : MonoBehaviour
         //TODO Change the large button to be the start of each task
         //m_activationPlatformButton = GetComponentInChildren<ActivationPlatformButton>();
         //m_activationPlatformButton.PlatformStateRef = m_platformState;
+
+        m_cheatingController = GetComponentInChildren<CheatingController>();
+        m_cheatingController.CurrentPlatformState = m_platformState;
     }
     private void Start()
     {

@@ -28,7 +28,7 @@ public class PlatformState : ScriptableObject
     public Color DisplayColor { get => m_displayColor; set => m_displayColor = value; }
     public color DesignatedColor { get => m_designatedColor; }
     public state CurrentState { get => m_currentState; }
-    public bool AvitationAllowed { get => m_activationAllowed; set => m_activationAllowed = value; }
+    public bool ActivationAllowed { get => m_activationAllowed; set => m_activationAllowed = value; }
     // Methods
     public void InitializePlatform()
     {

@@ -2,14 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Represents a sphere sneakily placed in the ring to trigger the buzz-wire touches on the path. 
+/// </summary>
 public class BuzzWireProbeTrigger : MonoBehaviour
 {
-    private PlatformState _platformState;
-    public PlatformState CurrentPlatformState { get => _platformState; }
+    //private PlatformState _platformState;
+    //public PlatformState CurrentPlatformState { get => _platformState; }
 
     private void OnEnable()
     {
-        _platformState = GetComponentInParent<CheatingController>().CurrentPlatformState;
+        //_platformState = GetComponentInParent<CheatingController>().CurrentPlatformState;
     }
 
     private void OnTriggerEnter(Collider other)

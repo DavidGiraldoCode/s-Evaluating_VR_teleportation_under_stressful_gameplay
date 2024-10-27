@@ -32,6 +32,9 @@ public class ControllerDataReader : MonoBehaviour
         _openSelector.WhenUnselected += OnOpenUnselected;
 
         _gameObjTransformPrevious = _gameObjTransform;
+
+
+        _gameObjTransform.gameObject.SetActive(false);
     }
 
     private void OnOpenUnselected()
@@ -47,6 +50,8 @@ public class ControllerDataReader : MonoBehaviour
         Debug.Log("XXX OnOpenSelected!");
         _preTeleportBunny = true;
         _gameObjTransform.gameObject.SetActive(true);
+        _gameObjTransform.forward = _teleportInteractor.ArcOrigin.forward;
+
         ///Debug.Log("XXX _teleportInteractor.ArcEnd.Point: " + _teleportInteractor.ArcEnd.Point);
         //Debug.Log("XXX _teleportArcGravity.PointAtIndex(n-1) " + _teleportArcGravity.PointAtIndex(_teleportArcGravity.PointsCount - 1));
         _gameObjTransformPrevious = _gameObjTransform;

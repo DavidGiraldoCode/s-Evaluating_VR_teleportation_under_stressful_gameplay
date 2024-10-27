@@ -2,16 +2,20 @@
 <img width="1096" alt="image" src="https://github.com/user-attachments/assets/8075172d-78b9-4fa9-8a89-61d4acb7d757">
 
 ## Teleportation test
+<div style="display: flex; justify-content: space-between;">
+    <img width="360" alt="image" src="Assets/Art/Images/cheating_control.gif">
+    <img width="360" alt="image" src="Assets/Art/Images/snapping.gif">
+</div>
 
-<img width="400" alt="image" src="Assets/Art/Images/cheating_control.gif">
-<img width="400" alt="image" src="Assets/Art/Images/snapping.gif">
-<span>In this "x-ray"-like debug view, two bounding volumes control the ring's limits. Six probes are placed inside the ring to trigger the path. Then, a snap interaction places the ring in the final location of the wire-buzz path and triggers the new color.</span>
+- In this "x-ray"-like debug view, two bounding volumes control the ring's limits. Six probes are placed inside the ring to trigger the path. Then, a snap interaction places the ring in the final location of the wire-buzz path and triggers the new color.
 
 <img width="600" alt="image" src="Assets/Art/Images/bunny_rotating_for_gif.gif">
-<span>Here you can see the teleportation with custom orientation at target position</span>
+
+- Here you can see the teleportation with custom orientation at target position
 
 <img width="600" alt="image" src="Assets/Art/Images/buzz_wire.png">
-<span>The BuzzWire backend configuration to detect the player moves and control cheating</span>
+
+- The BuzzWire backend configuration to detect the player moves and control cheating
 
 ## Objective and Research Question
 Evaluate whether users perform differently using teleportation techniques under high-arousal-inducing situations than in traditional lab environments without game-like stressors, aiming to answer the following:

@@ -2,6 +2,7 @@ using UnityEngine;
 using Oculus.Interaction.Input;
 using Oculus.Interaction.Locomotion;
 using Oculus.Interaction;
+using UnityEditor.PackageManager;
 
 /// <summary>
 /// This is a debugging class to read data form the controller
@@ -91,6 +92,7 @@ public class OrientationController : MonoBehaviour
     /// </summary>
     private void OnSelected()
     {
+        Debug.Log("XXX _teleportInteractor.HasValidDestination() " + _teleportInteractor.HasValidDestination());
         if (_teleportInteractor.HasValidDestination())
         {
             _orientationTransform.position = _teleportInteractor.ArcEnd.Point;

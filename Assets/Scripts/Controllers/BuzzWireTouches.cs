@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class BuzzWireTouches : MonoBehaviour
 {
-    [SerializeField] private BuzzWireTouchesCounter _buzzWireTouchesCounter;
     private MeshRenderer _mesh;
 
     private void OnEnable()
@@ -13,7 +12,6 @@ public class BuzzWireTouches : MonoBehaviour
 
     public void SetColor(Color newColor)
     {
-
         _mesh.material.color = newColor;
     }
     // private void OnTriggerEnter(Collider other)

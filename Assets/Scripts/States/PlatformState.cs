@@ -28,7 +28,7 @@ public class PlatformState : ScriptableObject
     public Color DisplayColor { get => m_displayColor; set => m_displayColor = value; }
     public color DesignatedColor { get => m_designatedColor; }
     public state CurrentState { get => m_currentState; }
-    public bool AvitationAllowed { get => m_activationAllowed; set => m_activationAllowed = value; }
+    public bool ActivationAllowed { get => m_activationAllowed; set => m_activationAllowed = value; }
     // Methods
     public void InitializePlatform()
     {
@@ -40,14 +40,15 @@ public class PlatformState : ScriptableObject
 
     public delegate void StateChanger(PlatformState thisPlatform, state state, color color);
     /// <summary>
-    /// Signals everytime the platform changes state IDLE, FOCUSSED, ACTIVATED
+    /// Sets the state of the platform and then, if some is subscribed, signals other about the platform changes state IDLE, FOCUSSED, ACTIVATED
     /// </summary>
     public event StateChanger OnStateChange;
 
-    public void ChangeState(state state)
+    public void ChangeState(state newState)
     {
+        m_currentState = newState;
+        
         if (OnStateChange == null) return;
-        m_currentState = state;
         OnStateChange?.Invoke(this, m_currentState, m_designatedColor);
     }
 

@@ -1,3 +1,4 @@
+using System;
 using Oculus.Interaction;
 using UnityEngine;
 
@@ -17,6 +18,11 @@ public class CheatingController : MonoBehaviour
     /// And this passes down the PlatformState to the BuzzWireProbeTrigger
     /// </summary>
     public PlatformState PlatformStateRef { get => _platformState; set => _platformState = value; }
+
+    [Tooltip("A Scriptable Object that keeps count of how many touches the path has received on the current platform, triggered by the probes.")]
+    [SerializeField] private BuzzWireTouchesCounter _buzzWireTouchesCounter;
+
+
     [Tooltip("References the trigger collider of the ring")]
     [SerializeField] private Collider _ringCollider;
     [Tooltip("References an invisible sphere in the middle of the ring to avoid player to pass the ring directly to the other location")]
@@ -41,7 +47,7 @@ public class CheatingController : MonoBehaviour
             throw new System.NullReferenceException("The PlatformState is missing");
 
         _buzzWireProbeTriggers = GetComponentsInChildren<BuzzWireProbeTrigger>();
-        
+
         SetActiveBizzWireProbes(false);
         ResetBuzzWirePosition();
 
@@ -83,6 +89,8 @@ public class CheatingController : MonoBehaviour
 
     private void OnPlayerEnterTheGameZone()
     {
+        _buzzWireTouchesCounter.currentPlatfrom = _platformState;
+        _buzzWireTouchesCounter.touchesCount = 0;
         SetActiveBizzWireProbes(true);
     }
 
@@ -167,7 +175,17 @@ public class CheatingController : MonoBehaviour
         foreach (var probe in _buzzWireProbeTriggers)
         {
             probe.gameObject.SetActive(activeState);
+
+            if (activeState)
+                probe.OnBuzzWireTouch += OnBuzzWireTouch;
+            else
+                probe.OnBuzzWireTouch -= OnBuzzWireTouch;
         }
+    }
+
+    private void OnBuzzWireTouch()
+    {
+        _buzzWireTouchesCounter.touchesCount++;
     }
 }
 

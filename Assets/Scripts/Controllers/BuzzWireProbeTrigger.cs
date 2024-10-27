@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,9 @@ using UnityEngine;
 /// </summary>
 public class BuzzWireProbeTrigger : MonoBehaviour
 {
+    public delegate void BuzzWireTouchesCounterDelegate();
+    public event BuzzWireTouchesCounterDelegate OnBuzzWireTouch;
+
     //private PlatformState _platformState;
     //public PlatformState CurrentPlatformState { get => _platformState; }
 
@@ -21,6 +25,7 @@ public class BuzzWireProbeTrigger : MonoBehaviour
         {
             //Debug.Log("XXX: " + path);
             path.SetColor(Color.red);
+            OnBuzzWireTouch?.Invoke();
         }
     }
     private void OnTriggerExit(Collider other)

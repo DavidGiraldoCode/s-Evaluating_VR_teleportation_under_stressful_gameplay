@@ -5,8 +5,6 @@ public class PlatformStateController : MonoBehaviour
     [SerializeField] private PlatformState m_platformState;
     [SerializeField] private MeshRenderer m_platformMeshR;
     [SerializeField] private GameState m_gameState;
-    private ActivationPlatformButton m_activationPlatformButton;
-
     /// <summary>
     /// This component is connected to the SnapInteractable component, which defines the end location 
     /// of the buzz-wire game. It receives the PlatformState from this context and uses it to check 
@@ -24,10 +22,6 @@ public class PlatformStateController : MonoBehaviour
 
         if (!m_gameState)
             throw new System.ArgumentNullException("The GameState is missing");
-
-        //TODO Change the large button to be the start of each task
-        //m_activationPlatformButton = GetComponentInChildren<ActivationPlatformButton>();
-        //m_activationPlatformButton.PlatformStateRef = m_platformState;
 
         InitializeBuzzWireComponents();
 
@@ -48,19 +42,22 @@ public class PlatformStateController : MonoBehaviour
         if (m_platformState.DesignatedColor == (PlatformState.color)m_gameState.CurrentTaskColor())
         {
             m_platformState.ActivationAllowed = true;
-            //Debug.Log("m_platformState.AvitationAllowed: " + m_platformState.AvitationAllowed);
+            //Debug.Log("YYY Player on m_platformState.AvitationAllowed: " + m_platformState.ActivationAllowed);
         }
         else
         {
-            //Debug.Log("m_platformState Avitation NOT Allowed: " + m_platformState.AvitationAllowed);
+            //Debug.Log("YYY Player on m_platformState Avitation NOT Allowed: " + m_platformState.ActivationAllowed);
         }
 
     }
     private void OnTriggerExit(Collider other)
     {
         if (!other.gameObject.CompareTag("Player")) return;
+        
         m_platformState.ChangeState(PlatformState.state.IDLE);
         m_platformState.ActivationAllowed = false;
+
+        //Debug.Log("YYY Player Exist platform");
     }
 
     /// <summary>

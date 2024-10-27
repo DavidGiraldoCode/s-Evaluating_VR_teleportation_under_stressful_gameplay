@@ -391,6 +391,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _platformState: {fileID: 11400000, guid: 07a39fee9e3c945e5ba6295839fd4a87, type: 2}
+  _buzzWireTouchesCounter: {fileID: 0}
   _ringCollider: {fileID: 21598816}
   _sphereCollider: {fileID: 893310993}
   _boxCollider: {fileID: 174661685}
@@ -1661,7 +1662,7 @@ PrefabInstance:
       objectReference: {fileID: 161130303}
     - target: {fileID: 4597578447477055396, guid: bce82786b15a240aca23581672ab9fe6, type: 3}
       propertyPath: m_VersionIndex
-      value: 1840
+      value: 1849
       objectReference: {fileID: 0}
     - target: {fileID: 5166734924643342978, guid: bce82786b15a240aca23581672ab9fe6, type: 3}
       propertyPath: m_Mesh
@@ -1677,7 +1678,7 @@ PrefabInstance:
       objectReference: {fileID: 757078476}
     - target: {fileID: 5358591944987017124, guid: bce82786b15a240aca23581672ab9fe6, type: 3}
       propertyPath: m_VersionIndex
-      value: 1752
+      value: 1761
       objectReference: {fileID: 0}
     - target: {fileID: 5602040428951562959, guid: bce82786b15a240aca23581672ab9fe6, type: 3}
       propertyPath: m_Mesh
@@ -1705,7 +1706,7 @@ PrefabInstance:
       objectReference: {fileID: 1391381054}
     - target: {fileID: 8146390277822310460, guid: bce82786b15a240aca23581672ab9fe6, type: 3}
       propertyPath: m_VersionIndex
-      value: 2092
+      value: 2101
       objectReference: {fileID: 0}
     - target: {fileID: 8299648608172950359, guid: bce82786b15a240aca23581672ab9fe6, type: 3}
       propertyPath: m_Mesh
@@ -1713,7 +1714,7 @@ PrefabInstance:
       objectReference: {fileID: 6029692}
     - target: {fileID: 8299648608172950359, guid: bce82786b15a240aca23581672ab9fe6, type: 3}
       propertyPath: m_VersionIndex
-      value: 2422
+      value: 2431
       objectReference: {fileID: 0}
     - target: {fileID: 8428308626130689138, guid: bce82786b15a240aca23581672ab9fe6, type: 3}
       propertyPath: m_Mesh
@@ -1721,38 +1722,16 @@ PrefabInstance:
       objectReference: {fileID: 1358674111}
     - target: {fileID: 8428308626130689138, guid: bce82786b15a240aca23581672ab9fe6, type: 3}
       propertyPath: m_VersionIndex
-      value: 1978
+      value: 1987
       objectReference: {fileID: 0}
-    - target: {fileID: 8722758535389538972, guid: bce82786b15a240aca23581672ab9fe6, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.255
-      objectReference: {fileID: 0}
-    - target: {fileID: 8722758535389538972, guid: bce82786b15a240aca23581672ab9fe6, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.386
-      objectReference: {fileID: 0}
-    - target: {fileID: 9102704884068663853, guid: bce82786b15a240aca23581672ab9fe6, type: 3}
-      propertyPath: _snapInteractable
-      value: 
-      objectReference: {fileID: 1011410935}
     - target: {fileID: 9102704884068663853, guid: bce82786b15a240aca23581672ab9fe6, type: 3}
       propertyPath: _grabInteractorState
       value: 
       objectReference: {fileID: 867801321}
-    - target: {fileID: 9102704884068663853, guid: bce82786b15a240aca23581672ab9fe6, type: 3}
-      propertyPath: _snapIneractorActiveState
-      value: 
-      objectReference: {fileID: 669961199}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5146704580257412600, guid: bce82786b15a240aca23581672ab9fe6, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1011410936}
-    - targetCorrespondingSourceObject: {fileID: 7987435591809553667, guid: bce82786b15a240aca23581672ab9fe6, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 669961199}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bce82786b15a240aca23581672ab9fe6, type: 3}
 --- !u!1 &214406116
 GameObject:
@@ -3015,7 +2994,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cf499077366c4c4da93d4ed19e8875c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _buzzWireTouchesCounter: {fileID: 11400000, guid: c2f61e02aa2a24ae09f3ffadfd4e9a23, type: 2}
 --- !u!54 &430137882
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3775,7 +3753,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cf499077366c4c4da93d4ed19e8875c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _buzzWireTouchesCounter: {fileID: 11400000, guid: c2f61e02aa2a24ae09f3ffadfd4e9a23, type: 2}
 --- !u!64 &536753979
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -15677,36 +15654,6 @@ Transform:
   - {fileID: 532171255}
   m_Father: {fileID: 493466722}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &669961196 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7987435591809553667, guid: bce82786b15a240aca23581672ab9fe6, type: 3}
-  m_PrefabInstance: {fileID: 207242324}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &669961198 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 318935701042330903, guid: bce82786b15a240aca23581672ab9fe6, type: 3}
-  m_PrefabInstance: {fileID: 207242324}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 669961196}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2756c251a8363df4f9d4b30ee6414bd9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &669961199
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 669961196}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a56054f6e3838f4e85dce4e71979800, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _interactor: {fileID: 669961198}
-  _property: 1
 --- !u!1 &678777765
 GameObject:
   m_ObjectHideFlags: 0
@@ -17356,36 +17303,6 @@ MonoBehaviour:
   _disablePitchFromSource: 0
   _disableYawFromSource: 0
   _disableRollFromSource: 0
---- !u!1 &1011410933 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5146704580257412600, guid: bce82786b15a240aca23581672ab9fe6, type: 3}
-  m_PrefabInstance: {fileID: 207242324}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1011410935 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5503521314981049019, guid: bce82786b15a240aca23581672ab9fe6, type: 3}
-  m_PrefabInstance: {fileID: 207242324}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1011410933}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06bd28341d3e86a4c8ab52b1a0269c7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1011410936
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1011410933}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d31c98d52e6444f158158a58679f5fe4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_platformState: {fileID: 0}
-  m_snapInteractable: {fileID: 1011410935}
 --- !u!1 &1058432563
 GameObject:
   m_ObjectHideFlags: 0
@@ -31738,7 +31655,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cf499077366c4c4da93d4ed19e8875c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _buzzWireTouchesCounter: {fileID: 11400000, guid: c2f61e02aa2a24ae09f3ffadfd4e9a23, type: 2}
 --- !u!64 &1587001157
 MeshCollider:
   m_ObjectHideFlags: 0

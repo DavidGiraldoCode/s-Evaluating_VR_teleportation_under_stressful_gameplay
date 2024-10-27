@@ -229,7 +229,7 @@ Transform:
   m_GameObject: {fileID: 1695111266371753138}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.70710707, z: -0, w: 0.7071066}
-  m_LocalPosition: {x: -1.256, y: 1.143, z: -0.398}
+  m_LocalPosition: {x: -1.256, y: 1.255, z: 0.386}
   m_LocalScale: {x: 0.10000001, y: 0.1, z: 0.10000001}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -305,6 +305,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _platformState: {fileID: 11400000, guid: 07a39fee9e3c945e5ba6295839fd4a87, type: 2}
+  _buzzWireTouchesCounter: {fileID: 11400000, guid: c2f61e02aa2a24ae09f3ffadfd4e9a23, type: 2}
   _ringCollider: {fileID: 2140222204325376897}
   _sphereCollider: {fileID: 7976952721652539711}
   _boxCollider: {fileID: 3094687243207368306}
@@ -312,6 +313,9 @@ MonoBehaviour:
   _grabInteractorState: {fileID: 0}
   _ISDK_HandGrabInteraction: {fileID: 2657021597859888468}
   _resetBuzzWirePosition: {fileID: 4890291426804357760}
+  _snapIneractorActiveState: {fileID: 7815368728237373761}
+  _snapInteractable: {fileID: 5503521314981049019}
+  _snapIneractableState: 0
 --- !u!1 &1870138901941442073
 GameObject:
   m_ObjectHideFlags: 0
@@ -13342,7 +13346,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1828
+  m_VersionIndex: 1846
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -25235,7 +25239,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2410
+  m_VersionIndex: 2428
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -25579,6 +25583,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5759888899846020851}
   - component: {fileID: 5503521314981049019}
+  - component: {fileID: 8385111849852051028}
   m_Layer: 0
   m_Name: SnapInteractable
   m_TagString: Untagged
@@ -25620,6 +25625,20 @@ MonoBehaviour:
   _rigidbody: {fileID: 2586964786202331632}
   _snapPoseDelegate: {fileID: 0}
   _movementProvider: {fileID: 0}
+--- !u!114 &8385111849852051028
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5146704580257412600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d31c98d52e6444f158158a58679f5fe4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_platformState: {fileID: 0}
+  m_snapInteractable: {fileID: 5503521314981049019}
 --- !u!1 &5192253031922127837
 GameObject:
   m_ObjectHideFlags: 0
@@ -26684,7 +26703,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1966
+  m_VersionIndex: 1984
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -27278,7 +27297,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1740
+  m_VersionIndex: 1758
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -39140,7 +39159,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2080
+  m_VersionIndex: 2098
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -39263,7 +39282,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cf499077366c4c4da93d4ed19e8875c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _buzzWireTouchesCounter: {fileID: 11400000, guid: c2f61e02aa2a24ae09f3ffadfd4e9a23, type: 2}
 --- !u!54 &1591051966052989116
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -51289,6 +51307,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1750524657049572247}
   - component: {fileID: 318935701042330903}
+  - component: {fileID: 7815368728237373761}
   m_Layer: 0
   m_Name: SnapInteractor
   m_TagString: Untagged
@@ -51335,6 +51354,20 @@ MonoBehaviour:
   _defaultInteractable: {fileID: 0}
   _timeOutInteractable: {fileID: 0}
   _timeOut: 0
+--- !u!114 &7815368728237373761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7987435591809553667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a56054f6e3838f4e85dce4e71979800, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactor: {fileID: 318935701042330903}
+  _property: 1
 --- !u!1 &8019134317915147873
 GameObject:
   m_ObjectHideFlags: 0

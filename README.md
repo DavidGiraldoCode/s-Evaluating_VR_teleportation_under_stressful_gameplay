@@ -2,6 +2,11 @@
 <img width="1096" alt="image" src="https://github.com/user-attachments/assets/8075172d-78b9-4fa9-8a89-61d4acb7d757">
 
 ## Teleportation test
+
+<img width="400" alt="image" src="Assets/Art/Images/cheating_control.gif">
+<img width="400" alt="image" src="Assets/Art/Images/snapping.gif">
+<span>In this "x-ray"-like debug view, two bounding volumes control the ring's limits. Six probes are placed inside the ring to trigger the path. Then, a snap interaction places the ring in the final location of the wire-buzz path and triggers the new color.</span>
+
 <img width="600" alt="image" src="Assets/Art/Images/bunny_rotating_for_gif.gif">
 <span>Here you can see the teleportation with custom orientation at target position</span>
 

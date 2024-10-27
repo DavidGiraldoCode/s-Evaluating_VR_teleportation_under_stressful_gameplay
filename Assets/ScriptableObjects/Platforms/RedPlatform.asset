@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f483aa687da04e4e9900699c92688f0, type: 3}
   m_Name: RedPlatform
   m_EditorClassIdentifier: 
-  m_currentState: 0
+  m_currentState: 2
   m_designatedColor: 1
   m_displayColor: {r: 1, g: 0, b: 0, a: 0}
-  m_activationAllowed: 0
+  m_activationAllowed: 1

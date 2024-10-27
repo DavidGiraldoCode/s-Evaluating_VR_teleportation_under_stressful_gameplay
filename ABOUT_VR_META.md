@@ -1,9 +1,11 @@
 # VR in Meta
 
 ## Modifying the teleportation.
+
 Important to notice that the TeleportActiveState is handled via a component called `ActiveStateGate` that is attached to the Prefab with the same name (TeleportActiveState). This gate has an `Open` and `Close` Selector, which are the most important parts since they actually enable the Selector to start selecting (who would it thought? 🙃). The logic in the `Open` Selector is going to show the `TeleportArc,` and the logic inside the Selector (after being enabled) is what is going to trigger the actual teleportation.
 
 ## Controlls inputs and how to get data
+
 <img width="800" alt="image" src="/Assets/Art/Images/controlls_inputs.png"></br>
 
 ```C#
@@ -27,6 +29,47 @@ public class YourCustomComponent : MonoBehaviour
         Debug.Log("Secondary2DAxis:.....:" + _rightControllerRef.ControllerInput.Secondary2DAxis);
         Debug.Log("SecondaryTouch:......:" + _rightControllerRef.ControllerInput.SecondaryTouch);
     }
+}
+```
+
+## How to subscribe to selected states when teleporting
+```C#
+ActiveStateSelector _openSelector;
+_openSelector.WhenSelected += OnOpenSelected; // Remember to unsubscribe
+
+```
+
+## How to check change orientation in teleportation -> WIP
+
+## How to forcibly disable an ongoing grabbing interaction to reset a grabbed object's default position.
+
+```C#
+GameObject _ISDK_HandGrabInteraction; // Get a reference to the ISDK_HandGrabInteraction GameObject
+
+void ResetBuzzWirePosition()
+{
+    _ISDK_HandGrabInteraction.SetActive(false); // Disable the grabbing by force
+    gameObject.transform.position = _defaultLocation.position;
+    gameObject.transform.rotation = _defaultLocation.rotation;
+    _ISDK_HandGrabInteraction.SetActive(true); // Enable again
+}
+```
+
+## How to subscribe to (Snap)Interactables events
+
+```C#
+// Reference the Interactable
+private SnapInteractable m_snapInteractable;
+m_snapInteractable = GetComponent<SnapInteractable>();
+
+// Subscribe to the delegate (recall unsubscribing)
+m_snapInteractable.WhenStateChanged += OnSnapChange;
+
+// Implement the method
+private void OnSnapChange(InteractableStateChangeArgs args)
+{
+    Debug.Log(args.NewState);
+     /*yout code*/
 }
 ```
 

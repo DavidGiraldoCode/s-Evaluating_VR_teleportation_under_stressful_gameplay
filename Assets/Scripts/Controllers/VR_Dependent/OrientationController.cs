@@ -48,7 +48,6 @@ public class OrientationController : MonoBehaviour
 
     [Tooltip("Is the head/endpoint of the arc, with a target that is use to show the arrow in the future position")]
     [SerializeField] private Transform _arcVisualTarget;
-    private bool _previewTeleportDestination = false;
 
     private void Awake()
     {
@@ -74,7 +73,6 @@ public class OrientationController : MonoBehaviour
 
     private void OnOpenSelected()
     {
-        _previewTeleportDestination = true;
         _orientationTransform.gameObject.SetActive(true);
         _orientationTransform.forward = _teleportInteractor.ArcOrigin.forward;
         _gameObjTransformPrevious = _orientationTransform;
@@ -83,7 +81,6 @@ public class OrientationController : MonoBehaviour
     }
     private void OnOpenUnselected()
     {
-        _previewTeleportDestination = false;
         _orientationTransform.gameObject.SetActive(false);
         _arrowVisualFeedback.gameObject.SetActive(false);
     }
@@ -105,7 +102,7 @@ public class OrientationController : MonoBehaviour
     }
 
     /// <summary>
-    /// When no interactables is selected, the arrow gets back to it initial position, and is disabled
+    /// When no interactables is selected, the arrow gets back to it initial position
     /// </summary>
     private void OnUnselected()
     {
@@ -113,7 +110,6 @@ public class OrientationController : MonoBehaviour
         {
             _orientationTransform = _gameObjTransformPrevious;
         }
-        //_orientationArrowFeedback.gameObject.SetActive(false);
     }
 
 
@@ -139,9 +135,6 @@ public class OrientationController : MonoBehaviour
             }
 
         }
-
-        // if (_previewTeleportDestination)
-        //     _orientationTransform.position = _arcVisualTarget.position;
     }
 
 }

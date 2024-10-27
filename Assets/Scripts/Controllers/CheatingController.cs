@@ -1,7 +1,8 @@
-using System;
 using Oculus.Interaction;
 using UnityEngine;
-using UnityEngine.UIElements;
+using System.Collections;
+using System.Collections.Generic;
+using System;
 /// <summary>
 /// The CheatingController keep track of two colliders, a sphere between the two points of the buzz-wire, and a bouding box
 /// that represents the playable area. If the ring touches the sphere or leaves the bounding box, it will return no the default position.
@@ -21,15 +22,21 @@ public class CheatingController : MonoBehaviour
     [SerializeField] private InteractorActiveState _grabInteractorState;
     [SerializeField] private GameObject _ISDK_HandGrabInteraction;
     [SerializeField] private ResetBuzzWirePosition _resetBuzzWirePosition;
+    private BuzzWireProbeTrigger[] _buzzWireProbeTriggers = new BuzzWireProbeTrigger[6];
 
     private void Awake()
     {
         if (!_platformState)
             throw new System.NullReferenceException("The PlatformState is missing");
+
+        _buzzWireProbeTriggers = GetComponentsInChildren<BuzzWireProbeTrigger>();
+        SetActiveBizzWireProbes(false);
+
     }
     private void OnEnable()
     {
         _resetBuzzWirePosition.OnPlayerLeftTheGameZone += OnPlayerLeftTheGameZone;
+        _resetBuzzWirePosition.OnPlayerEnterTheGameZone += OnPlayerEnterTheGameZone;
 
 
     }
@@ -37,11 +44,18 @@ public class CheatingController : MonoBehaviour
     private void OnDisable()
     {
         _resetBuzzWirePosition.OnPlayerLeftTheGameZone -= OnPlayerLeftTheGameZone;
+        _resetBuzzWirePosition.OnPlayerEnterTheGameZone -= OnPlayerEnterTheGameZone;
+    }
+
+    private void OnPlayerEnterTheGameZone()
+    {
+        SetActiveBizzWireProbes(true);
     }
 
     private void OnPlayerLeftTheGameZone()
     {
         ResetBuzzWirePosition();
+        SetActiveBizzWireProbes(false);
     }
 
     private void Update()
@@ -81,6 +95,19 @@ public class CheatingController : MonoBehaviour
         gameObject.transform.position = _defaultLocation.position;
         gameObject.transform.rotation = _defaultLocation.rotation;
         _ISDK_HandGrabInteraction.SetActive(true);
+    }
+
+    /// <summary>
+    /// Enables and disables the probes that trigger the buzzwire errors so they do not count in the 
+    /// physics collision checking loop when the user is not in the platform at that moment
+    /// </summary>
+    /// <param name="activeState"></param>
+    private void SetActiveBizzWireProbes(bool activeState)
+    {
+        foreach (var probe in _buzzWireProbeTriggers)
+        {
+            probe.gameObject.SetActive(activeState);
+        }
     }
 }
 

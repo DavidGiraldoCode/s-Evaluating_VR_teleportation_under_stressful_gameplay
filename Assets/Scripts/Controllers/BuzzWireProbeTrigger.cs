@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuzzWireTrigger : MonoBehaviour
+public class BuzzWireProbeTrigger : MonoBehaviour
 {
     private PlatformState _platformState;
     public PlatformState CurrentPlatformState { get => _platformState; }

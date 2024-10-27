@@ -17,8 +17,9 @@ public class PlatformStateController : MonoBehaviour
         if (!m_gameState)
             throw new System.ArgumentNullException("The GameState is missing");
 
-        m_activationPlatformButton = GetComponentInChildren<ActivationPlatformButton>();
-        m_activationPlatformButton.PlatformStateRef = m_platformState;
+        //TODO Change the large button to be the start of each task
+        //m_activationPlatformButton = GetComponentInChildren<ActivationPlatformButton>();
+        //m_activationPlatformButton.PlatformStateRef = m_platformState;
     }
     private void Start()
     {

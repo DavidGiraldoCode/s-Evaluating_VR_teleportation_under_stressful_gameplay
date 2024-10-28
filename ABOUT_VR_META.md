@@ -40,6 +40,7 @@ _openSelector.WhenSelected += OnOpenSelected; // Remember to unsubscribe
 ```
 
 ## How to check change orientation in teleportation -> WIP
+- The teleportation in the left hand is disabled
 
 ## How to forcibly disable an ongoing grabbing interaction to reset a grabbed object's default position.
 

@@ -3,12 +3,23 @@ using Oculus.Interaction.Input;
 using Oculus.Interaction.Locomotion;
 using Oculus.Interaction;
 using UnityEditor.PackageManager;
+using UnityEditor;
+using UnityEngine.AI;
 
 /// <summary>
 /// This is a debugging class to read data form the controller
 /// </summary>
 public class OrientationController : MonoBehaviour
 {
+    [MenuItem("/Debug/Force Cleanup NavMesh")]
+    public static void ForceCleanupNavMesh()
+    {
+        if (Application.isPlaying)
+            return;
+
+        NavMesh.RemoveAllNavMeshData();
+    }
+
     [Tooltip("Reads the data from the right controller to trigger teleportation with Primary (A) button")]
     [SerializeField] private ControllerRef _rightControllerRef;
 

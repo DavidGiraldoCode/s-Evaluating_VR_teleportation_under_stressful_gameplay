@@ -26,12 +26,18 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Playgrounds/PG_DomeExperimentWithGUI.unity
     guid: 57baf3b75497948c8acf2b49cf92c3d6
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Experiment/LocomotionExperiment.unity
     guid: 581a2c0999b6b4c04bc31e522a28034a
   - enabled: 0
     path: Assets/Scenes/Playgrounds/PG_Grab.unity
     guid: 2c5461b2ddbb2453cbf71016e42abef4
+  - enabled: 0
+    path: Assets/Scenes/Experiment/TeleportationExperiment.unity
+    guid: 644e0b2123c724f70af77aedc9436d85
+  - enabled: 1
+    path: Assets/Scenes/Playgrounds/PG_CopingTeleWithOrientationHere.unity
+    guid: 4aab23d1c81f54389b3f4bf7d2a3c7ac
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: f7bef572b355e480595326fa06b8c42a, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: acac6ab92436a45d79ef8b8ea7f6e85c, type: 2}

@@ -65,6 +65,8 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
         m_cycleGraph.BuildGraph(6);
         m_cycleGraph.GetDestinationNode(0, 3);
 
+        m_gameState.TestingCoordinates();
+
         OnPracticeBegin += m_gameState.OnPracticeBegin;
         OnTrialBegin += m_gameState.OnTrialBegin;
 

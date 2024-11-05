@@ -2,7 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utilities;
 
+/// <summary>
+/// Data object that is being passed through the mehtod of the observer pattern
+/// </summary>
 public struct GameStateData
 {
     public GameStateData(GameState.state newState)
@@ -151,6 +155,20 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
         m_observers = new List<IObserver<GameStateData>>();
         GenerateRandomTasks();
         m_currentState = state.PRACTICE_STANDBY;
+
+    }
+
+    //TODO creating the coordinates for the Graph
+    public void TestingCoordinates()
+    {
+        int[] myList;
+        uint visitCount = 0;
+        Tool.CreateCoordinatesList(visitCount, out myList);
+
+        foreach (var item in myList)
+        {
+            Debug.Log("Coordinate: " + item);
+        }
     }
 
 

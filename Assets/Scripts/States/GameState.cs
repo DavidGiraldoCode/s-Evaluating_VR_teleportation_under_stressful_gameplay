@@ -39,13 +39,13 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
     }
     public enum taskColors
     {
-        NONE,
         RED,
         GREEN,
         BLUE,
         YELLOW,
         ORANGE,
-        PURPLE
+        PURPLE,
+        NONE, // This was previously 0, until the addition of the graph
     }
     // public enum color
     // {
@@ -62,6 +62,9 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
         WORD,
         COLOR
     }
+    // TODO Coordinate on the Graph
+    private int[] _rawCoordinates;
+    public int[] RawCoordinates { get => _rawCoordinates; }
     private Stack<taskColors> m_practiceTasks = new Stack<taskColors>();
     private Stack<taskColors> m_trialTasks = new Stack<taskColors>();
     [SerializeField] private state m_currentState = state.PRACTICE_STANDBY;
@@ -161,14 +164,31 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
     //TODO creating the coordinates for the Graph
     public void TestingCoordinates()
     {
-        int[] myList;
-        uint visitCount = 0;
-        Tool.CreateCoordinatesList(visitCount, out myList);
+        CoordinatesGenerator.CreateCoordinatesList(5, out _rawCoordinates);
+        List<int[]> nodes;
+        Utilities.CycleGraph.BuildGraph(6, out nodes);
 
-        foreach (var item in myList)
+        HardCodedTrialSequence = new taskColors[_rawCoordinates.Length];
+
+        int start = 0;
+        Debug.Log("XXX Starts at " + (taskColors)start);
+
+        for (int i = 0; i < _rawCoordinates.Length; i++)
         {
-            Debug.Log("XXX Coordinate: " + item);
+            var coordinate = _rawCoordinates[i];
+            int nextColor = Utilities.CycleGraph.GetDestinationNode(nodes, start, coordinate);
+            Debug.Log("XXX Go to " + ((taskColors)nextColor).ToString());
+            HardCodedTrialSequence[i] = (taskColors)nextColor;
         }
+        // foreach (var coordinate in _rawCoordinates)
+        // {
+        //     //Debug.Log("XXX Coordinate: " + coordinate);
+        //     int nextColor = Utilities.CycleGraph.GetDestinationNode(nodes, start, coordinate);
+        //     Debug.Log("XXX Go to " + ((taskColors)nextColor).ToString());
+            
+
+        // }
+
     }
 
 

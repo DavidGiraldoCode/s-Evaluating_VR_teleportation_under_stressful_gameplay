@@ -7,7 +7,7 @@ public class CycleGraph : ScriptableObject
 {
     private List<int[]> _nodes;
     public int NodeCount { get => _nodes.Count; }
-
+    
     /// <summary>
     /// Creates the graph by adding an adjacency list at each index of a `List<int[]>`, `0` for left and `1` for right clockwise.
     /// It can only create graph with at least two nodes
@@ -37,17 +37,22 @@ public class CycleGraph : ScriptableObject
     /// It will retunr -1 if invalid coordinates or an inexistant node is inputed 
     /// </summary>
     /// <param name="currentNode">Valid coordinates {-3, -2, -1, 1, 2, 3}</param>
-    /// <param name="coordinates"></param>
+    /// <param name="coordinate"></param>
     /// <returns></returns>
-    public int GetDestinationNode(int currentNode, int coordinates)
+    public int GetDestinationNode(int currentNode, int coordinate)
     {
         // Invariances
-        bool invalidCoordinates = coordinates == 0 || coordinates > 3 || coordinates < -3; // The coordinate can only be {-3, -2, -1, 1, 2, 3}
+        bool invalidCoordinates = coordinate == 0 || coordinate > 3 || coordinate < -3; // The coordinate can only be {-3, -2, -1, 1, 2, 3}
         bool invalidNode = currentNode < 0 || currentNode >= _nodes.Count; // The user of this method inputed a location that does not exist.
-        if (invalidCoordinates || invalidNode) return -1;
 
-        bool clockWise = coordinates > 0;
-        int steps = Math.Abs(coordinates);
+        if ( invalidNode)
+            throw new ArgumentException($"Location {currentNode} that does not exist, must be between [0, n-1] , n being the number of platforms");
+        if (invalidCoordinates)
+            throw new ArgumentException($"Coordinate {coordinate} is invalid,"+" they can only be {-3, -2, -1, 1, 2, 3}");
+
+
+        bool clockWise = coordinate > 0;
+        int steps = Math.Abs(coordinate);
         int j = 0;
         int nextNode;
         
@@ -59,7 +64,7 @@ public class CycleGraph : ScriptableObject
                 nextNode = _nodes[currentNode][1];
 
             #if UNITY_EDITOR
-            Debug.Log($"moves to {nextNode}");
+            //Debug.Log($"XXX moves to {nextNode}");
             #endif
 
             currentNode = nextNode;

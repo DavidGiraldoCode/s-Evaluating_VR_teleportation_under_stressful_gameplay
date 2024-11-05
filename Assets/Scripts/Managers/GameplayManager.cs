@@ -1,5 +1,4 @@
 using System;
-using UnityEditor.PackageManager;
 using UnityEngine;
 /// <summary>
 /// Manages the actual execution of the gameloop that represent the sequence of task the player will performed.
@@ -10,6 +9,10 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     public static GameplayManager Instance { get; private set; }
 
     [SerializeField] private GameState m_gameState;
+    //TODO Adding Gaph
+    [Tooltip("This represents the abstract Data Structure of the plaforms" +
+             " distribution and the colors to prompt the user.")]
+    [SerializeField] private CycleGraph m_cycleGraph;
     // Observer
     private IDisposable unsubscriber;
 
@@ -27,7 +30,7 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     // Variables
     private PlatformStateController[] m_PlatformStates; // Holds all the platforms in the scene to then subscribe to their events
     [SerializeField] private PlayerController m_playerController; // The ref to the player to enable teleportation
-    
+
     #region MonoMonoBehaviour
     private void Awake()
     {
@@ -43,6 +46,10 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
         if (m_gameState == null)
             throw new System.NullReferenceException("GameState missing");
 
+        //TODO Graph
+        if (m_cycleGraph == null)
+            throw new System.NullReferenceException("CycleGraph missing");
+
         m_PlatformStates = FindObjectsOfType<PlatformStateController>();
 
         m_playerController = FindObjectOfType<PlayerController>();
@@ -54,6 +61,10 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     }
     private void OnEnable()
     {
+
+        m_cycleGraph.BuildGraph(6);
+        m_cycleGraph.GetDestinationNode(0, 3);
+
         OnPracticeBegin += m_gameState.OnPracticeBegin;
         OnTrialBegin += m_gameState.OnTrialBegin;
 

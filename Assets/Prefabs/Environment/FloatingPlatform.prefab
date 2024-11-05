@@ -12296,7 +12296,6 @@ GameObject:
   - component: {fileID: 7660511072103041385}
   - component: {fileID: 2328617965587121309}
   - component: {fileID: 6260285958900332061}
-  - component: {fileID: 6044556494324529707}
   m_Layer: 6
   m_Name: Walkable
   m_TagString: Untagged
@@ -13455,25 +13454,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
---- !u!114 &6044556494324529707
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3185042264030098315}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_OverrideArea: 0
-  m_Area: 0
-  m_OverrideGenerateLinks: 0
-  m_GenerateLinks: 0
-  m_IgnoreFromBuild: 0
-  m_ApplyToChildren: 1
-  m_AffectedAgents: ffffffff
 --- !u!1 &3670319098461887778
 GameObject:
   m_ObjectHideFlags: 0

@@ -167,7 +167,7 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
 
         foreach (var item in myList)
         {
-            Debug.Log("Coordinate: " + item);
+            Debug.Log("XXX Coordinate: " + item);
         }
     }
 

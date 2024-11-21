@@ -22,7 +22,7 @@ public class PlayerRelocator : MonoBehaviour
     private void OnDisable()
     {
         //UnsubribeFromConditionEvents();
-        UnsubribeToGameplayEvents();
+        UnsubribeFromGameplayEvents();
     }
 
     private void OnTasksReset()
@@ -39,7 +39,7 @@ public class PlayerRelocator : MonoBehaviour
         }
     }
 
-    private void UnsubribeToGameplayEvents()
+    private void UnsubribeFromGameplayEvents()
     {
         if (GameplayManager.Instance)
         {
@@ -49,27 +49,27 @@ public class PlayerRelocator : MonoBehaviour
         }
     }
 
-    private void PlayerRelocationOnConditionChange(Condition newCondition)
-    {
-        m_player.position = transform.position;
-    }
-    private void SubribeFromConditionEvents()
-    {
-        if (ExperimentManager.Instance)
-        {
-            ExperimentManager.Instance.OnConditionChanged += PlayerRelocationOnConditionChange;
-            ExperimentManager.Instance.OnConditionTerminated += PlayerRelocationOnConditionChange;
-            ExperimentManager.Instance.OnConditionFulfilled += PlayerRelocationOnConditionChange;
-        }
-    }
+    // private void PlayerRelocationOnConditionChange(Condition newCondition)
+    // {
+    //     m_player.position = transform.position;
+    // }
+    // private void SubribeFromConditionEvents()
+    // {
+    //     if (ExperimentManager.Instance)
+    //     {
+    //         ExperimentManager.Instance.OnConditionChanged += PlayerRelocationOnConditionChange;
+    //         ExperimentManager.Instance.OnConditionTerminated += PlayerRelocationOnConditionChange;
+    //         ExperimentManager.Instance.OnConditionFulfilled += PlayerRelocationOnConditionChange;
+    //     }
+    // }
 
-    private void UnsubribeFromConditionEvents()
-    {
-        if (ExperimentManager.Instance)
-        {
-            ExperimentManager.Instance.OnConditionChanged -= PlayerRelocationOnConditionChange;
-            ExperimentManager.Instance.OnConditionTerminated -= PlayerRelocationOnConditionChange;
-            ExperimentManager.Instance.OnConditionFulfilled -= PlayerRelocationOnConditionChange;
-        }
-    }
+    // private void UnsubribeFromConditionEvents()
+    // {
+    //     if (ExperimentManager.Instance)
+    //     {
+    //         ExperimentManager.Instance.OnConditionChanged -= PlayerRelocationOnConditionChange;
+    //         ExperimentManager.Instance.OnConditionTerminated -= PlayerRelocationOnConditionChange;
+    //         ExperimentManager.Instance.OnConditionFulfilled -= PlayerRelocationOnConditionChange;
+    //     }
+    // }
 }

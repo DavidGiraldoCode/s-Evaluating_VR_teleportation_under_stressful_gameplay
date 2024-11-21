@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+/* DEPRECATED, look into States/Tools/Utilities.cs for the graph definition
+
 [CreateAssetMenu(fileName = "CycleGraph", menuName = "States/CycleGraph", order = 0)]
 public class CycleGraph : ScriptableObject
 {
@@ -75,3 +77,4 @@ public class CycleGraph : ScriptableObject
     }
 
 }
+*/

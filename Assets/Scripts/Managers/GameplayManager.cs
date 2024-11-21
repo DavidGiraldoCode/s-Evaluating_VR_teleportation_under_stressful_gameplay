@@ -12,7 +12,7 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     //TODO Adding Gaph
     [Tooltip("This represents the abstract Data Structure of the plaforms" +
              " distribution and the colors to prompt the user.")]
-    [SerializeField] private CycleGraph m_cycleGraph;
+    //[SerializeField] private CycleGraph m_cycleGraph;
     // Observer
     private IDisposable unsubscriber;
 
@@ -28,6 +28,7 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     public static event GameplayStateChanges OnGameOver;
 
     // Variables
+    const uint STARTING_PLATFORM = 0;
     private PlatformStateController[] m_PlatformStates; // Holds all the platforms in the scene to then subscribe to their events
     [SerializeField] private PlayerController m_playerController; // The ref to the player to enable teleportation
 
@@ -46,9 +47,9 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
         if (m_gameState == null)
             throw new System.NullReferenceException("GameState missing");
 
-        //TODO Graph
-        if (m_cycleGraph == null)
-            throw new System.NullReferenceException("CycleGraph missing");
+        // Graph DEPRECATED
+        //if (m_cycleGraph == null)
+        //    throw new System.NullReferenceException("CycleGraph missing");
 
         m_PlatformStates = FindObjectsOfType<PlatformStateController>();
 
@@ -64,7 +65,7 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
 
         //m_cycleGraph.BuildGraph(6);
         m_gameState.TestingCoordinates();
-        
+
 
         OnPracticeBegin += m_gameState.OnPracticeBegin;
         OnTrialBegin += m_gameState.OnTrialBegin;
@@ -102,7 +103,7 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     /// <param name="experimentCondition"> This define the type of teleportation that get activated and all the other stimulus </param>
     public void EnterGameplay(Condition experimentCondition)
     {
-        m_gameState.Setup();
+        m_gameState.Setup(STARTING_PLATFORM);
         ResetPlatform();
         unsubscriber = m_gameState.Subscribe(this);
         // Setup teleporation

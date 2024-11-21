@@ -367,6 +367,7 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
             var coordinate = _rawCoordinates[i];
             int nextColor = CycleGraph.GetDestinationNode(_platformsGraph, start, coordinate);
             Debug.Log("XXX Go to " + ((taskColors)nextColor).ToString());
+            // Keep in mind that the firt coordinate of the _rawCoordinates will be the last on the stack.
             tasks.Push((taskColors)nextColor);
         }
     }

@@ -80,3 +80,7 @@ enum taskColors
 - Recall that every Grabable object needs a reference to the GrabInteractor that is placed on the right hand.
 - To make the grabbable on the platform, the `OVRCameraRig/TrackingSpace/CenterEyeAnchor` must have a `PlayerTag GameObject` children with "Player" tag. That PlayerTag GO must have a rigid body (no gravity) and a collider.
 - Grab interaction working, but chaging the next color stoped working.
+- The Platform's enum of color had `NONE` as `0` intead of `RED`, causing casting issues with the colorTask on GameState.
+- The practice and trial colores worked, both go through the end, they are not generating new colors sequences when starting new condition. Change this to make each condition unique.
+- Make sure the graphs numers match the numbers of the colors in the enums, and also the orientation in world space. Theres was a bug on platform yellow and green, they both marched them selfves as the next. had to move to another one and return to reseatrt the buzz-wire.
+- Add a counter of how many platforms (teleportations) are left.

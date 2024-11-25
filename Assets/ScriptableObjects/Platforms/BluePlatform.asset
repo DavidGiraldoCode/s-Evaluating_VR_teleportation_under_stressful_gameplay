@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: BluePlatform
   m_EditorClassIdentifier: 
   m_currentState: 0
-  m_designatedColor: 3
+  m_designatedColor: 2
   m_displayColor: {r: 0, g: 0, b: 1, a: 0}
   m_activationAllowed: 0

@@ -13,6 +13,7 @@ namespace Utilities
         /// It can only create graph with at least two nodes
         /// </summary>
         /// <param name="nodesCount"></param>
+        /// <param name="nodesGraph"></param>
         public static void BuildGraph(uint nodesCount, out List<int[]> nodesGraph)
         {
             // Invariance

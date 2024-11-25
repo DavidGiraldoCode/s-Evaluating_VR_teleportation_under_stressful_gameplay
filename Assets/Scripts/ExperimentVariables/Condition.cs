@@ -8,6 +8,10 @@ public class Condition : ScriptableObject
     [SerializeField] private IndependentVariables.CognitiveInterference m_cognitiveInterference;
     [SerializeField] private IndependentVariables.TimeAndEnvironmentalStressor m_TimeAndEnvironmentalStressor;
 
+    // NEW
+    [SerializeField] private IndependentVariables.GameStressor m_gameStressor;
+    public IndependentVariables.GameStressor GameStressor { get => m_gameStressor;}
+
     // Only get accessors
     public bool IsFulfilled { get => m_isFulfilled; set => m_isFulfilled = value;}
     public IndependentVariables.Teleportation TeleportationMethod { get => m_teleportationMethod;}

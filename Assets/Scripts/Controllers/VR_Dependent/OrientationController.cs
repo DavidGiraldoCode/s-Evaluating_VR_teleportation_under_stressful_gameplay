@@ -9,7 +9,7 @@ using Oculus.Interaction;
 public class OrientationController : MonoBehaviour
 {
 
-    [Tooltip("Reads the data from the right controller to trigger teleportation with Primary (A) button")]
+    [Tooltip("Reads the data from the right controller to trigger teleportation with Trigger button")]
     [SerializeField] private ControllerRef _rightControllerRef;
 
     [Tooltip("Reads data from left controller to change the orientation of the final teleportation destination")]

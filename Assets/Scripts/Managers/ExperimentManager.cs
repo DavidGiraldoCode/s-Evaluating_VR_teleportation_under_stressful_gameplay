@@ -5,6 +5,7 @@ public class ExperimentManager : MonoBehaviour
 {
     public static ExperimentManager Instance { get; private set; }
     public Condition CurrentCondition { get => m_currentCondition; }
+    [SerializeField] private ParticipantData _participantData;
 
     [Tooltip("Preview only")]
     [SerializeField] private Condition m_currentCondition = null;
@@ -37,6 +38,8 @@ public class ExperimentManager : MonoBehaviour
 
         if (!m_gameState)
             throw new System.NullReferenceException("The ExperimentManager is missing the GameState");
+        if(!_participantData)
+            throw new System.NullReferenceException("The ExperimentManager is missing the ParticipantData");
 
         SetupConditions();
         //m_gameState.Init();
@@ -88,6 +91,8 @@ public class ExperimentManager : MonoBehaviour
     {
         if (m_currentCondition == null || m_currentCondition != newCondition)
             m_currentCondition = newCondition;
+
+        _participantData.condition = m_currentCondition.ToString();
 
         if (OnConditionChanged == null) return; // No method has instantiate this event
         if (OnConditionChanged.GetInvocationList().Length > 0)

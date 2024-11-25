@@ -9,18 +9,37 @@
 */
 public static class IndependentVariables
 {
-    public enum Teleportation
+  public enum Teleportation
   {
     PT_TRADITIONAL, // [1]
     PT_ORIENTATION_INDICATION // [2]
   }
-  
+
+  // NEW
+  public enum GameStressor
+  {
+    NONE,
+    /*
+    Time Pressure: The time to meet a task gradually decreases to induce stress,
+    following guidelines by Adams (Fundamentals of Game Design).
+    */
+    // Biased Instruction (Cognitively Interfered Instruction): The instruction to teleport to a platform
+    // is distorted by presenting a color word in mismatched ink color. Users must teleport based on font color
+    // rather than word content, creating cognitive interference.
+    TIME_PRESSURE_AND_BIASED_INSTRUCTION,
+    
+    // Attention Demand: The teleportation platform shrinks toward a centered pivot point on its top surface.
+    // As the platform size reduces, the available teleportation area diminishes while the platform's center remains fixed.
+    TIME_PRESSURE_AND_ATTENTION_DEMAND,
+  }
+
+  // OLD
   public enum CognitiveInterference
   {
     DISABLED,
     ENABLE
   }
-  
+
   public enum TimeAndEnvironmentalStressor
   {
     DISABLED,

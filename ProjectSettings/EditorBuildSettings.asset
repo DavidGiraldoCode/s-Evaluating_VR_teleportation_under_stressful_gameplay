@@ -32,7 +32,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Playgrounds_October/PG_Grab.unity
     guid: 2c5461b2ddbb2453cbf71016e42abef4
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Experiment/TeleportationExperiment.unity
     guid: 644e0b2123c724f70af77aedc9436d85
   - enabled: 0
@@ -41,6 +41,9 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Experiment/WierdSceneWhereOrientationWorks.unity
     guid: b3a19ce3f76394b3fa2cc50a1921b2df
+  - enabled: 1
+    path: Assets/Scenes/Playgrounds_November/TeleportationOnRightHandOnly.unity
+    guid: 2cfc633c42e5640f6b04632524e44b37
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: f7bef572b355e480595326fa06b8c42a, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: acac6ab92436a45d79ef8b8ea7f6e85c, type: 2}

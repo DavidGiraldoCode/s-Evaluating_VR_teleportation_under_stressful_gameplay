@@ -1,9 +1,5 @@
 # Session notes
 
-Here is the revised version of the README with typos and clarity improved:
-
----
-
 ## Session 2024-11-05: Adding Graph and Distances
 
 - **Objective:** Implement the algorithms to determine which platform to teleport to.
@@ -81,3 +77,6 @@ enum taskColors
 - The project got clutter with scenes, hard to track, for now on, the scenes will be mentioned here as well.
 - Unpacked the InteractionRigOVR-Synthetic Prefab, and disabled the Ray Interactor (GUI pointer)
 - Disabled the OrientationController PreFab
+- Recall that every Grabable object needs a reference to the GrabInteractor that is placed on the right hand.
+- To make the grabbable on the platform, the `OVRCameraRig/TrackingSpace/CenterEyeAnchor` must have a `PlayerTag GameObject` children with "Player" tag. That PlayerTag GO must have a rigid body (no gravity) and a collider.
+- Grab interaction working, but chaging the next color stoped working.

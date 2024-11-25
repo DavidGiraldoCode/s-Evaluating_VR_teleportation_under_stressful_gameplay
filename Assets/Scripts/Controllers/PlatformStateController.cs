@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/// <summary>
+/// Manages the platform state scritable object, and passes down its references to the buzz-wire related classes.
+/// </summary>
 public class PlatformStateController : MonoBehaviour
 {
     [SerializeField] private PlatformState m_platformState;

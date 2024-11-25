@@ -10,15 +10,15 @@ public class PlatformState : ScriptableObject
         FOCUSSED,   //  Player steped on the platform
         ACTIVATED,  // Player activated the mechanism
     };
-    public enum color
+    public enum color // TODO hypothesis; by changing the enums in game state, this casting breaks.
     {
-        NONE,
         RED,
         GREEN,
         BLUE,
         YELLOW,
         ORANGE,
-        PURPLE
+        PURPLE,
+        NONE, // This was previously 0, until the addition of the graph
     }
 
     [SerializeField] private state m_currentState = state.IDLE;

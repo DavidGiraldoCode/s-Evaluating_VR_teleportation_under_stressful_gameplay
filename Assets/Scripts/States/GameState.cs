@@ -208,11 +208,15 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
     /// <returns>taskColors value</returns>
     public taskColors CurrentTaskColor()
     {
+        Debug.Log("YYY: m_currentState: " + m_currentState.ToString());
+        
         switch (m_currentState)
         {
             case state.PRACTICE_ONGOING:
+                Debug.Log("YYY: CurrentTaskColor: " + (m_practiceTasks.Count > 0 ? m_practiceTasks.Peek().ToString() : taskColors.NONE.ToString()));
                 return m_practiceTasks.Count > 0 ? m_practiceTasks.Peek() : taskColors.NONE;
             case state.TRIAL_ONGOING:
+                Debug.Log("YYY: CurrentTaskColor: " + (m_practiceTasks.Count > 0 ? m_trialTasks.Peek().ToString() : taskColors.NONE.ToString()));
                 return m_trialTasks.Count > 0 ? m_trialTasks.Peek() : taskColors.NONE;
         }
         return taskColors.NONE;

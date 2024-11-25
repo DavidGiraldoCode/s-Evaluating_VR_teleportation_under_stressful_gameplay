@@ -68,3 +68,16 @@ enum taskColors
 - [ ] Create the list of distances at the begning of each task, practice and trial.
 - [ ] Update the target platform given the graph
 - [ ] Remove the colors from the stack.
+
+## Session 2024-11-25: Teleportation on right hand only
+
+**Objective:** Configure the Point and Teleport to only work on right hand.
+
+- [x]  Disable teleportation with orientation, is not working. Make it normal Point&Teleport for now. 
+- [x]  Make all the teleportation interaction happen in one hand: hold the trigger activates and releasing, triggers the actual teleport. The left hand is only for the wristband display.
+
+### Logs
+- Working on: Scenes / Playgrounds_Novemeber / TeleportationOnRightHandOnly
+- The project got clutter with scenes, hard to track, for now on, the scenes will be mentioned here as well.
+- Unpacked the InteractionRigOVR-Synthetic Prefab, and disabled the Ray Interactor (GUI pointer)
+- Disabled the OrientationController PreFab

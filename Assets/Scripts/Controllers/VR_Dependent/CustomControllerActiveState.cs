@@ -5,6 +5,9 @@ using Oculus.Interaction;
 using Oculus.Interaction.Input;
 using UnityEngine;
 
+/// <summary>
+/// This class only checks if the button is not pressed to trigger the teleportation.
+/// </summary>
 public class CustomControllerActiveState : MonoBehaviour, IActiveState
 {
     public ControllerRef _rightControllerRef;
@@ -17,7 +20,8 @@ public class CustomControllerActiveState : MonoBehaviour, IActiveState
     {
         get
         {
-            return _rightControllerRef.ControllerInput.PrimaryButton == false;
+            //return _rightControllerRef.ControllerInput.PrimaryButton == false; //! OLD
+            return _rightControllerRef.ControllerInput.TriggerButton == false;
             if (!_rightControllerRef.ControllerInput.PrimaryButton && _readyForTeleporting)
             {
                 _active = true;

@@ -30,6 +30,7 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     // Variables
     const uint STARTING_PLATFORM = 0;
     private PlatformStateController[] m_PlatformStates; // Holds all the platforms in the scene to then subscribe to their events
+    [Tooltip("The Manager Finds it automatically")]
     [SerializeField] private PlayerController m_playerController; // The ref to the player to enable teleportation
 
     #region MonoMonoBehaviour

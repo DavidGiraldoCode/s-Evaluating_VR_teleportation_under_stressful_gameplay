@@ -40,11 +40,11 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
     public enum taskColors
     {
         RED,
-        GREEN,
-        BLUE,
-        YELLOW,
+        BLUE, 
         ORANGE,
+        YELLOW,
         PURPLE,
+        GREEN,
         NONE, // This was previously 0, until the addition of the graph
     }
     // public enum color
@@ -194,7 +194,7 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
         //     //Debug.Log("XXX Coordinate: " + coordinate);
         //     int nextColor = Utilities.CycleGraph.GetDestinationNode(nodes, start, coordinate);
         //     Debug.Log("XXX Go to " + ((taskColors)nextColor).ToString());
-            
+
 
         // }
 
@@ -209,7 +209,7 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
     public taskColors CurrentTaskColor()
     {
         Debug.Log("YYY: m_currentState: " + m_currentState.ToString());
-        
+
         switch (m_currentState)
         {
             case state.PRACTICE_ONGOING:
@@ -353,12 +353,12 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
     /// stored in the lits of colors. Meaning, the total colors the player is goging to visit in known
     /// at the begining of every task, instead of randomly generating a new destination when arriving at platform.
     /// </summary>
-    private void GenerateRandomCoordinateList(uint startingNode, uint  visitCount, Stack<taskColors> tasks)
+    private void GenerateRandomCoordinateList(uint startingNode, uint visitCount, Stack<taskColors> tasks)
     {
         // Create the list with randomly sorted { -3, -2, -1, 1, 2, 3 } 
         CoordinatesGenerator.CreateCoordinatesList(visitCount, out _rawCoordinates);
 
-        if(_platformsGraph == null)
+        if (_platformsGraph == null)
             CycleGraph.BuildGraph(6, out _platformsGraph); // Build the graph with the adjacency list
 
         HardCodedTrialSequence = new taskColors[_rawCoordinates.Length];

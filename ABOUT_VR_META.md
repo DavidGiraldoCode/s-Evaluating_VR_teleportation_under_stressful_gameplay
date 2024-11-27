@@ -74,6 +74,15 @@ private void OnSnapChange(InteractableStateChangeArgs args)
 }
 ```
 
+## How the teleportation Nav area is made?
+I used normal cylinders with the size of the platform, and include then in the baking os the Nav area.
+```bash
+NavGroup
+| - GameObject - NavMesh Surface
+| - ISDK_TeleportInteraction
+| - PlatformRef(n)
+```
+
 ### How the [interaction with the world (poke, grab, snap) works](https://developers.meta.com/horizon/documentation/unity/unity-isdk-architectural-overview/)
 
 ### Getting [Data from controller](https://developers.meta.com/horizon/documentation/unity/unity-isdk-input-processing#controller)

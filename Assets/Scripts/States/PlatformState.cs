@@ -13,11 +13,11 @@ public class PlatformState : ScriptableObject
     public enum color // TODO hypothesis; by changing the enums in game state, this casting breaks.
     {
         RED,
-        GREEN,
         BLUE,
-        YELLOW,
         ORANGE,
+        YELLOW,
         PURPLE,
+        GREEN,
         NONE, // This was previously 0, until the addition of the graph
     }
 
@@ -47,7 +47,7 @@ public class PlatformState : ScriptableObject
     public void ChangeState(state newState)
     {
         m_currentState = newState;
-        
+
         if (OnStateChange == null) return;
         OnStateChange?.Invoke(this, m_currentState, m_designatedColor);
     }

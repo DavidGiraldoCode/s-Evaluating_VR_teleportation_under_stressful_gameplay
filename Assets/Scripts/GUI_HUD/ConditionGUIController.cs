@@ -6,8 +6,9 @@ public class ConditionGUIController : MonoBehaviour
     [SerializeField] private GameObject m_conditionGUIMenu;
     private void Awake()
     {
-        if (ExperimentManager.Instance)
-            m_enterGameplayButton.SetActive(ExperimentManager.Instance.CurrentCondition != null);
+        //* This is the original proposal, where the conditions were pre-defined
+        // if (ExperimentManager.Instance)
+        //     m_enterGameplayButton.SetActive(ExperimentManager.Instance.CurrentCondition != null);
     }
 
     private void OnEnable()

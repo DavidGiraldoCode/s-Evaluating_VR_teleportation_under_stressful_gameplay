@@ -40,7 +40,7 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
     public enum taskColors
     {
         RED,
-        BLUE, 
+        BLUE,
         ORANGE,
         YELLOW,
         PURPLE,
@@ -62,6 +62,7 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
         WORD,
         COLOR
     }
+    private const uint PLATFORM_COUNT = 6;
     // TODO Coordinate on the Graph
     List<int[]> _platformsGraph;
     private int[] _rawCoordinates;
@@ -71,6 +72,7 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
     [SerializeField] private state m_currentState = state.PRACTICE_STANDBY;
     //[SerializeField] private color m_currentColor = color.NONE;
     [SerializeField] private stimulus m_currentStimulus = stimulus.COLOR;
+    [SerializeField] public taskColors[] ColorArrayToFillStacks; // This is a helper structure to fill the stack in the same order that the graph generates the colors
     [SerializeField] public taskColors[] HardCodedPracticeSequence; //TODO For testing
     [SerializeField] public taskColors[] HardCodedTrialSequence; //TODO For testing
     //private Stack<taskColors> m_currentSequence = new Stack<taskColors>();
@@ -161,17 +163,18 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
     public void Setup(uint startingPlatrom)
     {
         m_observers = new List<IObserver<GameStateData>>();
+        ColorArrayToFillStacks = null;
         //GenerateRandomTasks();
         //TODO adding graph
-        GenerateRandomCoordinateList(startingPlatrom, 1, m_practiceTasks);
-        GenerateRandomCoordinateList(startingPlatrom, 5, m_trialTasks);
+        //GenerateRandomCoordinateList(startingPlatrom, 1, m_practiceTasks);
+        //GenerateRandomCoordinateList(startingPlatrom, 5, m_trialTasks);
 
         m_currentState = state.PRACTICE_STANDBY;
 
     }
 
     //TODO creating the coordinates for the Graph
-    public void TestingCoordinates()
+    /*public void TestingCoordinates()
     {
         CoordinatesGenerator.CreateCoordinatesList(5, out _rawCoordinates);
         List<int[]> nodes;
@@ -198,7 +201,7 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
 
         // }
 
-    }
+    }*/
 
 
     /// <summary>
@@ -334,6 +337,7 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
 
     }
 
+    /*
     private void GenerateRandomTasks()
     {
         for (int i = HardCodedPracticeSequence.Length - 1; i >= 0; i--)
@@ -345,7 +349,7 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
             m_trialTasks.Push(HardCodedTrialSequence[i]);
         }
         Debug.Log("All task stacks are ready");
-    }
+    }*/
 
     /// <summary>
     /// Creates a list with random coordinates { -3, -2, -1, 1, 2, 3 } for the practice and the trial.
@@ -359,9 +363,9 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
         CoordinatesGenerator.CreateCoordinatesList(visitCount, out _rawCoordinates);
 
         if (_platformsGraph == null)
-            CycleGraph.BuildGraph(6, out _platformsGraph); // Build the graph with the adjacency list
+            CycleGraph.BuildGraph(PLATFORM_COUNT, out _platformsGraph); // Build the graph with the adjacency list
 
-        HardCodedTrialSequence = new taskColors[_rawCoordinates.Length];
+        ColorArrayToFillStacks = new taskColors[_rawCoordinates.Length];
 
         int start = (int)startingNode; // The node where the player starts, RED;
         Debug.Log("XXX Starts at " + (taskColors)start);
@@ -371,22 +375,37 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
             var coordinate = _rawCoordinates[i];
             int nextColor = CycleGraph.GetDestinationNode(_platformsGraph, start, coordinate);
             Debug.Log("XXX Go to " + ((taskColors)nextColor).ToString());
-            // Keep in mind that the firt coordinate of the _rawCoordinates will be the last on the stack.
-            tasks.Push((taskColors)nextColor);
+            ColorArrayToFillStacks[i] = (taskColors)nextColor;
+        }
+
+        // Traverse ColorArrayToFillStacks in reverse ensure that the Stack get the colors in the same order the graph created them.
+        // Otherwise the firt coordinate of the _rawCoordinates will be the last on the stack.
+        for (int i = ColorArrayToFillStacks.Length - 1; i >= 0; i--)
+        {
+            tasks.Push(ColorArrayToFillStacks[i]);
         }
     }
 
     #endregion Gameloop methods
     #region Event Listeners
+    /// <summary>
+    /// This event signals the creation of random coordinates for the practice
+    /// </summary>
     public void OnPracticeBegin()
     {
+        GenerateRandomCoordinateList((uint)taskColors.RED, 1, m_practiceTasks);
         m_currentState = state.PRACTICE_ONGOING;
         if (OnNewNextColor != null)
             OnNewNextColor?.Invoke(m_currentStimulus, CurrentTaskColor());
     }
+
+    /// <summary>
+    /// This event signals the creation of random coordinates for the trial
+    /// </summary>
     public void OnTrialBegin()
     {
-        Debug.Log("OnTrialBegin");
+        GenerateRandomCoordinateList((uint)taskColors.RED, 2, m_trialTasks);
+        //Debug.Log("OnTrialBegin");
         m_currentState = state.TRIAL_ONGOING;
         if (OnNewNextColor != null)
             OnNewNextColor?.Invoke(m_currentStimulus, CurrentTaskColor());

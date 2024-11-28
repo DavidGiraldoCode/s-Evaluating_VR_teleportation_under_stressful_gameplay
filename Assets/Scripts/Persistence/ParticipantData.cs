@@ -11,14 +11,9 @@ public class ParticipantData : ScriptableObject
     [SerializeField] private string id;
 
     // Current experimental condition being tested.
-    public string condition;
-
-    // Teleportation method type: `0` for traditional teleport, `1` for teleport with orientation adjustment.
-    public int independent_variable_1;
-
-    // Stressor type applied: `0` for no stress, `1` for cognitive interference, `2` for environmental stress.
-    public int independent_variable_2;
+    [SerializeField] private string condition;
     //* NEW
+     // Teleportation method type: `0` or `false` for traditional teleport, `1` or `true` for teleport with orientation adjustment.
     [SerializeField] private bool teleportation_method;
     [SerializeField] private bool game_stressor_time;
     [SerializeField] private bool game_stressor_biased_instruction;
@@ -81,6 +76,8 @@ public class ParticipantData : ScriptableObject
             SaveRecord();
         }
     }
+
+    public string Condition { get => condition; set => condition = value;}
 
     public bool TeleportationMethod
     {

@@ -4,6 +4,7 @@ public class ColorPromptController : MonoBehaviour
 {
     [SerializeField] private GameState m_gamesState;
     [SerializeField] private TMP_Text m_indcator;
+    [SerializeField] private TMP_Text m_timer;
     [SerializeField] private TMP_Text m_stroopStimuli;
     [SerializeField] private Color m_stroopColor;
     public Color StroopColor { get => m_stroopColor; set => m_stroopColor = value; }
@@ -26,9 +27,15 @@ public class ColorPromptController : MonoBehaviour
         m_gamesState.OnNewNextColor -= OnNewNextColor;
     }
 
+    private void Update()
+    {
+        if(GameplayManager.Instance)
+            m_timer.text = ((int)GameplayManager.Instance.Timer).ToString();    
+    }
+
     #endregion MonoBehaviour Methods
     //
-    public void OnNewNextColor(GameState.stimulus newStimulus, GameState.taskColors newColor)
+    public void OnNewNextColor(GameState.stimulus newStimulus, GameState.taskColors newColor, bool wasCompleted)
     {
         //Debug.Log("OnNewNextColor: " + newColor);
         UpdateColorPromptDisplay(newStimulus.ToString(), newColor.ToString(), (Color)GameState.ReadableColorToRGB[newColor]);

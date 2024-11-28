@@ -12,10 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88cf22fca7728452a90ffef4cba1d85f, type: 3}
   m_Name: ParticipantData
   m_EditorClassIdentifier: 
-  id: 
+  id: P13101660.6602643
   condition: 
   independent_variable_1: 0
   independent_variable_2: 0
+  teleportation_method: 1
+  game_stressor_time: 1
+  game_stressor_biased_instruction: 1
+  game_stressor_attention_demand: 1
   time: 0
   trial_count_down: 0
   prompted_distance: 0

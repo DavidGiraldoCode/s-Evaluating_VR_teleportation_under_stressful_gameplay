@@ -8,7 +8,7 @@ using UnityEngine;
 public class ParticipantData : ScriptableObject
 {
     // Unique identifier for each participant.
-    public string id;
+    [SerializeField] private string id;
 
     // Current experimental condition being tested.
     public string condition;
@@ -18,6 +18,13 @@ public class ParticipantData : ScriptableObject
 
     // Stressor type applied: `0` for no stress, `1` for cognitive interference, `2` for environmental stress.
     public int independent_variable_2;
+    //* NEW
+    [SerializeField] private bool teleportation_method;
+    [SerializeField] private bool game_stressor_time;
+    [SerializeField] private bool game_stressor_biased_instruction;
+    [SerializeField] private bool game_stressor_attention_demand;
+
+    //* ----
 
     // Total elapsed time, in seconds, since the start of the current condition.
     public float time;
@@ -63,5 +70,64 @@ public class ParticipantData : ScriptableObject
 
     // Cumulative count of platforms successfully activated by the participant.
     public int activated_platforms_counter;
+
+    #region Accessors and persistence
+    public string ID
+    {
+        get => id;
+        set
+        {
+            id = value;
+            SaveRecord();
+        }
+    }
+
+    public bool TeleportationMethod
+    {
+        get => teleportation_method;
+        set
+        {
+            teleportation_method = value;
+            SaveRecord();
+        }
+    }
+    public bool GameStressorTime
+    {
+        get => game_stressor_time;
+        set
+        {
+            game_stressor_time = value;
+            SaveRecord();
+        }
+    }
+
+    public bool GameStressorBiasedInstruction
+    {
+        get => game_stressor_biased_instruction;
+        set
+        {
+            game_stressor_biased_instruction = value;
+            SaveRecord();
+        }
+    }
+
+    public bool GameStressorAttentionDemand
+    {
+        get => game_stressor_attention_demand;
+        set
+        {
+            game_stressor_attention_demand = value;
+            SaveRecord();
+        }
+    }
+
+    #endregion Accessors and persistence
+
+    private void SaveRecord()
+    {
+#if UNITY_EDITOR
+        Debug.Log("Saving data");
+#endif
+    }
 }
 

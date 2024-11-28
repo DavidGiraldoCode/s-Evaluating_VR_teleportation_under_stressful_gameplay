@@ -29,18 +29,41 @@ public class ConditionGUIController : MonoBehaviour
 
         SetParticipantID();
         m_participantID.text = m_participantData.ID;
+        
+
+    }
+    private void Start()
+    {
+        //ResetTogglesAndVariables();
+    }
+
+    private void ResetTogglesAndVariables()
+    {   
+        m_participantData.TeleportationMethod = false;
+        m_participantData.GameStressorTime = false;
+        m_participantData.GameStressorBiasedInstruction = false;
+        m_participantData.GameStressorAttentionDemand = false;
+
+        // bool varTeleport     = (m_participantData.TeleportationMethod == true);
+        // bool varTime         = (m_participantData.GameStressorTime == true);
+        // bool varBiased       = (m_participantData.GameStressorBiasedInstruction == true);
+        // bool varAttention    = (m_participantData.GameStressorAttentionDemand == true);
 
         // Toggle tt = m_teleportToggle.GetComponentInChildren<Toggle>();
-        // tt.isOn = m_participantData.TeleportationMethod;
+        // tt.isOn = false;
+        // tt.isOn = varTeleport;
 
-        // Toggle mt = m_teleportToggle.GetComponentInChildren<Toggle>();
-        // mt.isOn = m_participantData.GameStressorTime;
+        // Toggle mt = m_timeToggle.GetComponentInChildren<Toggle>();
+        // mt.isOn = false;
+        // mt.isOn = varTime;
 
-        // Toggle bt = m_teleportToggle.GetComponentInChildren<Toggle>();
-        // bt.isOn = m_participantData.GameStressorBiasedInstruction;
+        // Toggle bt = m_biasedToggle.GetComponentInChildren<Toggle>();
+        // bt.isOn = false;
+        // bt.isOn = varBiased;
 
-        // Toggle at = m_teleportToggle.GetComponentInChildren<Toggle>();
-        // at.isOn = m_participantData.GameStressorAttentionDemand;
+        // Toggle at = m_attentionToggle.GetComponentInChildren<Toggle>();
+        // at.isOn = false;
+        // at.isOn = varAttention;
     }
 
     private void OnEnable()

@@ -101,9 +101,10 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
     public delegate void CompleteSequence();
     //public event CompleteSequence OnSequenceCompleted;
     public delegate void NewSequence(Stack<taskColors> sequence);
-    public delegate void NextColor(stimulus newStimulus, taskColors nextColor);
+    public delegate void NextColor(stimulus newStimulus, taskColors nextColor, bool wasCompleted);
     public event NewSequence OnNewSequence;
     public event NextColor OnNewNextColor;
+
 
     //========================================================================================================================
 
@@ -238,7 +239,7 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
         {
             if (platformColor == CurrentTaskColor())
             {
-                RemoveTaskFromStack();
+                RemoveTaskFromStack(true);
                 //Right platform
                 Debug.Log("Right platform, removing " + platformColor.ToString());
             }
@@ -251,6 +252,22 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
             CheckForTaskComplition();
         }
 
+    }
+
+    /// <summary>
+    /// When the player does not manager to get to the platform on time, the task if mark as incomplete, 
+    /// and the next color is prompted. It might happen that the next color is the current platform.
+    /// </summary>
+    /// <param name="platformColor"></param>
+    public void IncompleteTask(taskColors platformColor)
+    {
+        //Invariance; it wont let any color be removed if the task state is not ongoing
+        if (CurrentState == state.PRACTICE_ONGOING || CurrentState == state.TRIAL_ONGOING)
+        {
+            RemoveTaskFromStack(false);
+            
+            CheckForTaskComplition();
+        }
     }
 
     /// <summary>
@@ -319,20 +336,20 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
     /// <summary>
     /// Removes the task at the top of the stack of task in the current state, practice or trial
     /// </summary>
-    private void RemoveTaskFromStack()
+    private void RemoveTaskFromStack(bool wasCompleted)
     {
         if (m_currentState == state.PRACTICE_ONGOING && m_practiceTasks.Count > 0)
         {
             m_practiceTasks.Pop();
 
             if (OnNewNextColor != null)
-                OnNewNextColor?.Invoke(m_currentStimulus, CurrentTaskColor());
+                OnNewNextColor?.Invoke(m_currentStimulus, CurrentTaskColor(), wasCompleted);
         }
         else if (m_currentState == state.TRIAL_ONGOING && m_trialTasks.Count > 0)
         {
             m_trialTasks.Pop();
             if (OnNewNextColor != null)
-                OnNewNextColor?.Invoke(m_currentStimulus, CurrentTaskColor());
+                OnNewNextColor?.Invoke(m_currentStimulus, CurrentTaskColor(), wasCompleted);
         }
 
     }
@@ -396,7 +413,7 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
         GenerateRandomCoordinateList((uint)taskColors.RED, 1, m_practiceTasks);
         m_currentState = state.PRACTICE_ONGOING;
         if (OnNewNextColor != null)
-            OnNewNextColor?.Invoke(m_currentStimulus, CurrentTaskColor());
+            OnNewNextColor?.Invoke(m_currentStimulus, CurrentTaskColor(), false);
     }
 
     /// <summary>
@@ -408,7 +425,7 @@ public class GameState : ScriptableObject, IObservable<GameStateData>
         //Debug.Log("OnTrialBegin");
         m_currentState = state.TRIAL_ONGOING;
         if (OnNewNextColor != null)
-            OnNewNextColor?.Invoke(m_currentStimulus, CurrentTaskColor());
+            OnNewNextColor?.Invoke(m_currentStimulus, CurrentTaskColor(), false);
     }
     #endregion Event Listeners
 

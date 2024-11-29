@@ -92,7 +92,7 @@ public class ExperimentManager : MonoBehaviour
         if (m_currentCondition == null || m_currentCondition != newCondition)
             m_currentCondition = newCondition;
 
-        _participantData.condition = m_currentCondition.ToString();
+        _participantData.Condition = m_currentCondition.ToString();
 
         if (OnConditionChanged == null) return; // No method has instantiate this event
         if (OnConditionChanged.GetInvocationList().Length > 0)

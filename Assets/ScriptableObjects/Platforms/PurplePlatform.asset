@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: PurplePlatform
   m_EditorClassIdentifier: 
   m_currentState: 0
-  m_designatedColor: 5
+  m_designatedColor: 4
   m_displayColor: {r: 0.6577053, g: 0, b: 1, a: 0}
   m_activationAllowed: 0

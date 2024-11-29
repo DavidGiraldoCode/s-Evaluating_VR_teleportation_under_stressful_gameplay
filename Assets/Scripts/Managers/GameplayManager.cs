@@ -32,8 +32,9 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     private const uint STARTING_PLATFORM = 0;
     private float m_counterToReachPlatform;
     public float Timer { get => m_counterToReachPlatform; }
-    [SerializeField] private uint TIME_TO_GET_TO_PLATFORM = 20;
-    private uint m_timeReducer = 0;
+    [SerializeField] private float TIME_TO_GET_TO_PLATFORM = 20f;
+    private float m_timeReducingFactor = 0.25f;
+    private float m_timeReducingStep = 2f;
     private PlatformStateController[] m_PlatformStates; // Holds all the platforms in the scene to then subscribe to their events
     [Tooltip("The Manager Finds it automatically")]
     [SerializeField] private PlayerController m_playerController; // The ref to the player to enable teleportation
@@ -127,8 +128,8 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
         // Setup HUD prompts system with congnitive interference
         // Setup time and environmental stressors
         ReturnToStandby();
-        m_counterToReachPlatform = TIME_TO_GET_TO_PLATFORM + 1;
-        m_timeReducer = 0;
+        TIME_TO_GET_TO_PLATFORM = 20f;
+        m_counterToReachPlatform = TIME_TO_GET_TO_PLATFORM;
     }
 
     /// <summary>
@@ -156,18 +157,20 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
 
     private void OnNewNextColor(GameState.stimulus newStimulus, GameState.taskColors nextColor, bool wasCompleted)
     {
-        if(m_participantData.GameStressorTime)
-        {   
+        //Reduce time in case GameStressor is enable
+        if (m_participantData.GameStressorTime)
+        {
             Debug.Log("XXX REDUCING TIME");
-            float quarter = m_counterToReachPlatform * 0.25f;
-            m_timeReducer = (uint) quarter;
-            m_counterToReachPlatform = TIME_TO_GET_TO_PLATFORM - m_timeReducer;
+            //TIME_TO_GET_TO_PLATFORM -= TIME_TO_GET_TO_PLATFORM * m_timeReducingFactor;
+            TIME_TO_GET_TO_PLATFORM -= m_timeReducingStep;
+           
+            m_counterToReachPlatform = TIME_TO_GET_TO_PLATFORM;
         }
         else
         {
             m_counterToReachPlatform = TIME_TO_GET_TO_PLATFORM;
         }
-            
+
     }
 
     /// <summary>
@@ -177,13 +180,13 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     {
         if (m_gameState.CurrentState == GameState.state.PRACTICE_ONGOING || m_gameState.CurrentState == GameState.state.TRIAL_ONGOING)
         {
-            m_counterToReachPlatform -= 1.0f * Time.deltaTime;
+            m_counterToReachPlatform -= 0.9f * Time.deltaTime; // Add one to get 20 and not 19 in the counter feedback
 
             if (m_counterToReachPlatform < 0)
             {
                 Debug.Log("Change Color");
                 m_gameState.IncompleteTask(m_gameState.CurrentTaskColor());
-                m_counterToReachPlatform = TIME_TO_GET_TO_PLATFORM + 1; // Add one to get 20 and not 19 in the counter feedback
+                m_counterToReachPlatform = TIME_TO_GET_TO_PLATFORM;
             }
         }
     }
@@ -226,6 +229,8 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
                 break;
         }
         m_playerController.CanTeleport = true;
+        TIME_TO_GET_TO_PLATFORM = 20f;
+        m_counterToReachPlatform = TIME_TO_GET_TO_PLATFORM;
     }
     // public void BeginPractice()
     // {

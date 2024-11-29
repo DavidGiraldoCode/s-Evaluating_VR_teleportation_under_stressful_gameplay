@@ -16,6 +16,9 @@ public class ColorPromptController : MonoBehaviour
     private string m_stroopStimuliType; // "WORD" "COLOR"
     public string StroopStimuliType { get => m_stroopStimuliType; set => m_stroopStimuliType = value; }
 
+    // This stores the last biased word color so the next time, it can change
+    private string m_previousBiasedWordColor = "";
+
     #region MonoBehaviour Methods
     private void Awake()
     {
@@ -52,18 +55,25 @@ public class ColorPromptController : MonoBehaviour
     {
         //Debug.Log(newColor);
         m_indcator.text = stroopStimuliType;
-        string temp = wordColor;
+        string baisedWordColor = wordColor;
 
         // Apply Game Stressor based on Stroop Test
         if (m_participantData.GameStressorBiasedInstruction)
         {
-            float t = Random.value;
-            GameState.taskColors baisedColorName = (GameState.taskColors)(0.0f * t + (1.0f - t) * 5.0f);
-            Debug.Log($"XXX The NEW baisedColorName is {baisedColorName}");
-            //GameState.taskColors
+            while (baisedWordColor == wordColor) // Checks until the baisedWordColor is different from the original
+            {
+                float t = Random.value;
+                GameState.taskColors baisedColor = (GameState.taskColors)(0.0f * t + (1.0f - t) * 5.0f);
+
+                if (baisedColor.ToString() == m_previousBiasedWordColor) // Makes sure that is different from the last biased result
+                    continue;
+
+                baisedWordColor = baisedColor.ToString();
+            }
 
             m_stroopStimuli.color = newColor;
-            m_stroopStimuli.text = baisedColorName.ToString();
+            m_stroopStimuli.text = baisedWordColor;
+            m_previousBiasedWordColor = m_stroopStimuli.text;
         }
         else
         {

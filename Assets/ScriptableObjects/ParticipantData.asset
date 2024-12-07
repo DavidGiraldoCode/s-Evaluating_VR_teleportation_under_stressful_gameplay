@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88cf22fca7728452a90ffef4cba1d85f, type: 3}
   m_Name: ParticipantData
   m_EditorClassIdentifier: 
-  id: P13-103-084
-  condition: ConditionB_PT_Orientation (Condition)
+  id: P13-111-731
+  condition: ConditionA_PT_Orientation (Condition)
   teleportation_method: 0
   game_stressor_time: 0
-  game_stressor_biased_instruction: 0
-  game_stressor_attention_demand: 1
+  game_stressor_biased_instruction: 1
+  game_stressor_attention_demand: 0
   time: 0
   trial_count_down: 0
   prompted_distance: 0

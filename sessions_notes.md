@@ -84,3 +84,19 @@ enum taskColors
 - The practice and trial colores worked, both go through the end, they are not generating new colors sequences when starting new condition. Change this to make each condition unique.
 - Make sure the graphs numers match the numbers of the colors in the enums, and also the orientation in world space. Theres was a bug on platform yellow and green, they both marched them selfves as the next. had to move to another one and return to reseatrt the buzz-wire.
 - Add a counter of how many platforms (teleportations) are left.
+
+## Teleportation test
+<div style="display: flex; justify-content: space-between;">
+    <img width="360" alt="image" src="Assets/Art/Images/cheating_control.gif">
+    <img width="360" alt="image" src="Assets/Art/Images/snapping.gif">
+</div>
+
+- In this "x-ray"-like debug view, two bounding volumes control the ring's limits. Six probes are placed inside the ring to trigger the path. Then, a snap interaction places the ring in the final location of the wire-buzz path and triggers the new color.
+
+<img width="600" alt="image" src="Assets/Art/Images/bunny_rotating_for_gif.gif">
+
+- Here you can see the teleportation with custom orientation at target position
+
+<img width="600" alt="image" src="Assets/Art/Images/buzz_wire.png">
+
+- The BuzzWire backend configuration to detect the player moves and control cheating

@@ -82,7 +82,7 @@ OnNewNextColor:
 3. `NotifyObserversForTheLastTime()`:Sends a final notification to all observers and ensures they are informed of the game's end. It traverses the observer list in reverse to prevent issues when removing observers.
 
 ## Features
-- **Start:**The primary button on `GameplayGUI` children call `BeginGame` on GameplayManager
+- **Start:** The primary button on `GameplayGUI` children call `BeginGame` on GameplayManager
 **Platforms:** `EnterGameplay` in `ExprimentManager` and in `GameplayManager` triggers the setup of the platforms.
 <img width="50%" alt="image" src="Assets/Art/Images/vr_scene_layout.jpg">
 
@@ -97,7 +97,7 @@ OnNewNextColor:
 - **Timer:** This variables in controlled by the GameplayManager via the `CountdownToReachPlaform()` method.
 - **Biased instruction:** This stimuli is controll inside the `ColorPromptController` class, in the `UpdateColorPromptDisplay()` method. A memeber variable `m_participantData` referencing `ParticipantData` game object expose the property `.GameStressorBiasedInstruction`.
 - **Shrinking platforms:** This stimuli is controlled by `ShrinkPlatformController`, this component is attached to a GameObject ShrinkController inside the parent prefab FloatingPlatform. The GameObject TeleportationBlocker is what causes the teleportation area to apparently shrink. It is a torus that bloacks the Nav Mesh.
-<img width="50%" alt="image" src="Assets/Art/Images/turus.pgn">
+<img width="50%" alt="image" src="Assets/Art/Images/turus.png">
 
 ## Backlog
 - [ ]  Logging variables in CSV and store the file in the Headset

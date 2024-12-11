@@ -6,6 +6,8 @@ using UnityEngine;
 public class PlayerRelocator : MonoBehaviour
 {
     [SerializeField] private Transform m_player;
+    [SerializeField] private Transform m_mainPlatformRelocator;
+    [SerializeField] private Transform m_practiceTrialRelocator;
 
     private void Awake()
     {
@@ -25,17 +27,27 @@ public class PlayerRelocator : MonoBehaviour
         UnsubribeFromGameplayEvents();
     }
 
-    private void OnTasksReset()
+    /// <summary>
+    /// Places the player on the main platform to configure conditions.
+    /// </summary>
+    private void OnMainPlatformPositionReset()
     {
-        m_player.position = transform.position;
+        m_player.position = m_mainPlatformRelocator.position;
+    }
+    /// <summary>
+    /// Places the player on the starting platform (RED to begin the test
+    /// </summary>
+    private void OnTaskPlatformPositionReset()
+    {
+        m_player.position = m_practiceTrialRelocator.position;
     }
     private void SubribeToGameplayEvents()
     {
         if (GameplayManager.Instance)
         {
-            GameplayManager.OnPracticeStandby += OnTasksReset;
-            GameplayManager.OnTrialStandby += OnTasksReset;
-            GameplayManager.OnGameOver += OnTasksReset;
+            GameplayManager.OnPracticeStandby += OnTaskPlatformPositionReset;
+            GameplayManager.OnTrialStandby += OnTaskPlatformPositionReset;
+            GameplayManager.OnGameOver += OnMainPlatformPositionReset;
         }
     }
 
@@ -43,9 +55,9 @@ public class PlayerRelocator : MonoBehaviour
     {
         if (GameplayManager.Instance)
         {
-            GameplayManager.OnPracticeStandby -= OnTasksReset;
-            GameplayManager.OnTrialStandby -= OnTasksReset;
-            GameplayManager.OnGameOver -= OnTasksReset;
+            GameplayManager.OnPracticeStandby -= OnTaskPlatformPositionReset;
+            GameplayManager.OnTrialStandby -= OnTaskPlatformPositionReset;
+            GameplayManager.OnGameOver -= OnMainPlatformPositionReset;
         }
     }
 

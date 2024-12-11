@@ -7,7 +7,7 @@ using UnityEngine;
 public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
 {
     public static GameplayManager Instance { get; private set; }
-
+    [SerializeField] private ParticipantData m_participantData;
     [SerializeField] private GameState m_gameState;
     //TODO Adding Gaph
     [Tooltip("This represents the abstract Data Structure of the plaforms" +
@@ -27,11 +27,19 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     public static event GameplayStateChanges OnTrialEnd;            // The player completes all the trial task
     public static event GameplayStateChanges OnGameOver;
 
+
     // Variables
-    const uint STARTING_PLATFORM = 0;
     private PlatformStateController[] m_PlatformStates; // Holds all the platforms in the scene to then subscribe to their events
     [Tooltip("The Manager Finds it automatically")]
     [SerializeField] private PlayerController m_playerController; // The ref to the player to enable teleportation
+    [Header("Timer")]
+    private const uint STARTING_PLATFORM = 0;
+    private float m_counterToReachPlatform;
+    public float Timer { get => m_counterToReachPlatform; }
+    [SerializeField] private float TIME_TO_GET_TO_PLATFORM = 20f;
+    private float m_timeReducingFactor = 0.25f;
+    private float m_timeReducingStep = 2f;
+    
 
     #region MonoMonoBehaviour
     private void Awake()
@@ -46,7 +54,10 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
             //Debug.Log("Duplicated removed");
         }
         if (m_gameState == null)
-            throw new System.NullReferenceException("GameState missing");
+            throw new NullReferenceException("GameState missing");
+
+        if (m_participantData == null)
+            throw new NullReferenceException("ParticipantData missing");
 
         // Graph DEPRECATED
         //if (m_cycleGraph == null)
@@ -69,6 +80,8 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
         OnPracticeBegin += m_gameState.OnPracticeBegin;
         OnTrialBegin += m_gameState.OnTrialBegin;
 
+        m_gameState.OnNewNextColor += OnNewNextColor;
+
         //Subscribe to platform events
         if (m_PlatformStates != null)
             for (int i = 0; i < m_PlatformStates.Length; i++)
@@ -76,10 +89,13 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
                 m_PlatformStates[i].State.OnStateChange += OnPlaformStateChange;
             }
     }
+
     private void OnDisable()
     {
         OnPracticeBegin -= m_gameState.OnPracticeBegin;
         OnTrialBegin -= m_gameState.OnTrialBegin;
+
+        m_gameState.OnNewNextColor += OnNewNextColor;
 
         //Unsubscribe to platform events
         if (m_PlatformStates != null)
@@ -92,6 +108,11 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     {
         //EnterGameplay(null); //TODO for testing, REMOVE
         //BeginGame();
+    }
+
+    private void Update()
+    {
+        CountdownToReachPlaform();
     }
     #endregion MonoMonoBehaviour
 
@@ -109,6 +130,8 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
         // Setup HUD prompts system with congnitive interference
         // Setup time and environmental stressors
         ReturnToStandby();
+        TIME_TO_GET_TO_PLATFORM = 20f;
+        m_counterToReachPlatform = TIME_TO_GET_TO_PLATFORM;
     }
 
     /// <summary>
@@ -132,6 +155,42 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
     {
         if (state == PlatformState.state.ACTIVATED)
             m_gameState.CompleteTask((GameState.taskColors)color);
+    }
+
+    private void OnNewNextColor(GameState.stimulus newStimulus, GameState.taskColors nextColor, bool wasCompleted)
+    {
+        //Reduce time in case GameStressor is enable
+        if (m_participantData.GameStressorTime)
+        {
+            Debug.Log("XXX REDUCING TIME");
+            //TIME_TO_GET_TO_PLATFORM -= TIME_TO_GET_TO_PLATFORM * m_timeReducingFactor;
+            TIME_TO_GET_TO_PLATFORM -= m_timeReducingStep;
+           
+            m_counterToReachPlatform = TIME_TO_GET_TO_PLATFORM;
+        }
+        else
+        {
+            m_counterToReachPlatform = TIME_TO_GET_TO_PLATFORM;
+        }
+
+    }
+
+    /// <summary>
+    /// Counts down to indicate the player how much it is leaft to reach the next platform. When it reaches zero, changes color.
+    /// </summary>
+    private void CountdownToReachPlaform()
+    {
+        if (m_gameState.CurrentState == GameState.state.PRACTICE_ONGOING || m_gameState.CurrentState == GameState.state.TRIAL_ONGOING)
+        {
+            m_counterToReachPlatform -= 0.9f * Time.deltaTime; // Add one to get 20 and not 19 in the counter feedback
+
+            if (m_counterToReachPlatform < 0)
+            {
+                Debug.Log("Change Color");
+                m_gameState.IncompleteTask(m_gameState.CurrentTaskColor());
+                m_counterToReachPlatform = TIME_TO_GET_TO_PLATFORM;
+            }
+        }
     }
 
     #endregion Gameloop methods
@@ -172,6 +231,8 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
                 break;
         }
         m_playerController.CanTeleport = true;
+        TIME_TO_GET_TO_PLATFORM = 20f;
+        m_counterToReachPlatform = TIME_TO_GET_TO_PLATFORM;
     }
     // public void BeginPractice()
     // {

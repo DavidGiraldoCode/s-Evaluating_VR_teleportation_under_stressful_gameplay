@@ -5,7 +5,7 @@ using Oculus.Interaction;
 using UnityEngine;
 
 /// <summary>
-/// This class subscribed to a SnapInteractable event `WhenStateChanged` to check if the final snap location of the 
+/// This class subscribes to a SnapInteractable event `WhenStateChanged` to check if the final snap location of the 
 /// buzz-wire game is `Select` to activate the platform on the gameplay.
 /// It also checks if the Platform has `ActivationAllowed == true` to enable the activation of the platform
 /// </summary>

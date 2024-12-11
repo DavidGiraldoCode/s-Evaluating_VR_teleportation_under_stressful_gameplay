@@ -29,15 +29,17 @@ public class GameplayManager : MonoBehaviour, IObserver<GameStateData>
 
 
     // Variables
+    private PlatformStateController[] m_PlatformStates; // Holds all the platforms in the scene to then subscribe to their events
+    [Tooltip("The Manager Finds it automatically")]
+    [SerializeField] private PlayerController m_playerController; // The ref to the player to enable teleportation
+    [Header("Timer")]
     private const uint STARTING_PLATFORM = 0;
     private float m_counterToReachPlatform;
     public float Timer { get => m_counterToReachPlatform; }
     [SerializeField] private float TIME_TO_GET_TO_PLATFORM = 20f;
     private float m_timeReducingFactor = 0.25f;
     private float m_timeReducingStep = 2f;
-    private PlatformStateController[] m_PlatformStates; // Holds all the platforms in the scene to then subscribe to their events
-    [Tooltip("The Manager Finds it automatically")]
-    [SerializeField] private PlayerController m_playerController; // The ref to the player to enable teleportation
+    
 
     #region MonoMonoBehaviour
     private void Awake()

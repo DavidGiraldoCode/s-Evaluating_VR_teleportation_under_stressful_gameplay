@@ -20,7 +20,7 @@ This instance of the prototype includes two teleportation methods and three game
 *When the application is installed onto the HMD, the viewport can be streamed to a MacBook Pro via the Meta Quest Developer Hub for real-time monitoring.
 
 ## Directories
-The important files can be found in the following locations, any other files are dependencies from pluggings and they must not be removed or edited unless you know what you are doing.
+The important files can be found in the following locations, any other files are dependencies from pluggings and they must not be removed or edited unless you know what you are doing. The **main scene** is `TeleportationOnRightHandOnly` inside the `/Scenes/Experiment`.
 ```bash
 Project/
 ├── Assets/
@@ -31,6 +31,8 @@ Project/
 │   │   └── Textures/
 │   ├── Prefabs/
 │   ├── Scenes/
+│   │    ├── Experiment/ TeleportationOnRightHandOnly
+│   │    └── Playgrounds/
 │   ├── Scriptable Objects/
 │   │   └── Platforms/
 │   └── Scripts/
@@ -80,13 +82,19 @@ OnNewNextColor:
 3. `NotifyObserversForTheLastTime()`:Sends a final notification to all observers and ensures they are informed of the game's end. It traverses the observer list in reverse to prevent issues when removing observers.
 
 ## Features
-
-**Hard exit:**
-**Color generation:**
-**Timer:**
-**Biased instruction:**
-**Shrinking platforms:**
-
+**Start:**The primary button on `GameplayGUI` children call `BeginGame` on GameplayManager
+**Platforms:** `EnterGameplay` in `ExprimentManager` and in `GameplayManager` triggers the setup of the platforms.
+<img width="50%" alt="image" src="Assets/Art/Images/vr_scene_layout.jpg">
+**Hard exit:** Press both primary buttons for 5 seconds to terminate the task.
+**Color generation:** The colors are generated using a Graph, and a set of coordinates `{ -3, -2, -1, 1, 2, 3 }` that represent the number of steps from the player current position and the direction: `-` left and `+` right. 
+`GenerateRandomCoordinateList` inside `GameState`, creates the Graph. Read *Session 2024-11-05: Adding Graph and Distances* for more details.
+<img width="50%" alt="image" src="Assets/Art/Images/vr_color_gui.jpg"> 
+**Participant and variables Data:** The information about what stimuli are active in a task is in `ParticipantData` Scriptable Object. The GUI writes directly to its field to toggle variables.
+<img width="50%" alt="image" src="Assets/Art/Images/vr_new_gui.jpg"> 
+**Timer:** This variables in controlled by the GameplayManager via the `CountdownToReachPlaform()` method.
+**Biased instruction:** This stimuli is controll inside the `ColorPromptController` class, in the `UpdateColorPromptDisplay()` method. A memeber variable `m_participantData` referencing `ParticipantData` game object expose the property `.GameStressorBiasedInstruction`.
+**Shrinking platforms:** This stimuli is controlled by `ShrinkPlatformController`, this component is attached to a GameObject ShrinkController inside the parent prefab FloatingPlatform. The GameObject TeleportationBlocker is what causes the teleportation area to apparently shrink. It is a torus that bloacks the Nav Mesh.
+<img width="50%" alt="image" src="Assets/Art/Images/turus.pgn">
 
 ## Backlog
 - [ ]  Logging variables in CSV and store the file in the Headset

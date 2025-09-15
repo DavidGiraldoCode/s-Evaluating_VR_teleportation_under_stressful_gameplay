@@ -42,9 +42,9 @@ Subjects are given one teleportation instruction at a time in the form of color 
 
 
 <div style="display: flex; justify-content: space-between;">
-    <img width="240" alt="image" src="Assets/Art/Images/cheating_control.gif">
-    <img width="auto" height="240" alt="image" src="Assets/Art/Images/vr_color_gui.jpg"> 
-    <img width="240" alt="image" src="Assets/Art/Images/snapping.gif">
+    <img width="224" alt="image" src="Assets/Art/Images/cheating_control.gif">
+    <img width="auto" height="224" alt="image" src="Assets/Art/Images/vr_color_gui.jpg"> 
+    <img width="224" alt="image" src="Assets/Art/Images/snapping.gif">
 </div>
 
 This instance of the prototype includes two teleportation methods and three game stressors, but further methods and stressors can be added according to the research’s needs.
